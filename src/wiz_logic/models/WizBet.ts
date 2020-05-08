@@ -1,0 +1,3 @@
+interface IWizBet {
+    takes: number
+}

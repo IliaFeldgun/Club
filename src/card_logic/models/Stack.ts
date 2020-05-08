@@ -1,0 +1,7 @@
+interface IStack {
+    cards: ICard[]
+    shuffle: () => void
+    top: () => ICard
+    pop: () => ICard
+    push: (card: ICard) => void
+}
