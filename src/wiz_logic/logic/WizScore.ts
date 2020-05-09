@@ -1,4 +1,4 @@
-import { calculateScore } from "../models/GameRules"
+import { calculateScore } from "./GameRules"
 
 export class WizScore implements IWizScore {
     total: number

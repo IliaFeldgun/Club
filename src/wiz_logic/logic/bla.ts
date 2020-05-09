@@ -1,4 +1,4 @@
-import { getCardsPerPlayer } from "../models/GameRules"
+import { getCardsPerPlayer } from "./GameRules"
 
 
 function dealPlayers(cards: number, players: IWizPlayer[], deck: IDeck){
@@ -14,5 +14,3 @@ function dealGame(turn: number, players: IWizPlayer[], deck: IDeck) {
     const cards = getCardsPerPlayer(turn, players.length)
     dealPlayers(cards, players, deck)
 }
-
-function 

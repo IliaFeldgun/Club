@@ -1,4 +1,4 @@
-import { checkPlayValidity, getWinningCard } from "../models/GameRules"
+import { checkPlayValidity, getWinningCard } from "./GameRules"
 
 export class WizTableStack extends Stack implements IWizTableStack {
     suitRequired?: Suit
