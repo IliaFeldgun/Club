@@ -4,7 +4,7 @@ const router = express.Router()
 router.post('/', (req, res) => {
     // req.gametype
     // req.player
-    res.send( "Room created" );
+    res.send( "Room " +req.body.roomName+ " created" );
 } );
 
 router.post('/player', ( req, res ) => {
