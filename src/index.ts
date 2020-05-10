@@ -1,10 +1,14 @@
-import express from "express";
+import dotenv from "dotenv"
+dotenv.config()
+
+import express from "express"
 import game from "./api/game"
 import player from "./api/player"
 import room from "./api/room"
 
+
 const app = express();
-const port = 8080; // default port to listen
+const port = process.env.PORT; // default port to listen
 
 // define a route handler for the default home page
 app.get( "/", ( req, res ) => {
