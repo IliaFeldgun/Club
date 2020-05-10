@@ -5,8 +5,19 @@ import express from "express"
 import game from "./api/game"
 import player from "./api/player"
 import room from "./api/room"
+import winston from "winston"
 
+const logger = winston.createLogger( {
+    level: 'info',
+    format: winston.format.json(),
+    defaultMeta: { service: 'user-service'},
+    transports: [
+        new winston.transports.File({ filename: 'error.log', level: 'error'}),
+        new winston.transports.File({ filename: 'combined.log' })
+    ]
+})
 
+logger.log('info', 'This is the first log');
 const app = express();
 const port = process.env.PORT; // default port to listen
 
