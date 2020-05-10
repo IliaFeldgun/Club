@@ -10,6 +10,7 @@ import {redisClient} from "./redis"
 
 const app = express();
 const port = process.env.PORT; // default port to listen
+app.use(express.json());
 
 // define a route handler for the default home page
 app.get( "/", ( req, res ) => {
