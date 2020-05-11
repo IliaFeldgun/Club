@@ -17,6 +17,17 @@ router.post('/', (req, res) => {
     }
 });
 
+router.get('/:roomId', (req, res) => {
+    const roomId = req.params.roomId
+    const playerId = req.signedCookies["player_id"]
+    if (playerId) {
+        store.get()(roomId, (err, reply) => {
+            let room = JSON.parse(reply)
+            if (room.players.filter((player: string) => player == playerId).length)
+                res.send(room);
+        })
+    }
+})
 router.post('/player', ( req, res ) => {
     const playerId = req.signedCookies["player_id"]
     if (playerId) {
