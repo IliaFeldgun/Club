@@ -3,6 +3,6 @@ class Player implements IPlayer {
     name: string
     constructor (id: string, name: string) {
         this.name = name
-        this.id = id // TODO: Generate ID for players
+        this.id = id
     }
 }

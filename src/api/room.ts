@@ -8,8 +8,10 @@ router.post('/', (req, res) => {
     
     if (playerId) {
         const roomId = generateId(playerId, process.env.UUID_ROOM_NAMESPACE)
-        store.set()(roomId, JSON.stringify({leader: playerId, players: []}))
-        res.send( "Room " + roomId + " created" );
+        const room : IRoom = new Room(roomId, playerId)
+        store.set()(room.id, JSON.stringify(room), (err, reply) => {
+            res.send( "Room " + room.id + " created" );
+        })
     }
     else {
         res.status(403)
@@ -20,24 +22,25 @@ router.post('/', (req, res) => {
 router.get('/:roomId', (req, res) => {
     const roomId = req.params.roomId
     const playerId = req.signedCookies["player_id"]
+    
     if (playerId) {
         store.get()(roomId, (err, reply) => {
-            let room = JSON.parse(reply)
-            if (room.players.filter((player: string) => player == playerId).length)
+            let room : IRoom = JSON.parse(reply)
+            if (room.players.filter((player: IPlayer["id"]) => player == playerId).length)
                 res.send(room);
         })
     }
 })
-router.post('/player', ( req, res ) => {
+router.get('/:roomId/join', ( req, res ) => {
     const playerId = req.signedCookies["player_id"]
     if (playerId) {
-        const roomId = req.body.roomId
+        const roomId = req.params.roomId
         
         if (roomId) {
             store.get()(roomId, (err, reply) => {
-                let room = JSON.parse(reply)
+                let room : IRoom = JSON.parse(reply)
                 room.players.push(playerId)
-                store.set()(roomId, JSON.stringify(room))
+                store.set()(room.id, JSON.stringify(room))
             })
         }
     }
@@ -45,7 +48,7 @@ router.post('/player', ( req, res ) => {
         res.status(403)
         res.send("Room can't be joined, you need to set a player")
     }
-} );
+});
 
 router.delete('/player', ( req, res ) => {
     // req.player
