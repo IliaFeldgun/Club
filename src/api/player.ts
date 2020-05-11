@@ -9,11 +9,13 @@ router.post('/', (req, res) => {
         const playerName = req.body.playerName
         const id = generateId(playerName,process.env.UUID_PLAYER_NAMESPACE)
         
-        store.set()(id,playerName)
-        res.cookie("player_name", playerName, { signed: true })
-        res.cookie("player_id", id, { signed: true })
+        const player : IPlayer = new Player(id, playerName)
 
-        res.send("Player created, cookie sent")
+        store.set()(player.id,JSON.stringify(player), (err, reply) => {
+            res.cookie("player_name", player.name, { signed: true })
+            res.cookie("player_id", player.id, { signed: true })
+            res.send("Player created, cookie sent")
+        })
     }
     else {
         res.send("You are already " + req.signedCookies["player_name"])
