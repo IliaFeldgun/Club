@@ -7,7 +7,6 @@ import game from "./api/game"
 import player from "./api/player"
 import room from "./api/room"
 import {logger} from "./winston"
-import {redisClient} from "./redis"
 
 const app = express();
 const port = process.env.PORT; // default port to listen
