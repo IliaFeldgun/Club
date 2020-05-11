@@ -1,6 +1,6 @@
 import express from "express"
 import { generateId } from "../engine/id_generator"
-import { redisClient } from "../redis"
+import store from "../engine/key_value_state_store"
 
 const router = express.Router()
 
@@ -10,7 +10,7 @@ router.post('/', (req, res) => {
         const userName = req.body.username
         const id = generateId(userName,process.env.UUID_PLAYER_NAMESPACE)
         
-        redisClient.SET(id,userName)
+        store.set()(id,userName)
         res.cookie("user_name", userName, { signed: true })
         res.cookie("user_id", id, { signed: true })
 
@@ -23,7 +23,7 @@ router.delete('/', (req,res) => {
     
     if (id)
     {
-        redisClient.DEL(id)
+        store.delete()(id)
         res.clearCookie("user_name", { signed: true })
         res.clearCookie("user_id", { signed: true })
         res.send("Player deleted, cookie deleted")
