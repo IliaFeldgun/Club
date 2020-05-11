@@ -1,5 +1,5 @@
-import {v5 as uuidv5} from "uuid"
+import * as uuid from "uuid"
 
-export function generateId(name: string, url: string) : string {
-    return uuidv5(name, url)
+export function generateId(name: string, namespace: string) : string {
+    return uuid.v5(name, namespace)
 }
