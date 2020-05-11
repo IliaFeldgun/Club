@@ -8,7 +8,7 @@ router.post('/', (req, res) => {
     if (!req.signedCookies["user_id"])
     {
         const userName = req.body.username
-        const id = generateId(userName,process.env.URL)
+        const id = generateId(userName,process.env.UUID_PLAYER_NAMESPACE)
         
         redisClient.SET(id,userName)
         res.cookie("user_name", userName, { signed: true })
