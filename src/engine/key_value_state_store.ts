@@ -8,4 +8,8 @@ export default class KeyValueStateStore {
     static delete() {
         return redisClient.DEL
     }
+
+    static get() {
+        return redisClient.GET
+    }
 }
