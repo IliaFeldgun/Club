@@ -1,0 +1,88 @@
+body {
+    margin: 0;
+    overflow: hidden;
+  }
+.three-quarters {
+    width: 75%;
+}
+.one-quarter {
+    width: 25%;
+}
+.split {
+    height: 100%;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    overflow-x: hidden;
+    padding-top: 20px;
+}
+.left { left: 0; }
+.right { right: 0; }
+.top {top: 0; }
+.bottom {bottom: 0; }
+
+.fixed {
+    position: fixed;
+}
+.tall {
+    height: 90%;
+}
+.wide {
+    width: 100%;
+}
+.centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+.horizontal-centered {
+    text-align: center;
+}
+.cardboard {
+    background-color: rgba(7,150,34);
+    overflow: hidden;
+}
+.scoreboard {
+    background-color: white;
+}
+.white {
+    background-color: white;
+}
+.blue {
+    background-color: royalblue;
+}
+.card {
+    width: 12vmax;
+    height: 18vmax;
+    position: absolute;
+    margin: 0;
+    bottom: 0;
+    transform-origin: left bottom;
+    font-size: 2.5vmax;
+    font-family: sans-serif;
+    border-style: ridge;
+    border-radius: 5px;
+    padding-left: 5px;
+}
+.card:hover {
+    z-index: 1000;
+}
+.fan {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: fit-content;
+    width: -moz-fit-content;
+    margin: auto;
+}
+.stack {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+.red-card { color: red; }
