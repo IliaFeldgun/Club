@@ -50,8 +50,10 @@ body {
 .white {
     background-color: white;
 }
+.blue {
+    background-color: royalblue;
+}
 .card {
-    background-color: white;
     width: 12vmax;
     height: 18vmax;
     position: absolute;
@@ -73,6 +75,7 @@ body {
     right: 0;
     bottom: 0;
     width: fit-content;
+    width: -moz-fit-content;
     margin: auto;
 }
 .stack {
