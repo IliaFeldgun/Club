@@ -10,8 +10,8 @@ export default class Login extends React.PureComponent {
             <React.Fragment>
                 <div className={allClass}>
                     <h3>Login with a name of your choice</h3>
-                    <form id="loginform" action="/api/player">
-                        <input className={fieldClass} id="loginname" type="text" name="loginname" />
+                    <form id="loginform" method="POST" action="/api/player">
+                        <input className={fieldClass} id="playerName" type="text" name="playerName" />
                         <button className={buttonClass} id="loginsend" type="submit">
                             <span>
                                 Login
