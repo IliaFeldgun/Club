@@ -5,10 +5,10 @@ import store from "../engine/key_value_state_store"
 const router = express.Router()
 
 router.post('/', (req, res) => {
-    if (!req.signedCookies["player_id"]) {
+    if (!req.signedCookies.player_id) {
         const playerName = req.body.playerName
         const id = generateId(playerName,process.env.UUID_PLAYER_NAMESPACE)
-        
+
         const player : IPlayer = new Player(id, playerName)
 
         store.set()(player.id,JSON.stringify(player), (err, reply) => {
@@ -18,13 +18,13 @@ router.post('/', (req, res) => {
         })
     }
     else {
-        res.send("You are already " + req.signedCookies["player_name"])
+        res.send("You are already " + req.signedCookies.player_name)
     }
 })
 
 router.delete('/', (req,res) => {
-    const id = req.signedCookies["player_id"]
-    
+    const id = req.signedCookies.player_id
+
     if (id) {
         store.delete()(id)
         res.clearCookie("player_name", { signed: true })

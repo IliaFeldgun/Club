@@ -4,8 +4,8 @@ import store from "../engine/key_value_state_store"
 const router = express.Router()
 
 router.post('/', (req, res) => {
-    const playerId = req.signedCookies["player_id"]
-    
+    const playerId = req.signedCookies.player_id
+
     if (playerId) {
         const roomId = generateId(playerId, process.env.UUID_ROOM_NAMESPACE)
         const room : IRoom = new Room(roomId, playerId)
@@ -21,24 +21,24 @@ router.post('/', (req, res) => {
 
 router.get('/:roomId', (req, res) => {
     const roomId = req.params.roomId
-    const playerId = req.signedCookies["player_id"]
-    
+    const playerId = req.signedCookies.player_id
+
     if (playerId) {
         store.get()(roomId, (err, reply) => {
-            let room : IRoom = JSON.parse(reply)
-            if (room.players.filter((player: IPlayer["id"]) => player == playerId).length)
+            const room : IRoom = JSON.parse(reply)
+            if (room.players.filter((player: IPlayer["id"]) => player === playerId).length)
                 res.send(room);
         })
     }
 })
 router.get('/:roomId/join', ( req, res ) => {
-    const playerId = req.signedCookies["player_id"]
+    const playerId = req.signedCookies.player_id
     if (playerId) {
         const roomId = req.params.roomId
-        
+
         if (roomId) {
             store.get()(roomId, (err, reply) => {
-                let room : IRoom = JSON.parse(reply)
+                const room : IRoom = JSON.parse(reply)
                 room.players.push(playerId)
                 store.set()(room.id, JSON.stringify(room))
             })
