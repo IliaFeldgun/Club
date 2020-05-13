@@ -1,6 +1,6 @@
 import React from "react";
 import Card, { ICardProps } from "./Card";
-import './Wiz.css';
+
 interface ICardFanProps {
     cards: Array<{suit: ICardProps["suit"], rank: ICardProps["rank"]}>
 }
