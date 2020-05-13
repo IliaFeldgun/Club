@@ -12,11 +12,12 @@ router.post('/', (req, res) => {
 
         const player : IPlayer = new Player(id, playerName)
 
-        store.setAsync()(player.id, JSON.stringify(player)).then(() => {
-            res.cookie("player_name", player.name, { signed: true })
-            res.cookie("player_id", player.id, { signed: true })
-            res.send("Player created, cookie sent") }
+        store.setAsync()(player.id, JSON.stringify(player)).then((ok: any) => {
+                res.cookie("player_name", player.name, { signed: true })
+                res.cookie("player_id", player.id, { signed: true })
+                res.send("Player created, cookie sent") }
             ).catch((err: any) => {
+                res.status(500)
                 res.send("FAIL")
             })
     }
