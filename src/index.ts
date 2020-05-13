@@ -14,6 +14,7 @@ const port = process.env.PORT; // default port to listen
 
 app.use(express.json());
 app.use(cookieParser(process.env.COOKIE_SECRET))
+app.use(express.urlencoded())
 
 app.use(express.static('./client/build'))
 
