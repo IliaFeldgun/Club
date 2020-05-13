@@ -1,6 +1,7 @@
 import express from "express"
 import { generateId } from "../engine/id_generator"
 import store from "../engine/key_value_state_store"
+import Player from "../engine/room_logic/logic/Player"
 
 const router = express.Router()
 
@@ -11,11 +12,13 @@ router.post('/', (req, res) => {
 
         const player : IPlayer = new Player(id, playerName)
 
-        store.set()(player.id,JSON.stringify(player), (err, reply) => {
+        store.setAsync()(player.id, JSON.stringify(player)).then(() => {
             res.cookie("player_name", player.name, { signed: true })
             res.cookie("player_id", player.id, { signed: true })
-            res.send("Player created, cookie sent")
-        })
+            res.send("Player created, cookie sent") }
+            ).catch((err: any) => {
+                res.send("FAIL")
+            })
     }
     else {
         res.send("You are already " + req.signedCookies.player_name)
