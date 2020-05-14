@@ -1,6 +1,7 @@
 import express from "express"
 import { generateId } from "../engine/id_generator"
 import store from "../engine/key_value_state_store"
+import Room from "../engine/room_logic/logic/Room";
 const router = express.Router()
 
 router.post('/', (req, res) => {
@@ -9,8 +10,11 @@ router.post('/', (req, res) => {
     if (playerId) {
         const roomId = generateId(playerId, process.env.UUID_ROOM_NAMESPACE)
         const room : IRoom = new Room(roomId, playerId)
-        store.set()(room.id, JSON.stringify(room), (err, reply) => {
+        store.setAsync()(room.id, JSON.stringify(room)).then((ok: any) => {
             res.send( "Room " + room.id + " created" );
+        }).catch((err: any) => {
+            res.status(500)
+            res.send("FAIL")
         })
     }
     else {
