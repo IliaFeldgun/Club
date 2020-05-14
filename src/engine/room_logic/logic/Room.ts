@@ -1,4 +1,4 @@
-class Room implements IRoom {
+export default class Room implements IRoom {
     id: string
     leader: IPlayer["id"]
     players: IPlayer["id"][]
