@@ -9,9 +9,10 @@ router.post('/', (req, res) => {
 
     if (playerId) {
         const roomId = generateId(playerId, process.env.UUID_ROOM_NAMESPACE)
+        //TODO: decouple
         const room : IRoom = new Room(roomId, playerId)
         store.setAsync()(room.id, JSON.stringify(room)).then((ok: any) => {
-            res.send( "Room " + room.id + " created" );
+            res.send({roomId: room.id});
         }).catch((err: any) => {
             res.status(500)
             res.send("FAIL")
