@@ -1,7 +1,7 @@
-class Stack implements IStack {
+export default class Stack implements IStack {
     cards: ICard[]
     constructor(cards: ICard[]) {
-        this.cards = cards.slice()
+        this.cards = [...cards]
     }
     shuffle() {
         function stackShuffle(cards: ICard[])
