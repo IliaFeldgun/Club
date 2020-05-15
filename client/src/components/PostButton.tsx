@@ -18,7 +18,7 @@ export default class PostButton extends React.PureComponent<IPostButtonProps> {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: this.props.body
+            body: JSON.stringify(this.props.body)
         }
 
         fetch(this.props.route, options).then((res) => {
