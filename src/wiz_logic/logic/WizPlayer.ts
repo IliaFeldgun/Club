@@ -1,4 +1,5 @@
 import { WizScore } from "./WizScore"
+import Stack from "../../card_logic/logic/Stack"
 
 export class WizPlayer implements IWizPlayer {
     id: string
