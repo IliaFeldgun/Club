@@ -8,4 +8,3 @@ export default function requireLogin(req : Request, res: Response, next : NextFu
       res.redirect("/login"); // or render a form, etc.
     }
   }
-  
