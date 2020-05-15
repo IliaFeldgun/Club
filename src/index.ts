@@ -1,7 +1,6 @@
 import dotenv from "dotenv"
 dotenv.config()
 
-import path from 'path'
 import express from "express"
 import cookieParser from "cookie-parser"
 import game from "./api/game"
@@ -14,7 +13,7 @@ const port = process.env.PORT; // default port to listen
 
 app.use(express.json());
 app.use(cookieParser(process.env.COOKIE_SECRET))
-app.use(express.urlencoded())
+app.use(express.urlencoded({extended: true}))
 
 app.use(express.static('./client/build'))
 
