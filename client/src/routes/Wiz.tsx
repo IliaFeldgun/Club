@@ -1,7 +1,7 @@
 import React from "react";
-import CardBoard from "../components/CardBoard";
-import CardFan from "../components/CardFan";
-import ScoreBoard from "../components/ScoreBoard";
+import CardBoard from "../components/Wiz/CardBoard";
+import CardFan from "../components/Wiz/CardFan";
+import ScoreBoard from "../components/Wiz/ScoreBoard";
 import './Wiz.css';
 
 export default class WizGame extends React.PureComponent {
