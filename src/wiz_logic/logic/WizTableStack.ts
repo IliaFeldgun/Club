@@ -1,4 +1,5 @@
 import { checkPlayValidity, getWinningCard } from "./GameRules"
+import Stack from "../../card_logic/logic/Stack"
 
 export class WizTableStack extends Stack implements IWizTableStack {
     suitRequired?: Suit
