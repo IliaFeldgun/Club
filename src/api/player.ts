@@ -9,7 +9,7 @@ router.post('/', (req, res) => {
     if (!req.signedCookies.player_id) {
         const playerName = req.body.playerName
         const id = generateId(playerName,process.env.UUID_PLAYER_NAMESPACE)
-
+        // TODO: decouple
         const player : IPlayer = new Player(id, playerName)
 
         store.setAsync()(player.id, JSON.stringify(player)).then((ok: any) => {
