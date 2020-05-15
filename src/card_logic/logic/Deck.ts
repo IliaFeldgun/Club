@@ -1,4 +1,6 @@
-class Deck extends Stack implements IDeck {
+import Stack from "./Stack"
+
+export default class Deck extends Stack implements IDeck {
     id: string
     jokers: boolean
 
