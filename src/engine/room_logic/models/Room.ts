@@ -2,7 +2,7 @@ interface IRoom {
     id: string
     leader: IPlayer["id"]
     players: IPlayer["id"][]
-    // addPlayer: (player: IPlayer) => void
+    addPlayer: (player: IPlayer["id"]) => void
     // removePlayer: (player: IPlayer) => void
     // close: () => void
 }
