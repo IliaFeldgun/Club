@@ -1,4 +1,6 @@
-class Card implements ICard {
+import ICard, { Rank, Suit, Color } from "../models/Card"
+
+export default class Card implements ICard {
     suit: Suit
     rank: Rank
     face: boolean

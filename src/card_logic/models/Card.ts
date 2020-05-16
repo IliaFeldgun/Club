@@ -1,4 +1,4 @@
-interface ICard {
+export default interface ICard {
     suit: Suit
     rank: Rank
     face: boolean
@@ -7,14 +7,14 @@ interface ICard {
 }
 
 
-enum Suit {
+export enum Suit {
     HEART = 1,
     DIAMOND,
     CLOVER,
     SPADE
 }
 
-enum Rank {
+export enum Rank {
     ACE = 1,
     TWO,
     THREE,
@@ -31,7 +31,7 @@ enum Rank {
     JOKER
 }
 
-enum Color {
+export enum Color {
     RED = 1,
     BLACK
 }

@@ -1,3 +1,6 @@
+import ICard from "../models/Card";
+import IStack from "../models/Stack";
+
 export default class Stack implements IStack {
     cards: ICard[]
     constructor(cards: ICard[]) {

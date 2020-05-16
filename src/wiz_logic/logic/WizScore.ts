@@ -1,4 +1,7 @@
 import { calculateScore } from "./GameRules"
+import IWizBet from "../models/WizBet"
+import IWizPlayerRoundResult from "../models/WizPlayerRoundResult"
+import IWizScore from "../models/WizScore"
 
 export class WizScore implements IWizScore {
     total: number

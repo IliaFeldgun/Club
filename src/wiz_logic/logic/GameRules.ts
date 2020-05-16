@@ -1,3 +1,5 @@
+import ICard, { Suit, Rank } from "../../card_logic/models/Card"
+
 export const WIN_SCORE = 20
 export const TAKE_SCORE = 10
 export const TAKE_LOSE_SCORE = 10

@@ -1,7 +1,12 @@
 import { WizScore } from "./WizScore"
 import Stack from "../../card_logic/logic/Stack"
+import IStack from "../../card_logic/models/Stack"
+import IWizScore from "../models/WizScore"
+import IWizBet from "../models/WizBet"
+import IWizPlayerRoundResult from "../models/WizPlayerRoundResult"
+import IWizPlayer from "../models/WizPlayer"
 
-export class WizPlayer implements IWizPlayer {
+export default class WizPlayer implements IWizPlayer {
     id: string
     name: string
     stack: IStack

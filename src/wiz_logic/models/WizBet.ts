@@ -1,3 +1,3 @@
-interface IWizBet {
+export default interface IWizBet {
     takes: number
 }

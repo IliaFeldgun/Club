@@ -1,4 +1,6 @@
-class WizPlayerRoundResult implements IWizPlayerRoundResult {
+import IWizPlayerRoundResult from "../models/WizPlayerRoundResult"
+
+export default class WizPlayerRoundResult implements IWizPlayerRoundResult {
     totalCards: number
     successfulTakes: number
     constructor(totalCards: number) {

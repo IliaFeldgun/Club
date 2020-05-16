@@ -1,5 +1,8 @@
 import { checkPlayValidity, getWinningCard } from "./GameRules"
 import Stack from "../../card_logic/logic/Stack"
+import { Suit } from "../../card_logic/models/Card"
+import IWizCard from "../models/WizCard"
+import IWizTableStack from "../models/WizTableStack"
 
 export class WizTableStack extends Stack implements IWizTableStack {
     suitRequired?: Suit

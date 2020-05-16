@@ -1,4 +1,6 @@
 import { getCardsPerPlayer } from "./GameRules"
+import IDeck from "../../card_logic/models/Deck"
+import IWizPlayer from "../models/WizPlayer"
 
 
 function dealPlayers(cards: number, players: IWizPlayer[], deck: IDeck){
