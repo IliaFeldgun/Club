@@ -5,6 +5,7 @@ import Deck from "../card_logic/logic/Deck"
 import Stack from "../card_logic/logic/Stack"
 import { WizScore } from "../wiz_logic/logic/WizScore"
 import WizGame from "../wiz_logic/logic/WizGame"
+import WizPlayerRoundResult from "../wiz_logic/logic/WizPlayerRoundResult"
 
 const router = express.Router()
 
@@ -19,7 +20,9 @@ router.post('/wiz', ( req, res ) => {
             const gameId = generateId(roomId,process.env.UUID_GAME_NAMESPACE)
             // TODO: Decouple
             // Game intial state creation
-            const game = new WizGame(gameId, new Deck(true), new Stack([]))
+            const gameDeck = new Deck(true)
+            const gameStack = new Stack([])
+            const game = new WizGame(gameId, gameDeck, gameStack)
             room.players.forEach((player) => {
                 game.playerHands[player] = new Stack([])
                 game.playerScores[player] = new WizScore()
