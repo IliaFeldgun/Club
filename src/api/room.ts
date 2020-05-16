@@ -11,6 +11,7 @@ router.post('/', (req, res) => {
         const roomId = generateId(playerId, process.env.UUID_ROOM_NAMESPACE)
         //TODO: decouple
         const room : IRoom = new Room(roomId, playerId)
+        room.addPlayer(playerId)
         store.setAsync()(room.id, JSON.stringify(room)).then((ok: any) => {
             res.send({roomId: room.id});
         }).catch((err: any) => {
