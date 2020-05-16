@@ -1,4 +1,8 @@
 import Stack from "./Stack"
+import Card from "./Card"
+import { Rank, Suit } from "../models/Card"
+import IStack from "../models/Stack"
+import IDeck from "../models/Deck"
 
 export default class Deck extends Stack implements IDeck {
     id: string
@@ -6,8 +10,8 @@ export default class Deck extends Stack implements IDeck {
 
     constructor(jokers: boolean){
         super([])
-
-        function generateDeck(stack: Stack)
+        // TODO: decouple
+        function generateDeck(stack: IStack)
         {
             const maxRank = Rank.ACE
 
