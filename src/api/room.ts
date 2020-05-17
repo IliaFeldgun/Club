@@ -6,7 +6,7 @@ import IRoom from "../engine/room_logic/models/Room";
 const router = express.Router()
 
 router.post('/', (req, res) => {
-    const playerId = req.signedCookies.player_id
+    const playerId = req.playerId
 
     if (playerId) {
         const roomId = generateId(playerId, process.env.UUID_ROOM_NAMESPACE)
