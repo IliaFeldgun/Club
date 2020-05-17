@@ -3,12 +3,23 @@ import React, { CSSProperties } from "react";
 export interface ICardProps {
     rotateDegree: number,
     suit: string,
-    rank: string
+    rank: string,
+    handleClick?: (event: React.MouseEvent) => void
 }
 interface ICardState {
 
 }
 export default class Card extends React.PureComponent<ICardProps,ICardState>{
+    constructor(props: ICardProps) {
+        super(props)
+
+        this.handleClick = this.handleClick.bind(this)
+    }
+    handleClick(event: React.MouseEvent) {
+        if (this.props.handleClick) {
+            this.props.handleClick(event)
+        }
+    }
     render() {
         let suit: string = ""
         switch(this.props.suit) {
@@ -32,7 +43,7 @@ export default class Card extends React.PureComponent<ICardProps,ICardState>{
         const classes = `white card ${red}`
         
         return (
-            <p className={classes} style={rotate}>{suit}<br/>{this.props.rank}</p>
+            <p className={classes} style={rotate} onClick={this.handleClick}>{suit}<br/>{this.props.rank}</p>
         )
     }
 }
