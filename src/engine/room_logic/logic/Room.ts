@@ -1,3 +1,5 @@
+import IRoom from "../models/Room"
+
 export default class Room implements IRoom {
     id: string
     leader: IPlayer["id"]

@@ -2,6 +2,7 @@ import express from "express"
 import { generateId } from "../engine/id_generator"
 import store from "../engine/key_value_state_store"
 import Room from "../engine/room_logic/logic/Room";
+import IRoom from "../engine/room_logic/models/Room";
 const router = express.Router()
 
 router.post('/', (req, res) => {
@@ -9,7 +10,7 @@ router.post('/', (req, res) => {
 
     if (playerId) {
         const roomId = generateId(playerId, process.env.UUID_ROOM_NAMESPACE)
-        //TODO: decouple
+        // TODO: decouple
         const room : IRoom = new Room(roomId, playerId)
         room.addPlayer(playerId)
         store.setAsync()(room.id, JSON.stringify(room)).then((ok: any) => {

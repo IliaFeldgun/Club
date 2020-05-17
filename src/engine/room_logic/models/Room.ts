@@ -1,4 +1,4 @@
-interface IRoom {
+export default interface IRoom {
     id: string
     leader: IPlayer["id"]
     players: IPlayer["id"][]
