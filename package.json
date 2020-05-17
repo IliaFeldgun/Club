@@ -4,6 +4,7 @@
   "description": "A regular card game based on some rules of Wizard",
   "main": "dist/index.js",
   "scripts": {
+    "postinstall": "cd client && npm install",
     "prebuild": "tslint -c tslint.json -p tsconfig.json --fix",
     "build": "tsc && cd client && npm run build",
     "prestart": "npm run build",
