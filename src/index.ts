@@ -7,6 +7,7 @@ import game from "./api/game"
 import player from "./api/player"
 import room from "./api/room"
 import {logger} from "./winston"
+import assertPlayer from "./engine/player_assert"
 
 const app = express();
 const port = process.env.PORT; // default port to listen
@@ -14,6 +15,7 @@ const port = process.env.PORT; // default port to listen
 app.use(express.json());
 app.use(cookieParser(process.env.COOKIE_SECRET))
 app.use(express.urlencoded({extended: true}))
+app.use(assertPlayer)
 
 app.use(express.static('./client/build'))
 
