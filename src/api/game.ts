@@ -11,14 +11,12 @@ import IWizGame from "../wiz_logic/models/WizGame"
 
 const router = express.Router()
 
-router.post('/wiz', ( req, res ) => {
-    const playerId = req.signedCookies.player_id
+router.post('/wiz', async ( req, res ) => {
+    const playerId = req.playerId
     const roomId = req.body.roomId
-
-    store.getAsync()(roomId).then((roomJson : string) => {
-        const room : IRoom = JSON.parse(roomJson)
+    try {
+        const room : IRoom = JSON.parse(await store.getAsync()(roomId))
         if (room.leader === playerId) {
-
             const gameId = generateId(roomId,process.env.UUID_GAME_NAMESPACE)
             // TODO: Decouple
             // Game intial state creation
@@ -31,20 +29,17 @@ router.post('/wiz', ( req, res ) => {
                 game.playerRoundResults[player] = new WizPlayerRoundResult(1)
             })
 
-            store.setAsync()(gameId, JSON.stringify(game)).then((ok:any) => {
-                res.send(`Game ${game.id} created`)
-            }).catch((err: any) => {
-                res.status(500)
-                res.send("FAIL")
-            })
+            const storeResponse = await store.setAsync()(gameId, JSON.stringify(game))
+            res.send(`Game ${game.id} created`)
         }
         else {
             res.send("You are not room leader")
         }
-    }).catch((err: any) => {
+    }
+    catch(error) {
         res.status(500)
         res.send("FAIL")
-    })
+    }
 })
 
 /*router.get('/wiz', (req, res) => {

@@ -5,7 +5,7 @@ import Room from "../engine/room_logic/logic/Room";
 import IRoom from "../engine/room_logic/models/Room";
 const router = express.Router()
 
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
     const playerId = req.playerId
 
     if (playerId) {
@@ -13,12 +13,14 @@ router.post('/', (req, res) => {
         // TODO: decouple
         const room : IRoom = new Room(roomId, playerId)
         room.addPlayer(playerId)
-        store.setAsync()(room.id, JSON.stringify(room)).then((ok: any) => {
-            res.send({roomId: room.id});
-        }).catch((err: any) => {
+        try {
+            const storeResponse = await store.setAsync()(room.id, JSON.stringify(room))
+            res.send({roomId: room.id})
+        }
+        catch (error) {
             res.status(500)
             res.send("FAIL")
-        })
+        }
     }
     else {
         res.status(403)
@@ -26,29 +28,36 @@ router.post('/', (req, res) => {
     }
 });
 
-router.get('/:roomId', (req, res) => {
+router.get('/:roomId', async (req, res) => {
     const roomId = req.params.roomId
-    const playerId = req.signedCookies.player_id
+    const playerId = req.playerId
 
     if (playerId) {
-        store.get()(roomId, (err, reply) => {
-            const room : IRoom = JSON.parse(reply)
+        try {
+            const room : IRoom = JSON.parse(await store.getAsync()(roomId))
             if (room.players.filter((player: IPlayer["id"]) => player === playerId).length)
                 res.send(room);
-        })
+        }
+        catch (error) {
+            res.status(500)
+            res.send("FAIL")
+        }
     }
 })
-router.get('/:roomId/join', ( req, res ) => {
-    const playerId = req.signedCookies.player_id
+router.get('/:roomId/join', async ( req, res ) => {
+    const playerId = req.playerId
     if (playerId) {
         const roomId = req.params.roomId
 
         if (roomId) {
-            store.get()(roomId, (err, reply) => {
-                const room : IRoom = JSON.parse(reply)
+            try {
+                const room : IRoom = JSON.parse(await store.getAsync()(roomId))
                 room.players.push(playerId)
-                store.set()(room.id, JSON.stringify(room))
-            })
+                const storeResponse = await store.setAsync()(room.id, JSON.stringify(room))
+            }
+            catch (error) {
+                res.status(500).send("FAIL")
+            }
         }
     }
     else {
