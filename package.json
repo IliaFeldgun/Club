@@ -16,7 +16,7 @@
     "url": "git+https://github.com/IliaFeldgun/Wiz.git"
   },
   "author": "Ilia Feldgun",
-  "license": "MIT",
+  "license": "BSD-3-Clause",
   "bugs": {
     "url": "https://github.com/IliaFeldgun/Wiz/issues"
   },
