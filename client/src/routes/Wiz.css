@@ -58,7 +58,6 @@ body {
     height: 18vmax;
     position: absolute;
     margin: 0;
-    bottom: 0;
     transform-origin: left bottom;
     font-size: 2.5vmax;
     font-family: sans-serif;
@@ -68,20 +67,20 @@ body {
 }
 .card:hover {
     z-index: 1000;
+   /* transform: scale(1.2)*/
 }
 .fan {
     position: absolute;
-    left: 0;
-    right: 0;
+    left: 37.5%;
     bottom: 0;
-    width: fit-content;
-    width: -moz-fit-content;
-    margin: auto;
+}
+.fan .card {
+    bottom: 0;
 }
 .stack {
     position: absolute;
-    top: 30%;
-    left: 50%;
+    top: 10%;
+    left: 37.5%;
     transform: translate(-50%, -50%);
     text-align: center;
 }
