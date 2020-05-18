@@ -1,4 +1,5 @@
 import IRoom from "../models/Room"
+import IPlayer from "../models/Player"
 
 export default class Room implements IRoom {
     id: string
