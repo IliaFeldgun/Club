@@ -1,4 +1,4 @@
-import { getCardsPerPlayer } from "./GameRules"
+import WizGameRules from "./WizGameRules"
 import IDeck from "../../card_logic/models/Deck"
 import IWizPlayer from "../models/WizPlayer"
 
@@ -13,6 +13,6 @@ function dealPlayers(cards: number, players: IWizPlayer[], deck: IDeck){
 }
 
 function dealGame(turn: number, players: IWizPlayer[], deck: IDeck) {
-    const cards = getCardsPerPlayer(turn, players.length)
+    const cards = WizGameRules.getCardsPerPlayer(turn, players.length)
     dealPlayers(cards, players, deck)
 }

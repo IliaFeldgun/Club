@@ -1,4 +1,4 @@
-import { calculateScore } from "./GameRules"
+import WizGameRules from "./WizGameRules"
 import IWizBet from "../models/WizBet"
 import IWizPlayerRoundResult from "../models/WizPlayerRoundResult"
 import IWizScore from "../models/WizScore"
@@ -11,6 +11,6 @@ export class WizScore implements IWizScore {
     }
 
     calculateScore(bet: IWizBet, playerResult: IWizPlayerRoundResult) {
-        calculateScore(this.total, bet.takes, playerResult.successfulTakes)
+        WizGameRules.calculateScore(this.total, bet.takes, playerResult.successfulTakes)
     }
 }
