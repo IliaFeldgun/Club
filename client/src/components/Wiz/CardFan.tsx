@@ -3,7 +3,7 @@ import Card, { ICardProps } from "./Card";
 
 interface ICardFanProps {
     cards: Array<{suit: ICardProps["suit"], rank: ICardProps["rank"]}>
-    handleCardClick?: (event: React.MouseEvent) => void
+    handleCardClick?: (event: React.MouseEvent, suit: string, rank: string) => void
 }
 interface ICardFanState {
 
@@ -14,9 +14,9 @@ export default class CardFan extends React.PureComponent<ICardFanProps,ICardFanS
 
         this.handleCardClick = this.handleCardClick.bind(this)
     }
-    handleCardClick(event: React.MouseEvent) {
+    handleCardClick(event: React.MouseEvent, suit: string, rank: string) {
         if (this.props.handleCardClick)
-            this.props.handleCardClick(event)
+            this.props.handleCardClick(event, suit, rank)
     }
     render() {
         const totalCards = this.props.cards.length
@@ -24,10 +24,13 @@ export default class CardFan extends React.PureComponent<ICardFanProps,ICardFanS
         const firstDegree = (-1) * increment * ((totalCards % 2) ? (totalCards-1)/2 : totalCards/2)
         let currentDegree = firstDegree
         
-        let cardsInFan = this.props.cards.map(card => {
+        const cardsInFan = this.props.cards.map(card => {
             const currentRotate = currentDegree
             currentDegree+= increment
-            return <Card suit={card.suit} rank={card.rank} rotateDegree={currentRotate} handleClick={this.handleCardClick}/>
+            return <Card key={card.suit+card.rank} 
+                         suit={card.suit} rank={card.rank} 
+                         rotateDegree={currentRotate} 
+                         handleClick={this.handleCardClick}/>
         })
 
         return (
