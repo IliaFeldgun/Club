@@ -4,7 +4,7 @@ export interface ICardProps {
     rotateDegree: number,
     suit: string,
     rank: string,
-    handleClick?: (event: React.MouseEvent) => void
+    handleClick?: (event: React.MouseEvent, suit: string, rank: string) => void
 }
 interface ICardState {
 
@@ -17,7 +17,7 @@ export default class Card extends React.PureComponent<ICardProps,ICardState>{
     }
     handleClick(event: React.MouseEvent) {
         if (this.props.handleClick) {
-            this.props.handleClick(event)
+            this.props.handleClick(event, this.props.suit, this.props.rank)
         }
     }
     render() {
