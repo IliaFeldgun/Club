@@ -35,7 +35,7 @@ router.get('/:roomId', async (req, res) => {
     if (playerId) {
         try {
             const room : IRoom = JSON.parse(await store.getAsync()(roomId))
-            if (room.players.indexOf(playerId) != -1)
+            if (room.players.indexOf(playerId) !== -1)
                 res.send(room);
         }
         catch (error) {
