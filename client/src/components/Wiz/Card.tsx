@@ -1,10 +1,11 @@
 import React, { CSSProperties } from "react";
+import ICard, { Suit, Rank } from "../../models/Card"
 
 export interface ICardProps {
-    rotateDegree: number,
-    suit: string,
-    rank: string,
-    handleClick?: (event: React.MouseEvent, suit: string, rank: string) => void
+    rotateDegree: number
+    suit: ICard["suit"]
+    rank: ICard["rank"]
+    handleClick?: (event: React.MouseEvent, suit: ICard["suit"], rank: ICard["rank"]) => void
 }
 interface ICardState {
 
@@ -21,29 +22,51 @@ export default class Card extends React.PureComponent<ICardProps,ICardState>{
         }
     }
     render() {
-        let suit: string = ""
-        switch(this.props.suit) {
-            case "spades":
-                suit = "♠"
-                break
-            case "hearts":
-                suit = "♥"
-                break
-            case "clubs":
-                suit = "♣"
-                break
-            case "diamonds":
-                suit = "♦"
-                break
-        }
-        const isRed = this.props.suit === "hearts" || this.props.suit === "diamonds"
+        let suit: string = this.translateSuit()
+        let rank: string = this.translateRank()
+        
+        const isRed = this.isRed()
         const red = isRed ? "red-card" : ""
         const rotate: CSSProperties = {transform: `rotate(${this.props.rotateDegree}deg)`}
         
         const classes = `white card ${red}`
         
         return (
-            <p className={classes} style={rotate} onClick={this.handleClick}>{suit}<br/>{this.props.rank}</p>
+            <p className={classes} style={rotate} onClick={this.handleClick}>{suit}<br/>{rank}</p>
         )
+    }
+    isRed() : boolean {
+        return this.props.suit === Suit.HEART || this.props.suit === Suit.DIAMOND
+    }
+    translateSuit() : string {
+        let suit: string
+        switch(this.props.suit) {
+            case Suit.SPADE:
+                suit = "♠"
+                break
+            case Suit.HEART:
+                suit = "♥"
+                break
+            case Suit.CLUB:
+                suit = "♣"
+                break
+            case Suit.DIAMOND:
+                suit = "♦"
+                break
+        }
+
+        return suit
+    }
+    translateRank() : string {
+        let rank: string
+        
+        if (this.props.rank <= 10 && this.props.rank >= 2) {
+            rank = this.props.rank.toString()
+        }
+        else {
+            rank = Rank[this.props.rank].charAt(0)
+        }
+        
+        return rank
     }
 }
