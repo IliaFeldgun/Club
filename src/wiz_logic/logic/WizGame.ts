@@ -5,25 +5,20 @@ import IWizScore from "../models/WizScore"
 import IWizBet from "../models/WizBet"
 import IWizPlayerRoundResult from "../models/WizPlayerRoundResult"
 import IRoom from "../../engine/room_logic/models/Room"
+import IWizRound from "../models/WizRound"
 
 export default class WizGame implements IWizGame {
     id: string
     roomId: IRoom["id"]
-    deck: IDeck
-    tableStack: IStack
-    playerHands: { [playerId: string]: IStack }
-    playerBets: { [playerId: string] : IWizBet }
-    playerScores: { [playerId: string] : IWizScore }
-    playerRoundResults: { [playerId: string] : IWizPlayerRoundResult }
+    currentRound: number
+    currentRoundId: IWizRound["id"]
+    playerScores: { [playerId: string]: IWizScore }
 
-    constructor(id: IWizGame["id"], roomId: IRoom["id"], deck: IDeck, tableStack: IStack) {
+    constructor(id: IWizGame["id"], roomId: IRoom["id"]) {
         this.id = id
         this.roomId = roomId
-        this.deck = deck
-        this.tableStack = tableStack
-        this.playerHands = {}
-        this.playerBets = {}
+        this.currentRound = 0
+        this.currentRoundId = ""
         this.playerScores = {}
-        this.playerRoundResults = {}
     }
 }
