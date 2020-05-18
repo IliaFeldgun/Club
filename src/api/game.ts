@@ -8,6 +8,7 @@ import WizGame from "../wiz_logic/logic/WizGame"
 import WizPlayerRoundResult from "../wiz_logic/logic/WizPlayerRoundResult"
 import IRoom from "../engine/room_logic/models/Room"
 import IWizGame from "../wiz_logic/models/WizGame"
+import WizMaster from "../wiz_logic/WizMaster"
 
 const router = express.Router()
 
@@ -18,16 +19,8 @@ router.post('/wiz', async ( req, res ) => {
         const room : IRoom = JSON.parse(await store.getAsync()(roomId))
         if (room.leader === playerId) {
             const gameId = generateId(roomId,process.env.UUID_GAME_NAMESPACE)
-            // TODO: Decouple
-            // Game intial state creation
-            const gameDeck = new Deck(true)
-            const gameStack = new Stack([])
-            const game = new WizGame(gameId, room.id, gameDeck, gameStack)
-            room.players.forEach((player) => {
-                game.playerHands[player] = new Stack([])
-                game.playerScores[player] = new WizScore()
-                game.playerRoundResults[player] = new WizPlayerRoundResult(1)
-            })
+
+            const game = WizMaster.newGameState(gameId, room.id, room.players)
 
             const storeResponse = await store.setAsync()(gameId, JSON.stringify(game))
             res.send(`Game ${game.id} created`)
@@ -65,11 +58,8 @@ router.post('/wiz:bet', (req, res) => {
 })
 
 router.post('/wiz:card', ( req, res ) => {
+    // set next player
     res.send("Player made his move")
-})
-
-router.get('/wiz', (req,res) => {
-    res.send("This is the game's state")
 })
 
 export default router
