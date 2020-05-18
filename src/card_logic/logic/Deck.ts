@@ -16,7 +16,7 @@ export default class Deck extends Stack implements IDeck {
             const maxRank = Rank.ACE
 
             for (let suit = Suit.HEART; suit <= Suit.SPADE; suit++) {
-                for (let rank = Rank.ACE; rank <= Rank.KING; rank++){
+                for (let rank = Rank.TWO; rank <= Rank.ACE; rank++){
                     stack.push(new Card(suit, rank, false))
                 }
             }
