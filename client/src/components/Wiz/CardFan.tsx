@@ -3,7 +3,9 @@ import Card, { ICardProps } from "./Card";
 
 interface ICardFanProps {
     cards: Array<{suit: ICardProps["suit"], rank: ICardProps["rank"]}>
-    handleCardClick?: (event: React.MouseEvent, suit: string, rank: string) => void
+    handleCardClick?: (event: React.MouseEvent, 
+                       suit: ICardProps["suit"], 
+                       rank: ICardProps["rank"]) => void
 }
 interface ICardFanState {
 
@@ -14,7 +16,7 @@ export default class CardFan extends React.PureComponent<ICardFanProps,ICardFanS
 
         this.handleCardClick = this.handleCardClick.bind(this)
     }
-    handleCardClick(event: React.MouseEvent, suit: string, rank: string) {
+    handleCardClick(event: React.MouseEvent, suit: ICardProps["suit"], rank: ICardProps["rank"]) {
         if (this.props.handleCardClick)
             this.props.handleCardClick(event, suit, rank)
     }
