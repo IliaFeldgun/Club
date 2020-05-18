@@ -1,3 +1,5 @@
+import { AceHighRank as Rank} from "./Rank"
+
 export default interface ICard {
     suit: Suit
     rank: Rank
@@ -14,24 +16,9 @@ export enum Suit {
     SPADE
 }
 
-export enum Rank {
-    ACE = 1,
-    TWO,
-    THREE,
-    FOUR,
-    FIVE,
-    SIX,
-    SEVEN,
-    EIGHT,
-    NINE,
-    TEN,
-    JACK,
-    QUEEN,
-    KING,
-    JOKER
-}
-
 export enum Color {
     RED = 1,
     BLACK
 }
+
+export { AceHighRank as Rank } from "./Rank"
