@@ -3,13 +3,15 @@ import CardBoard from "./CardBoard";
 import CardFan from "./CardFan";
 import ScoreBoard from "./ScoreBoard";
 import CardStack from "./CardStack";
+import { ICardProps } from "./Card";
+import { Suit, Rank } from "../../models/Card";
 
 interface IWizGameProps {
     handleFanCardClick?: (event: React.MouseEvent) => void
 }
 interface IWizGameState {
-    handCards: {suit: string, rank: string}[]
-    stackCards: {suit: string, rank: string}[]
+    handCards: {suit: ICardProps["suit"], rank: ICardProps["rank"]}[]
+    stackCards: {suit: ICardProps["suit"], rank: ICardProps["rank"]}[]
 }
 export default class WizGame extends React.PureComponent<IWizGameProps,IWizGameState> {
     constructor(props: IWizGameProps) {
@@ -17,13 +19,15 @@ export default class WizGame extends React.PureComponent<IWizGameProps,IWizGameS
         this.state = {handCards: [], stackCards: []}
         this.handleFanCardClick = this.handleFanCardClick.bind(this)
     }
-    moveCard(suit: string, rank: string) {
+    moveCard(suit: ICardProps["suit"], rank: ICardProps["rank"]) {
         const newHandCards = [...this.state.handCards].filter((card) => 
             !(card.suit === suit && card.rank === rank))
         const newStackCards = [...this.state.stackCards, {suit,rank}]
         this.setState({handCards: newHandCards, stackCards: newStackCards})
     }
-    handleFanCardClick(event: React.MouseEvent, suit: string, rank: string) {
+    handleFanCardClick(event: React.MouseEvent, 
+                       suit: ICardProps["suit"], 
+                       rank: ICardProps["rank"]) {
         // fetch post card move here
         this.moveCard(suit, rank)
         if(this.props.handleFanCardClick)
@@ -34,11 +38,11 @@ export default class WizGame extends React.PureComponent<IWizGameProps,IWizGameS
         // fetch get table stack cards here
         // fetch get player cards here
         this.setState({handCards: [
-            {suit:"spades", rank:"Q"},
-            {suit:"hearts", rank:"7"},
-            {suit:"clubs", rank:"J"},
-            {suit:"diamonds", rank:"A"},
-            {suit:"diamonds", rank:"2"}]})
+            {suit: Suit.SPADE, rank: Rank.QUEEN},
+            {suit: Suit.HEART, rank: Rank.SEVEN},
+            {suit: Suit.CLUB, rank: Rank.JACK},
+            {suit: Suit.DIAMOND, rank: Rank.ACE},
+            {suit: Suit.DIAMOND, rank: Rank.TWO}]})
     }
     render() {
         return (
