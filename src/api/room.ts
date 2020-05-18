@@ -35,7 +35,7 @@ router.get('/:roomId', async (req, res) => {
     if (playerId) {
         try {
             const room : IRoom = JSON.parse(await store.getAsync()(roomId))
-            if (room.players.filter((player: IPlayer["id"]) => player === playerId).length)
+            if (room.players.indexOf(playerId) != -1)
                 res.send(room);
         }
         catch (error) {
@@ -54,6 +54,7 @@ router.get('/:roomId/join', async ( req, res ) => {
                 const room : IRoom = JSON.parse(await store.getAsync()(roomId))
                 room.players.push(playerId)
                 const storeResponse = await store.setAsync()(room.id, JSON.stringify(room))
+                res.send("OK")
             }
             catch (error) {
                 res.status(500).send("FAIL")
