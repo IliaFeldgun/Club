@@ -10,7 +10,7 @@ export default interface ICard {
 export enum Suit {
     HEART = 1,
     DIAMOND,
-    CLOVER,
+    CLUB,
     SPADE
 }
 
