@@ -1,3 +1,5 @@
+import IPlayer from "../models/Player"
+
 export default class Player implements IPlayer {
     id: string
     name: string
