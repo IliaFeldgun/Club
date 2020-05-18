@@ -31,4 +31,8 @@ export default class Card implements ICard {
 
         return color
     }
+
+    equals(card: ICard): boolean {
+        return (card.rank === this.rank && card.suit === this.suit)
+    }
 }
