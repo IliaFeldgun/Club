@@ -6,4 +6,5 @@ export default interface IStack {
     top: () => ICard
     pop: () => ICard
     push: (card: ICard) => void
+    contains: (card: ICard) => boolean
 }
