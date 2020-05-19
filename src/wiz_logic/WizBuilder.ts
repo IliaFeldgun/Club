@@ -12,9 +12,8 @@ export default class WizBuilder {
     
     static newGameState(gameId: IWizGame["id"],
                         roomId: IRoom["id"],
-                        players: IPlayer["id"][]) : IWizGame {
-
-
+                        players: IPlayer["id"][]) : IWizGame 
+    {
         const game = new WizGame(gameId, roomId)
         players.forEach((player) => {
             game.playerScores[player] = new WizScore()
@@ -24,24 +23,33 @@ export default class WizBuilder {
     }
     static newGameRound(roundId: IWizRound["id"],
                         gameId: IWizGame["id"],
+                        roundNumber: number,
                         players: IPlayer["id"][],
-                        firstPlayer: IPlayer["id"]) {
+                        firstPlayer: IPlayer["id"]): IWizRound 
+    {
         const roundDeck = new Deck(true)
         const roundTableStack = new Stack([])
 
-        const round = new WizRound(roundId, gameId, roundDeck, roundTableStack)
-
+        const round = new WizRound(roundId, gameId, roundNumber, roundDeck, roundTableStack)
+        
+        round.playerOrder = WizBuilder.generatePlayerOrder(firstPlayer, players)
+        
         players.forEach((player) => {
-            // round.playerBets[player] =
             round.playerHands[player] = []
         })
+
+        return round
     }
-    static generatePlayerOrder(firstPlayer: IPlayer["id"], players: IPlayer["id"][]) {
+
+    static generatePlayerOrder(firstPlayer: IPlayer["id"], 
+                               players: IPlayer["id"][]): IPlayer["id"][] 
+    {
         const newOrder = [...players]
 
         while (newOrder.indexOf(firstPlayer) > 0) {
             newOrder.push(newOrder.shift())
         }
-    }
 
+        return newOrder
+    }
 }
