@@ -1,14 +1,8 @@
 import express from "express"
 import { generateId } from "../engine/id_generator"
 import store from "../engine/key_value_state_store"
-import Deck from "../card_logic/logic/Deck"
-import Stack from "../card_logic/logic/Stack"
-import { WizScore } from "../wiz_logic/logic/WizScore"
-import WizGame from "../wiz_logic/logic/WizGame"
-import WizPlayerRoundResult from "../wiz_logic/logic/WizPlayerRoundResult"
 import IRoom from "../engine/room_logic/models/Room"
-import IWizGame from "../wiz_logic/models/WizGame"
-import WizMaster from "../wiz_logic/WizMaster"
+import WizBuilder from "../wiz_logic/WizBuilder"
 
 const router = express.Router()
 
@@ -20,7 +14,7 @@ router.post('/wiz', async ( req, res ) => {
         if (room.leader === playerId) {
             const gameId = generateId(roomId,process.env.UUID_GAME_NAMESPACE)
 
-            const game = WizMaster.newGameState(gameId, room.id, room.players)
+            const game = WizBuilder.newGameState(gameId, room.id, room.players)
 
             const storeResponse = await store.setAsync()(gameId, JSON.stringify(game))
             res.send(`Game ${game.id} created`)
