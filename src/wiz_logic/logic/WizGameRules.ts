@@ -10,8 +10,9 @@ export default class WizGameRules {
     }
 
     static calculateScore(playerScore: number,
-                                playerBet: number,
-                                playerResult: number) {
+                          playerBet: number,
+                          playerResult: number) 
+    {
         let total = playerScore
 
         if (playerBet === playerResult) {
