@@ -36,7 +36,6 @@ export default class WizMaster {
             playerCards, topCard, requiredSuit)
 
         return isCurrentPlayer && isCardInHand && isMoveValid
-
     }
     static advanceRound(round: IWizRound) {
         
