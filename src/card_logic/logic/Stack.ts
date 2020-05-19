@@ -28,8 +28,8 @@ export default class Stack implements IStack {
     push(card: ICard) {
         this.cards.push(card);
     }
-    contains(card: ICard) {
-        return this.cards.some((stackCard) =>
+    indexOf(card: ICard): number {
+        return this.cards.findIndex((stackCard) =>
             stackCard.rank === card.rank && stackCard.suit === card.suit)
     }
 }
