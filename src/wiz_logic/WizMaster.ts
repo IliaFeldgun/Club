@@ -4,10 +4,10 @@ import WizGameRules from "./logic/WizGameRules";
 import IWizRound from "./models/WizRound";
 
 export default class WizMaster {
-    static playCard(round: IWizRound, 
+    static playCard(round: IWizRound,
                     cardPlayed: ICard,
-                    playerId: IPlayer["id"]): IWizRound 
-    {        
+                    playerId: IPlayer["id"]): IWizRound
+    {
         if (WizMaster.canPlayCard(round, cardPlayed, playerId)) {
             const cardsLeft = round.playerHands[playerId].filter(card =>
                 card.equals(cardPlayed))
@@ -15,19 +15,19 @@ export default class WizMaster {
             round.playerHands[playerId] = cardsLeft
 
             WizMaster.advanceRound(round)
-            //if (WizMaster.areAllHandsEmpty(round))
+            // if (WizMaster.areAllHandsEmpty(round))
             return round
         }
-        else 
+        else
             return null
     }
-    static canPlayCard(round: IWizRound, 
+    private static canPlayCard(round: IWizRound,
                        cardPlayed: ICard,
-                       playerId: IPlayer["id"]): boolean 
+                       playerId: IPlayer["id"]): boolean
     {
         const isCurrentPlayer = playerId === WizMaster.getCurrentPlayer(round)
-        const isCardInHand = -1 !== round.playerHands[playerId].findIndex(card => 
-            cardPlayed.equals(card)) 
+        const isCardInHand = -1 !== round.playerHands[playerId].findIndex(card =>
+            cardPlayed.equals(card))
 
         const playerCards = round.playerHands[playerId]
         const topCard = round.tableStack.top()
@@ -37,18 +37,18 @@ export default class WizMaster {
 
         return isCurrentPlayer && isCardInHand && isMoveValid
     }
-    static advanceRound(round: IWizRound) {
-        
+    private static advanceRound(round: IWizRound) {
+
         this.assertWinner(round)
 
         round.turnNumber++
     }
-    static assertWinner(round: IWizRound) {
+    private static assertWinner(round: IWizRound) {
         if (WizMaster.didAllPlay(round)) {
-            const requiredSuit = 
+            const requiredSuit =
                 WizGameRules.getRequiredSuit(round.tableStack.cards)
 
-            const winningCard = 
+            const winningCard =
                 WizGameRules.getWinningCard(round.tableStack.cards, requiredSuit)
 
             const winningPlayer = WizMaster.getPlayerByCard(round, winningCard)
@@ -56,23 +56,37 @@ export default class WizMaster {
             round.playerResults[winningPlayer].addTake()
         }
     }
-    static getPlayerByCard(round: IWizRound, card: ICard): IPlayer["id"] {
+    private static getPlayerByCard(round: IWizRound, card: ICard): IPlayer["id"] {
         const cardIndex = round.tableStack.indexOf(card)
         return round.playerOrder[cardIndex]
     }
-    static getCurrentPlayer(round: IWizRound) {
+    private static getCurrentPlayer(round: IWizRound) {
         const currentPlayerNum = round.turnNumber % round.playerOrder.length
-        
+
         return round.playerOrder[currentPlayerNum - 1]
     }
-    static didAllPlay(round: IWizRound): boolean {
-        return round.turnNumber % round.playerOrder.length == 0
+    private static didAllPlay(round: IWizRound): boolean {
+        return (round.turnNumber % round.playerOrder.length === 0)
 
     }
-    static areAllHandsEmpty(round: IWizRound): boolean {
+    private static areAllHandsEmpty(round: IWizRound): boolean {
         const playerHands = Object.entries(round.playerHands)
         const allEmpty = !playerHands.some(([player,cards]) => cards.length)
 
         return allEmpty
+    }
+    static dealCards(round: IWizRound) {
+        const totalRounds =
+            WizGameRules.getTotalRounds(round.playerOrder.length)
+
+        if (round.roundNumber <= totalRounds) {
+            const cardsToDeal =
+                WizGameRules.getCardsPerPlayer(round.roundNumber)
+
+            for (let i = cardsToDeal; i > 0; i--) {
+                round.playerOrder.forEach(playerId =>
+                    round.playerHands[playerId].push(round.deck.pop()))
+            }
+        }
     }
 }
