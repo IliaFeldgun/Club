@@ -3,6 +3,7 @@ import { generateId } from "../engine/id_generator"
 import store from "../engine/key_value_state_store"
 import IRoom from "../engine/room_logic/models/Room"
 import WizBuilder from "../wiz_logic/WizBuilder"
+import WizMaster from "../wiz_logic/WizMaster"
 
 const router = express.Router()
 
@@ -12,9 +13,20 @@ router.post('/wiz', async ( req, res ) => {
     try {
         const room : IRoom = JSON.parse(await store.getAsync()(roomId))
         if (room.leader === playerId) {
-            const gameId = generateId(roomId,process.env.UUID_GAME_NAMESPACE)
 
+            const gameId = generateId(roomId,process.env.UUID_GAME_NAMESPACE)
             const game = WizBuilder.newGameState(gameId, room.id, room.players)
+
+            const roundId = generateId(gameId + 1,
+                                       process.env.UUID_ROUND_NAMESPACE)
+
+            const round = WizBuilder.newRoundState(roundId,
+                                                   game.id,
+                                                   1,
+                                                   room.players,
+                                                   room.players[0])
+
+            WizMaster.dealCards(round)
 
             const storeResponse = await store.setAsync()(gameId, JSON.stringify(game))
             res.send(`Game ${game.id} created`)
@@ -47,11 +59,11 @@ router.post('/wiz', async ( req, res ) => {
 
 })
 */
-router.post('/wiz:bet', (req, res) => {
+router.post('/wiz/bet/:bet', (req, res) => {
     res.send("Bet submitted")
 })
 
-router.post('/wiz:card', ( req, res ) => {
+router.post('/wiz/:card', ( req, res ) => {
     // set next player
     res.send("Player made his move")
 })
