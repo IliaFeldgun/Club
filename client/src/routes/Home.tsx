@@ -1,6 +1,8 @@
 import React from "react";
 import PostButton from "../components/PostButton";
-
+import "./Home.css"
+import Description from "../components/Home/Description";
+import Catalog from "../components/Home/Catalog";
 interface IHomeState{
     roomId: string
 }
@@ -25,14 +27,11 @@ export default class Home extends React.PureComponent<{},IHomeState> {
 
     }
     render() {
-        const allClass = "centered"
         return (
             <React.Fragment>
-                <div className={allClass}>
-                    <h3>Create a room</h3>
-                    <PostButton text="Create a room for me" route="api/room" handleResponse={this.roomCreated}/>
-                    <PostButton text="Create a game for me" route="api/game/wiz" handleResponse={this.gameCreated} body={this.state}/>
-                </div>
+                <Description/>
+                <Catalog games={[{name: "Wiz", url: "/wiz",
+                                  img:"https://norskpokerforbund.com/wp-content/uploads/2018/08/Card-Game.jpg"}]} />
             </React.Fragment>
         )
     }
