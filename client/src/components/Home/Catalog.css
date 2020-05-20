@@ -1,0 +1,10 @@
+.catalog {
+    float:left;
+    padding: 1vmax;
+}
+.catalog img {
+    width:15vw;
+}
+.catalog-item {
+    text-align: center;
+}
