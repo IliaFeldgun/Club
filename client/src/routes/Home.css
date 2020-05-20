@@ -1,0 +1,13 @@
+.container {
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+    margin-right: 2vw;
+    margin-left: 2vw;
+    padding: 1vmax;
+    border-radius: 6px;
+    background-color: #eee;
+}
+a {
+    text-decoration: none;
+    color: black;
+}
