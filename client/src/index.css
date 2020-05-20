@@ -1,0 +1,48 @@
+header {
+    height: 6vh;
+    background-color: white;
+    box-shadow: 0 1px 0 rgba(12,13,14,.1),0 1px 6px rgba(59,64,69,.1);
+    color: black;
+    padding-right: 1vw;
+    padding-left: 1vw;
+    position: relative;
+    z-index: 2000;
+}
+footer {
+    z-index:2000;
+}
+.main-title {
+    margin-left: 0.5vmax;
+    line-height: 6vh;
+    font-size: 4vh;
+    font-weight: bold;
+}
+.main-user {
+    font-size: 3vh;
+    float: right;
+    line-height: 6vh;
+    margin-right: 2vmax;
+}
+footer {
+    color:white;
+    background-color: gray;
+
+}
+.wide {
+    width: 100%;
+}
+.centered-top {
+    position: absolute;
+    top:30%;
+    left:50%;
+    text-align: center;
+    transform: translate(-50%, -50%);
+
+}
+.centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    text-align: center;
+    transform: translate(-50%, -50%);
+  }
