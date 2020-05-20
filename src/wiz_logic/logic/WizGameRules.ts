@@ -4,14 +4,17 @@ export default class WizGameRules {
     static WIN_SCORE = 20
     static TAKE_SCORE = 10
     static TAKE_LOSE_SCORE = 10
+    static TOTAL_CARDS = 54
 
-    static getCardsPerPlayer(round: number, players: number) {
-        return round * players
+    static getCardsPerPlayer(round: number) {
+        return round
     }
-
+    static getTotalRounds(players: number) {
+        return Math.floor(this.TOTAL_CARDS / players)
+    }
     static calculateScore(playerScore: number,
                           playerBet: number,
-                          playerResult: number) 
+                          playerResult: number)
     {
         let total = playerScore
 
