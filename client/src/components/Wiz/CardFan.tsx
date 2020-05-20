@@ -29,7 +29,7 @@ export default class CardFan extends React.PureComponent<ICardFanProps,ICardFanS
         const cardsInFan = this.props.cards.map(card => {
             const currentRotate = currentDegree
             currentDegree+= increment
-            return <Card key={card.suit+card.rank} 
+            return <Card key={`${card.suit},${card.rank}`} 
                          suit={card.suit} rank={card.rank} 
                          rotateDegree={currentRotate} 
                          handleClick={this.handleCardClick}/>
