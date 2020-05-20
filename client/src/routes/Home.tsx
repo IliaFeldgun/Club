@@ -12,19 +12,6 @@ export default class Home extends React.PureComponent<{},IHomeState> {
         this.state = {
             roomId: ""
         }
-        this.roomCreated = this.roomCreated.bind(this)
-        this.gameCreated = this.gameCreated.bind(this)
-    }
-    roomCreated(res: Response) {
-            res.json().then((res) =>
-            {
-                this.setState({
-                    roomId: res.roomId
-                })
-            })
-    }
-    gameCreated(res: Response) {
-
     }
     render() {
         return (
