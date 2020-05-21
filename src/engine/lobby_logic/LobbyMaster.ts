@@ -61,16 +61,6 @@ export default class LobbyMaster {
             return error
         }
     }
-    static async getPlayerRooms(playerId: IPlayer["id"]): Promise<IRoom["id"][]> {
-        try {
-            const player: IPlayer = await LobbyMaster.getPlayer(playerId)
-
-            return player.rooms
-        }
-        catch (error) {
-            return error
-        }
-    }
     static async setRoomLeader(playerId: IPlayer["id"], roomId: IRoom["id"]): Promise<boolean> {
         try {
             const room: IRoom = await LobbyMaster.getRoom(roomId)
@@ -81,6 +71,16 @@ export default class LobbyMaster {
         catch (error) {
             // Log it
             return false 
+        }
+    }
+    static async getPlayerRooms(playerId: IPlayer["id"]): Promise<IRoom["id"][]> {
+        try {
+            const player: IPlayer = await LobbyMaster.getPlayer(playerId)
+
+            return player.rooms
+        }
+        catch (error) {
+            return error
         }
     }
     static async deletePlayer(playerId: IPlayer["id"]): Promise<any> {
