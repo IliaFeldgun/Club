@@ -4,6 +4,7 @@ import Login from "./routes/Login";
 import Home from "./routes/Home";
 import Wiz from "./routes/Wiz";
 import Room from "./routes/Room";
+import Lobby from "./routes/Lobby";
 
 export default class App extends React.PureComponent {
     render() {
@@ -18,6 +19,9 @@ export default class App extends React.PureComponent {
                     </Route>
                     <Route exact path="/login">
                         <Login/>
+                    </Route>
+                    <Route exact path="/lobby">
+                        <Lobby/>
                     </Route>
                     <Route exact path="/room">
                         <Room/>
