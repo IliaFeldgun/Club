@@ -18,7 +18,7 @@ export default class LobbyMaster {
             return roomDone && playerDone
         }
         catch (error) {
-            // Log it
+            // TODO: Log it
             return false
         }
     }
@@ -37,7 +37,7 @@ export default class LobbyMaster {
             return roomDone && playerDone
         }
         catch (error) {
-            // Log it
+            // TODO: Log it
             return false
         }
     }
@@ -48,7 +48,8 @@ export default class LobbyMaster {
             return room.players
         }
         catch (error) {
-            return error
+            // TODO: Log it
+            return undefined
         }
     }
     static async getRoomLeader(roomId: IRoom["id"]): Promise<IRoom["leader"]> {
@@ -58,7 +59,8 @@ export default class LobbyMaster {
             return room.leader
         }
         catch (error) {
-            return error
+            // TODO: Log it
+            return undefined
         }
     }
     static async setRoomLeader(playerId: IPlayer["id"], roomId: IRoom["id"]): Promise<boolean> {
@@ -69,7 +71,7 @@ export default class LobbyMaster {
             return roomDone
         }
         catch (error) {
-            // Log it
+            // TODO: Log it
             return false 
         }
     }
@@ -80,17 +82,19 @@ export default class LobbyMaster {
             return player.rooms
         }
         catch (error) {
-            return error
+            // TODO: Log it
+            return undefined
         }
     }
-    static async deletePlayer(playerId: IPlayer["id"]): Promise<any> {
+    static async deletePlayer(playerId: IPlayer["id"]): Promise<boolean> {
         try {
             const storeResponse = await store.deleteAsync()(playerId)
             // TODO: Maybe remove player from all rooms and close lead rooms
-            return storeResponse
+            return true
         }
         catch(error) {
-            return error
+            // TODO: Log it
+            return false
         }
     }
     private static async getRoom(roomId: IRoom["id"]): Promise<IRoom> {
@@ -99,8 +103,8 @@ export default class LobbyMaster {
             return room
         }
         catch(error) {
-            // Log it
-            return error
+            // TODO: Log it
+            return undefined
         }
     }
     private static async setRoom(roomId: IRoom["id"], room: IRoom): Promise<boolean> {
@@ -109,17 +113,7 @@ export default class LobbyMaster {
             return true
         }
         catch(error) {
-            // Log it
-            return false
-        }
-    }
-    private static async setPlayer(playerId: IPlayer["id"], player: IPlayer): Promise<boolean> {
-        try {
-            const storeResponse = await store.setAsync()(playerId, JSON.stringify(player))
-            return true
-        }
-        catch(error) {
-            // Log it
+            // TODO: Log it
             return false
         }
     }
@@ -129,8 +123,18 @@ export default class LobbyMaster {
             return player
         }
         catch(error) {
-            // Log it
-            return error
+            // TODO: Log it
+            return undefined
+        }
+    }
+    private static async setPlayer(playerId: IPlayer["id"], player: IPlayer): Promise<boolean> {
+        try {
+            const storeResponse = await store.setAsync()(playerId, JSON.stringify(player))
+            return true
+        }
+        catch(error) {
+            // TODO: Log it
+            return false
         }
     }
 }
