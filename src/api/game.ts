@@ -1,7 +1,7 @@
 import express from "express"
 import { generateId } from "../engine/id_generator"
 import store from "../engine/key_value_state_store"
-import IRoom from "../engine/room_logic/models/Room"
+import IRoom from "../engine/lobby_logic/models/Room"
 import WizBuilder from "../wiz_logic/WizBuilder"
 import WizMaster from "../wiz_logic/WizMaster"
 
