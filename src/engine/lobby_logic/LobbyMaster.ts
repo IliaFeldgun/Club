@@ -3,7 +3,7 @@ import IPlayer from "./models/Player";
 import IRoom from "./models/Room";
 
 export default class LobbyMaster {
-    static async addPlayerToRoom(playerId: IPlayer["id"], roomId: IRoom["id"]): Promise<any> {
+    static async addPlayerToRoom(playerId: IPlayer["id"], roomId: IRoom["id"]): Promise<boolean> {
         try {
             const room: IRoom = await LobbyMaster.getRoom(roomId)
             const player: IPlayer = await LobbyMaster.getPlayer(playerId)
@@ -12,16 +12,17 @@ export default class LobbyMaster {
             room.players = room.players.concat(playerId)
 
             // TODO: Needs to be a single transaction
-            const storeResponse1 = await store.setAsync()(room.id, JSON.stringify(room))
-            const storeResponse2 = await store.setAsync()(player.id, JSON.stringify(player))
+            const roomDone = await LobbyMaster.setRoom(room.id, room)
+            const playerDone = await LobbyMaster.setPlayer(player.id, player)
 
-            return room
+            return roomDone && playerDone
         }
         catch (error) {
-            return error
+            // Log it
+            return false
         }
     }
-    static async removePlayerFromRoom(playerId: IPlayer["id"], roomId: IRoom["id"]): Promise<any> {
+    static async removePlayerFromRoom(playerId: IPlayer["id"], roomId: IRoom["id"]): Promise<boolean> {
         try {
             const room: IRoom = await LobbyMaster.getRoom(roomId)
             const player: IPlayer = await LobbyMaster.getPlayer(playerId)
@@ -30,13 +31,14 @@ export default class LobbyMaster {
             room.players = room.players.filter((player) => player != playerId)
 
             // TODO: Needs to be a single transaction
-            const storeResponse1 = await store.setAsync()(room.id, JSON.stringify(room))
-            const storeResponse2 = await store.setAsync()(player.id, JSON.stringify(player))
+            const roomDone = await LobbyMaster.setRoom(room.id, room)
+            const playerDone = await LobbyMaster.setPlayer(player.id, player)
 
-            return room
+            return roomDone && playerDone
         }
         catch (error) {
-            return error
+            // Log it
+            return false
         }
     }
     static async getRoomPlayers(roomId: IRoom["id"]): Promise<IPlayer["id"][]> {
@@ -44,6 +46,16 @@ export default class LobbyMaster {
             const room: IRoom = await LobbyMaster.getRoom(roomId)
 
             return room.players
+        }
+        catch (error) {
+            return error
+        }
+    }
+    static async getRoomLeader(roomId: IRoom["id"]): Promise<IRoom["leader"]> {
+        try {
+            const room: IRoom = await LobbyMaster.getRoom(roomId)
+
+            return room.leader
         }
         catch (error) {
             return error
@@ -57,6 +69,18 @@ export default class LobbyMaster {
         }
         catch (error) {
             return error
+        }
+    }
+    static async setRoomLeader(playerId: IPlayer["id"], roomId: IRoom["id"]): Promise<boolean> {
+        try {
+            const room: IRoom = await LobbyMaster.getRoom(roomId)
+            room.leader = playerId
+            const roomDone = await LobbyMaster.setRoom(roomId, room)
+            return roomDone
+        }
+        catch (error) {
+            // Log it
+            return false 
         }
     }
     static async deletePlayer(playerId: IPlayer["id"]): Promise<any> {
@@ -75,7 +99,28 @@ export default class LobbyMaster {
             return room
         }
         catch(error) {
+            // Log it
             return error
+        }
+    }
+    private static async setRoom(roomId: IRoom["id"], room: IRoom): Promise<boolean> {
+        try {
+            const storeResponse = await store.setAsync()(roomId, JSON.stringify(room))
+            return true
+        }
+        catch(error) {
+            // Log it
+            return false
+        }
+    }
+    private static async setPlayer(playerId: IPlayer["id"], player: IPlayer): Promise<boolean> {
+        try {
+            const storeResponse = await store.setAsync()(playerId, JSON.stringify(player))
+            return true
+        }
+        catch(error) {
+            // Log it
+            return false
         }
     }
     private static async getPlayer(playerId: IPlayer["id"]): Promise<IPlayer> {
@@ -84,6 +129,7 @@ export default class LobbyMaster {
             return player
         }
         catch(error) {
+            // Log it
             return error
         }
     }
