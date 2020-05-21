@@ -1,21 +1,18 @@
 import express from "express"
 import { generateId } from "../engine/id_generator"
 import store from "../engine/key_value_state_store"
-import Room from "../engine/room_logic/logic/Room";
-import IRoom from "../engine/room_logic/models/Room";
+import Room from "../engine/lobby_logic/logic/Room";
+import IRoom from "../engine/lobby_logic/models/Room";
+import LobbyBuilder from "../engine/lobby_logic/LobbyBuilder";
 const router = express.Router()
 
 router.post('/', async (req, res) => {
     const playerId = req.playerId
 
     if (playerId) {
-        const roomId = generateId(playerId, process.env.UUID_ROOM_NAMESPACE)
-        // TODO: decouple
-        const room : IRoom = new Room(roomId, playerId)
-        room.addPlayer(playerId)
         try {
-            const storeResponse = await store.setAsync()(room.id, JSON.stringify(room))
-            res.send({roomId: room.id})
+            const roomId = await LobbyBuilder.createRoom(playerId)
+            res.send(roomId)
         }
         catch (error) {
             res.status(500)

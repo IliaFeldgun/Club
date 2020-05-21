@@ -1,22 +1,20 @@
 import express from "express"
 import { generateId } from "../engine/id_generator"
 import store from "../engine/key_value_state_store"
-import Player from "../engine/room_logic/logic/Player"
-import IPlayer from "../engine/room_logic/models/Player"
+import Player from "../engine/lobby_logic/logic/Player"
+import IPlayer from "../engine/lobby_logic/models/Player"
+import LobbyBuilder from "../engine/lobby_logic/LobbyBuilder"
 
 const router = express.Router()
 
 router.post('/', async (req, res) => {
     if (!req.signedCookies.player_id) {
         const playerName = req.body.playerName
-        const id = generateId(playerName,process.env.UUID_PLAYER_NAMESPACE)
-        // TODO: decouple
-        const player : IPlayer = new Player(id, playerName)
 
         try {
-            const storeResponse = await store.setAsync()(player.id, JSON.stringify(player))
-            res.cookie("player_name", player.name, { signed: true })
-            res.cookie("player_id", player.id, { signed: true })
+            const playerId = await LobbyBuilder.createPlayer(playerName)
+            res.cookie("player_name", playerName, { signed: true })
+            res.cookie("player_id", playerId, { signed: true })
             res.send("Player created, cookie sent")
         }
         catch(error) {
