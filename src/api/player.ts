@@ -14,7 +14,7 @@ router.post('/', async (req, res) => {
 
         try {
             const playerId = await LobbyBuilder.createPlayer(playerName)
-            
+
             res.cookie("player_name", playerName, { signed: true })
             res.cookie("player_id", playerId, { signed: true })
             res.send("Player created, cookie sent")
