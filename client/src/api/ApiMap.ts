@@ -4,6 +4,16 @@ const API_MAP = {
             URL: "/api/wiz",
             METHOD: "POST"
         }
+    },
+    LOBBY: {
+        CREATE_PLAYER: {
+            URL: "/api/player",
+            METHOD: "POST"
+        },
+        DELETE_PLAYER: {
+            URL: "/api/player",
+            METHO: "DELETE"
+        },
     }
 }
 
