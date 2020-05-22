@@ -67,10 +67,6 @@ body {
     padding-left: 5px;
     user-select: none; 
 }
-.card:hover {
-    z-index: 1000;
-   /* transform: scale(1.2)*/
-}
 .fan {
     position: absolute;
     left: 37.5%;
@@ -79,9 +75,20 @@ body {
 .fan .card {
     bottom: 0;
 }
+.fan .card:hover {
+    z-index: 1000;
+   /* transform: scale(1.2)*/
+}
 .stack {
     position: absolute;
     top: 10%;
     left: 37.5%;
+}
+.stack:hover {
+    display: flex;
+}
+.stack:hover .card {
+    position: relative;
+    margin-right: -10vmax;
 }
 .red-card { color: red; }
