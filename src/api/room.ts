@@ -1,9 +1,8 @@
 import express from "express"
-import { generateId } from "../engine/id_generator"
-import store from "../engine/key_value_state_store"
-import Room from "../engine/lobby_logic/logic/Room";
 import IRoom from "../engine/lobby_logic/models/Room";
 import LobbyBuilder from "../engine/lobby_logic/LobbyBuilder";
+import LobbyMaster from "../engine/lobby_logic/LobbyMaster";
+
 const router = express.Router()
 
 router.post('/', async (req, res) => {
@@ -31,7 +30,7 @@ router.get('/:roomId', async (req, res) => {
 
     if (playerId) {
         try {
-            const room : IRoom = JSON.parse(await store.getAsync()(roomId))
+            const room : IRoom = await LobbyMaster.getRoom(roomId)
             if (room.players.indexOf(playerId) !== -1)
                 res.send(room);
         }
@@ -43,15 +42,15 @@ router.get('/:roomId', async (req, res) => {
 })
 router.get('/:roomId/join', async ( req, res ) => {
     const playerId = req.playerId
+
     if (playerId) {
         const roomId = req.params.roomId
 
         if (roomId) {
             try {
-                const room : IRoom = JSON.parse(await store.getAsync()(roomId))
-                room.players.push(playerId)
-                const storeResponse = await store.setAsync()(room.id, JSON.stringify(room))
-                res.send("OK")
+                const storeResponse = await LobbyMaster.addPlayerToRoom(playerId, roomId)
+
+                res.send(roomId)
             }
             catch (error) {
                 res.status(500).send("FAIL")
@@ -64,10 +63,27 @@ router.get('/:roomId/join', async ( req, res ) => {
     }
 });
 
-router.delete('/player', ( req, res ) => {
-    // req.player
-    // req.room
-    res.send( "Player left room" );
+router.delete('/player', async ( req, res ) => {
+    const playerId = req.playerId
+
+    if (playerId) {
+        const roomId = req.params.roomId
+
+        if (roomId) {
+            try {
+                const storeResponse = await LobbyMaster.removePlayerFromRoom(playerId, roomId)
+
+                res.send("OK")
+            }
+            catch (error) {
+                res.status(500).send("FAIL")
+            }
+        }
+    }
+    else {
+        res.status(403)
+        res.send("Room can't be joined, you need to set a player")
+    }
 } );
 router.put('/leader', ( req, res ) => {
     // req.player
