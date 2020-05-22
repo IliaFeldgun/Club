@@ -27,8 +27,8 @@ export default class LobbyMaster {
             const room: IRoom = await LobbyMaster.getRoom(roomId)
             const player: IPlayer = await LobbyMaster.getPlayer(playerId)
 
-            player.rooms = player.rooms.filter((room) => room != roomId)
-            room.players = room.players.filter((player) => player != playerId)
+            player.rooms = player.rooms.filter((r) => r !== roomId)
+            room.players = room.players.filter((p) => p !== playerId)
 
             // TODO: Needs to be a single transaction
             const roomDone = await LobbyMaster.setRoom(room.id, room)
@@ -72,7 +72,7 @@ export default class LobbyMaster {
         }
         catch (error) {
             // TODO: Log it
-            return false 
+            return false
         }
     }
     static async getPlayerRooms(playerId: IPlayer["id"]): Promise<IRoom["id"][]> {
