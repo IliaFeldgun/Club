@@ -97,7 +97,7 @@ export default class LobbyMaster {
             return false
         }
     }
-    private static async getRoom(roomId: IRoom["id"]): Promise<IRoom> {
+    static async getRoom(roomId: IRoom["id"]): Promise<IRoom> {
         try {
             const room: IRoom = JSON.parse(await store.getAsync()(roomId))
             return room
@@ -117,7 +117,7 @@ export default class LobbyMaster {
             return false
         }
     }
-    private static async getPlayer(playerId: IPlayer["id"]): Promise<IPlayer> {
+    static async getPlayer(playerId: IPlayer["id"]): Promise<IPlayer> {
         try {
             const player: IPlayer = JSON.parse(await store.getAsync()(playerId))
             return player
@@ -133,6 +133,29 @@ export default class LobbyMaster {
             return true
         }
         catch(error) {
+            // TODO: Log it
+            return false
+        }
+    }
+    static async getRoomGame(roomId: IRoom["id"]): Promise<IRoom["gameName"]> {
+        try {
+            const room: IRoom = await LobbyMaster.getRoom(roomId)
+
+            return room.gameName
+        }
+        catch (error) {
+            // TODO: Log it
+            return undefined
+        }
+    }
+    static async setRoomGame(roomId: IRoom["id"], game: IRoom["gameName"]): Promise<boolean> {
+        try {
+            const room: IRoom = await LobbyMaster.getRoom(roomId)
+            room.gameName = game
+            const roomDone = await LobbyMaster.setRoom(roomId, room)
+            return roomDone
+        }
+        catch (error) {
             // TODO: Log it
             return false
         }
