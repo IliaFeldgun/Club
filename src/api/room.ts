@@ -40,7 +40,7 @@ router.get('/:roomId', async (req, res) => {
         }
     }
 })
-router.get('/:roomId/join', async ( req, res ) => {
+router.post('/:roomId/join', async ( req, res ) => {
     const playerId = req.playerId
 
     if (playerId) {
