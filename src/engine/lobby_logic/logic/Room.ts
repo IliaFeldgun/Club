@@ -12,10 +12,10 @@ export default class Room implements IRoom {
         this.players = []
     }
 
+    /*
     addPlayer(player: IPlayer["id"]) {
         this.players.push(player)
     }
-    /*
     removePlayer(player: IPlayer) {
         this.players = this.players.filter(p => p.id !== player.id)
     }

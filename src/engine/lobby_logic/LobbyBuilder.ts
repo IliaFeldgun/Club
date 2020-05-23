@@ -22,8 +22,8 @@ export default class LobbyBuilder {
     static async createRoom(playerId: IPlayer["id"]): Promise<IRoom["id"]> {
         const roomId = generateId(playerId, process.env.UUID_ROOM_NAMESPACE)
 
-        const room : IRoom = new Room(roomId, playerId)
-        room.addPlayer(playerId)
+        const room: IRoom = new Room(roomId, playerId)
+        room.players = [... room.players, playerId]
 
         try {
             const storeResponse = await store.setAsync()(room.id, JSON.stringify(room))

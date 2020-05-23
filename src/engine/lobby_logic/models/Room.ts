@@ -5,7 +5,7 @@ export default interface IRoom {
     leader: IPlayer["id"]
     players: IPlayer["id"][]
     gameName: string
-    addPlayer: (player: IPlayer["id"]) => void
+    // addPlayer: (player: IPlayer["id"]) => void
     // removePlayer: (player: IPlayer) => void
     // close: () => void
 }
