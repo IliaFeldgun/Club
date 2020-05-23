@@ -7,13 +7,14 @@ import IWizRound from "./models/WizRound"
 import Deck from "../card_logic/logic/Deck"
 import Stack from "../card_logic/logic/Stack"
 import WizRound from "./logic/WizRound"
+import { generateId } from "../engine/id_generator"
 
 export default class WizBuilder {
 
-    static newGameState(gameId: IWizGame["id"],
-                        roomId: IRoom["id"],
+    static newGameState(roomId: IRoom["id"],
                         players: IPlayer["id"][]) : IWizGame
     {
+        const gameId = generateId(roomId,process.env.UUID_GAME_NAMESPACE)
         const game = new WizGame(gameId, roomId)
         players.forEach((player) => {
             game.playerScores[player] = new WizScore()
@@ -21,12 +22,15 @@ export default class WizBuilder {
 
         return game
     }
-    static newRoundState(roundId: IWizRound["id"],
-                        gameId: IWizGame["id"],
-                        roundNumber: number,
-                        players: IPlayer["id"][],
-                        firstPlayer: IPlayer["id"]): IWizRound
+    static newRoundState(gameId: IWizGame["id"],
+                         roundNumber: number,
+                         players: IPlayer["id"][],
+                         firstPlayer: IPlayer["id"]): IWizRound
     {
+
+        const roundId = generateId(gameId + 1,
+                                   process.env.UUID_ROUND_NAMESPACE)
+
         const roundDeck = new Deck(true)
         const roundTableStack = new Stack([])
 
