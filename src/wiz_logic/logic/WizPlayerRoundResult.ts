@@ -7,8 +7,4 @@ export default class WizPlayerRoundResult implements IWizPlayerRoundResult {
         this.totalCards = totalCards
         this.successfulTakes = 0
     }
-
-    addTake() {
-        this.successfulTakes++
-    }
 }
