@@ -12,7 +12,7 @@ router.post('/wiz', async ( req, res ) => {
     const roomId = req.body.roomId
     try {
         const room : IRoom = await LobbyMaster.getRoom(roomId)
-        
+
         if (room.leader === playerId) {
             const game = WizBuilder.newGameState(room.id, room.players)
             const round = WizBuilder.newRoundState(game.id,
