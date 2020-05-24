@@ -102,6 +102,7 @@ router.delete('/:roomId/player', async ( req, res ) => {
     }
 } );
 router.post('/:roomId/game/:gameName', async ( req, res ) => {
+    // TODO: possibly not a useful route
     const playerId = req.playerId
     const roomId = req.params.roomId
     const gameName = req.params.gameName
@@ -110,7 +111,7 @@ router.post('/:roomId/game/:gameName', async ( req, res ) => {
         const room : IRoom = await LobbyMaster.getRoom(roomId)
 
         if (room.leader === playerId) {
-            await LobbyMaster.setRoomGame(roomId, gameName)
+            await LobbyMaster.setRoomGameType(roomId, gameName)
             res.send({})
         }
         else {
