@@ -52,6 +52,23 @@ export default class LobbyMaster {
             return undefined
         }
     }
+    static async getRoomPlayerNames(roomId: IRoom["id"]): Promise<IPlayer["name"][]> {
+        try {
+            const playerIds = await LobbyMaster.getRoomPlayers(roomId)
+            const playerReqs: Promise<IPlayer>[] = []
+            playerIds.forEach((id) => {
+                playerReqs.push(LobbyMaster.getPlayer(id))
+            })
+
+            const players = await Promise.all(playerReqs)
+
+            return players.map((player) => player.name)
+        }
+        catch (error) {
+            // TODO: Log it
+            return undefined
+        }
+    }
     static async getRoomLeader(roomId: IRoom["id"]): Promise<IRoom["leader"]> {
         try {
             const room: IRoom = await LobbyMaster.getRoom(roomId)
