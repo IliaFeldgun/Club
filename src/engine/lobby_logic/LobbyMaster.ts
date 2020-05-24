@@ -154,7 +154,7 @@ export default class LobbyMaster {
             return false
         }
     }
-    static async getRoomGame(roomId: IRoom["id"]): Promise<IRoom["gameName"]> {
+    static async getRoomGameType(roomId: IRoom["id"]): Promise<IRoom["gameName"]> {
         try {
             const room: IRoom = await LobbyMaster.getRoom(roomId)
 
@@ -165,10 +165,26 @@ export default class LobbyMaster {
             return undefined
         }
     }
-    static async setRoomGame(roomId: IRoom["id"], game: IRoom["gameName"]): Promise<boolean> {
+    static async setRoomGameType(roomId: IRoom["id"], 
+                                 game: IRoom["gameName"]): Promise<boolean> {
         try {
             const room: IRoom = await LobbyMaster.getRoom(roomId)
             room.gameName = game
+            const roomDone = await LobbyMaster.setRoom(roomId, room)
+            return roomDone
+        }
+        catch (error) {
+            // TODO: Log it
+            return false
+        }
+    }
+    static async setRoomGame(roomId: IRoom["id"], 
+                             game: IRoom["gameName"], 
+                             gameId: string): Promise<boolean> {
+        try {
+            const room: IRoom = await LobbyMaster.getRoom(roomId)
+            room.gameName = game
+            room.gameId = gameId
             const roomDone = await LobbyMaster.setRoom(roomId, room)
             return roomDone
         }
