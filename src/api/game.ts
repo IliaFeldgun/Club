@@ -7,23 +7,24 @@ import LobbyMaster from "../engine/lobby_logic/LobbyMaster"
 
 const router = express.Router()
 
-router.post('/wiz', async ( req, res ) => {
+router.post('/wiz/:roomId', async ( req, res ) => {
     const playerId = req.playerId
-    const roomId = req.body.roomId
+    const roomId = req.params.roomId
+    
     try {
         const room : IRoom = await LobbyMaster.getRoom(roomId)
 
         if (room.leader === playerId) {
-            const game = WizBuilder.newGameState(room.id, room.players)
-            const round = WizBuilder.newRoundState(game.id,
+            const gameId = await WizBuilder.newGameState(room.id, room.players)
+            const isRoomSet = await LobbyMaster.setRoomGameType(room.id, "wiz")
+            const roundId = await WizBuilder.newRoundState(gameId,
                                                    1,
                                                    room.players,
                                                    room.players[0])
 
-            WizMaster.dealCards(round)
+            WizMaster.dealCards(roundId)
 
-            const storeResponse = await store.setAsync()(game.id, JSON.stringify(game))
-            res.send({gameId: game.id})
+            res.send({gameId: gameId})
         }
         else {
             res.send("You are not room leader")
