@@ -27,6 +27,7 @@ router.post('/wiz/:roomId', async ( req, res ) => {
             res.send({gameId: gameId})
         }
         else {
+            res.status(403)
             res.send("You are not room leader")
         }
     }
