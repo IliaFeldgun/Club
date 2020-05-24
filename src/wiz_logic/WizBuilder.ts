@@ -8,11 +8,12 @@ import Deck from "../card_logic/logic/Deck"
 import Stack from "../card_logic/logic/Stack"
 import WizRound from "./logic/WizRound"
 import { generateId } from "../engine/id_generator"
+import store from "../engine/key_value_state_store"
 
 export default class WizBuilder {
 
-    static newGameState(roomId: IRoom["id"],
-                        players: IPlayer["id"][]) : IWizGame
+    static async newGameState(roomId: IRoom["id"],
+                        players: IPlayer["id"][]) : Promise<IWizGame["id"]>
     {
         const gameId = generateId(roomId,process.env.UUID_GAME_NAMESPACE)
         const game = new WizGame(gameId, roomId)
@@ -20,12 +21,18 @@ export default class WizBuilder {
             game.playerScores[player] = new WizScore()
         })
 
-        return game
+        try {
+            const storeResponse = await store.setAsync()(gameId, JSON.stringify(game))
+            return game.id
+        }
+        catch(error){
+            return error
+        }
     }
-    static newRoundState(gameId: IWizGame["id"],
+    static async newRoundState(gameId: IWizGame["id"],
                          roundNumber: number,
                          players: IPlayer["id"][],
-                         firstPlayer: IPlayer["id"]): IWizRound
+                         firstPlayer: IPlayer["id"]): Promise<IWizRound["id"]>
     {
 
         const roundId = generateId(gameId + 1,
@@ -42,7 +49,14 @@ export default class WizBuilder {
             round.playerHands[player] = []
         })
 
-        return round
+        try {
+            const storeResponse = await store.setAsync()(round.id, JSON.stringify(round))
+            return round.id
+        }
+        catch(error) {
+            return error
+        }
+        
     }
 
     static generatePlayerOrder(firstPlayer: IPlayer["id"],
