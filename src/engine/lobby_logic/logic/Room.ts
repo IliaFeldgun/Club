@@ -5,7 +5,9 @@ export default class Room implements IRoom {
     id: string
     leader: IPlayer["id"]
     players: IPlayer["id"][]
+    // TODO: Create a model for games
     gameName: string
+    gameId: string
     constructor(id: string, leader: IPlayer["id"]) {
         this.id = id
         this.leader = leader
