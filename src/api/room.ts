@@ -11,7 +11,8 @@ router.post('/', async (req, res) => {
 
     if (playerId) {
         const roomId = await LobbyBuilder.createRoom(playerId)
-        if(roomId) {
+        const isPlayerAdded = await LobbyMaster.addPlayerToRoom(playerId, roomId)
+        if(roomId && isPlayerAdded) {
             res.send({roomId})
         }
         else {
