@@ -17,9 +17,9 @@ router.post('/wiz/:roomId', async ( req, res ) => {
             const gameId = await WizBuilder.newGameState(room.id, room.players)
             const isRoomSet = await LobbyMaster.setRoomGameType(room.id, "wiz")
             const roundId = await WizBuilder.newRoundState(gameId,
-                                                   1,
-                                                   room.players,
-                                                   room.players[0])
+                                                           1,
+                                                           room.players,
+                                                           room.players[0])
 
             WizMaster.dealCards(roundId)
 
