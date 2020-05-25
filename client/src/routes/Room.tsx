@@ -5,6 +5,7 @@ import PlayerList from '../components/PlayerList'
 import "./Room.css"
 import { getPlayerName } from '../utils/Cookie'
 import JoinButton from '../components/Room/JoinButton'
+import CreateWiz from '../components/Wiz/CreateWiz'
 interface IRouteParams {
     id: string
 }
@@ -37,6 +38,7 @@ export default class Room extends React.PureComponent<IRoomProps,IRoomState>{
         {
             joinButton = <React.Fragment/>
         }
+        let createWizButton = <CreateWiz roomId={this.props.match.params.id} />
         return (
             <React.Fragment>
             <div className="centered-top">
@@ -45,6 +47,7 @@ export default class Room extends React.PureComponent<IRoomProps,IRoomState>{
                 <p className="block bold">Players in this room:</p>
                 <PlayerList players={this.state.players} />
                 {joinButton}
+                {createWizButton}
             </div>
             </React.Fragment>
         )
