@@ -5,7 +5,7 @@ import IWizRound from "./models/WizRound"
 export default class WizStore {
     static async getWizGame(gameId: IWizGame["id"]): Promise<IWizGame> {
         try {
-            const game: IWizGame = store.getAsync()(gameId)
+            const game: IWizGame = JSON.parse(await store.getAsync()(gameId))
 
             return game
         }
@@ -16,7 +16,7 @@ export default class WizStore {
     }
     static async getWizRound(roundId: IWizRound["id"]): Promise<IWizRound> {
         try {
-            const round: IWizRound = store.getAsync()(roundId)
+            const round: IWizRound = JSON.parse(await store.getAsync()(roundId))
 
             return round
         }
