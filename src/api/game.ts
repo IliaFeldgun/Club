@@ -1,9 +1,9 @@
 import express from "express"
-import store from "../engine/key_value_state_store"
 import IRoom from "../engine/lobby_logic/models/Room"
 import WizBuilder from "../wiz_logic/WizBuilder"
 import WizMaster from "../wiz_logic/WizMaster"
 import LobbyMaster from "../engine/lobby_logic/LobbyMaster"
+import LobbyStore from "../engine/lobby_logic/LobbyStore"
 
 const router = express.Router()
 
@@ -11,9 +11,8 @@ router.post('/wiz/:roomId', async ( req, res ) => {
     const playerId = req.playerId
     const roomId = req.params.roomId
     
-    try {
-        const room : IRoom = await LobbyMaster.getRoom(roomId)
-
+    const room : IRoom = await LobbyStore.getRoom(roomId)
+    if (room) {
         if (room.leader === playerId) {
             const gameId = await WizBuilder.newGameState(room.id, room.players)
             const isRoomSet = await LobbyMaster.setRoomGameType(room.id, "wiz")
@@ -31,7 +30,7 @@ router.post('/wiz/:roomId', async ( req, res ) => {
             res.send("You are not room leader")
         }
     }
-    catch(error) {
+    else {
         res.status(500)
         res.send("FAIL")
     }
