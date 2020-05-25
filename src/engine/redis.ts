@@ -4,3 +4,6 @@ export let redisClient = redis.createClient({
     host: process.env.REDIS_HOST,
     password: process.env.REDIS_PASSWORD,
 })
+redisClient.on('error', (error) => {
+    // TODO: Log
+})
