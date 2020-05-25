@@ -130,9 +130,25 @@ export default class WizMaster {
     }
     static async getWizPlayersByGame(gameId: IWizGame["id"]):
         Promise<{id: IPlayer["id"], name: IPlayer["name"]}[]> {
+            // TODO: refactor
+
             const game = await WizStore.getWizGame(gameId)
             if (game) {
-                return await LobbyMaster.getRoomPlayers(game.roomId)
+                const players = await LobbyMaster.getRoomPlayers(game.roomId)
+                if (players) {
+                    const wizPlayers = (players.map((player) => {
+                        return {
+                            id: player.id,
+                            name: player.name,
+                            score: game.playerScores[player.id].total
+                        }
+                    }))
+
+                    return wizPlayers
+                }
+                else {
+                    return []
+                }
             }
             else {
                 return []
