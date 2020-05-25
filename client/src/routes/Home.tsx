@@ -1,8 +1,8 @@
 import React from "react";
-import PostButton from "../components/PostButton";
 import "./Home.css"
 import Description from "../components/Home/Description";
 import Catalog from "../components/Home/Catalog";
+
 interface IHomeState{
     roomId: string
 }
