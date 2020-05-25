@@ -10,6 +10,7 @@ interface ISetBetState {
 export default class SetBet extends React.PureComponent<ISetBetProps, ISetBetState> {
     constructor(props: ISetBetProps) {
         super(props)
+        this.state = {bet: -1}
         this.handleBetChange = this.handleBetChange.bind(this)
     }
     handleBetChange(event: React.ChangeEvent<HTMLInputElement>) {
