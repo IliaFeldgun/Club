@@ -46,9 +46,9 @@ router.get('/:roomId/players', async (req,res) => {
     const playerId = req.playerId
 
     if (playerId) {
-        const players = await LobbyMaster.getRoomPlayerNames(roomId)
+        const players = await LobbyMaster.getRoomPlayers(roomId)
         if (players) {
-            res.send({playerNames: players})
+            res.send({playerNames: players.map((player) => player.name)})
         }
         else {
             res.status(500)
