@@ -8,7 +8,7 @@ export default class Catalog extends React.PureComponent<ICatalogProps,{}> {
         const games = this.props.games.map((game) => 
             <div className="catalog-item">
                 <a href={game.url}>
-                    <img src={game.img} />
+                    <img src={game.img} alt={game.name}/>
                     <div>{game.name}</div>
                 </a>
             </div>
