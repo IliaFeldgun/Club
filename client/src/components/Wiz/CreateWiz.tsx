@@ -13,8 +13,8 @@ export default class CreateWiz extends React.PureComponent<ICreateWizProps,{}>{
     handleWizCreation(event: React.MouseEvent<HTMLButtonElement>) {
         WizApi.newGame(this.props.roomId).then((res: Response) => 
         {
-            // Statuses not 
-            if (res.status !== 403 && res.status !== 403) {
+            // Statuses not failed
+            if (res.status !== 403 && res.status !== 500) {
                     window.location.assign("/wiz/" + this.props.roomId) 
             }
         })
@@ -23,7 +23,7 @@ export default class CreateWiz extends React.PureComponent<ICreateWizProps,{}>{
         const buttonClass = "form-button"
         return (
             <React.Fragment>
-                <div className="centered-top">
+                <div>
                     <button className={buttonClass} type="button" onClick={this.handleWizCreation}>
                         <span>Create Wiz Game</span>
                     </button>
