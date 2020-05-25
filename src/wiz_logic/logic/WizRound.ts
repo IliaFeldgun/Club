@@ -30,6 +30,7 @@ export default class WizRound implements IWizRound {
         this.playerOrder = []
         this.playerHands = {}
         this.playerBets = {}
+        this.playerResults = {}
 
     }
 }
