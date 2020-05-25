@@ -5,8 +5,10 @@ import ScoreBoard from "./ScoreBoard";
 import CardStack from "./CardStack";
 import { ICardProps } from "./Card";
 import { Suit, Rank } from "../../models/Card";
+import WizPlayerList from "./PlayerList";
 
 interface IWizGameProps {
+    players: Array<{id: string, name: string}>
     handleFanCardClick?: (event: React.MouseEvent) => void
 }
 interface IWizGameState {
@@ -52,6 +54,7 @@ export default class WizGame extends React.PureComponent<IWizGameProps,IWizGameS
                     <CardFan cards={this.state.handCards} handleCardClick={this.handleFanCardClick}/>
                 </CardBoard>
                 <ScoreBoard>
+                    <WizPlayerList players={this.props.players} />
                 </ScoreBoard>
             </React.Fragment>
         )
