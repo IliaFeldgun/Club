@@ -8,12 +8,18 @@ interface IRouteParams {
     id: string
 }
 interface IWizProps extends RouteComponentProps<IRouteParams>{
-    match: match<IRouteParams>;
+    match: match<IRouteParams>
 }
 interface IWizState {
     game: any
+    players: Array<{id: string, name: string}>
 }
 export default class Wiz extends React.PureComponent<IWizProps,IWizState> {
+    constructor(props: IWizProps) {
+        super(props)
+
+        this.state = {game: {}, players: []}
+    }
     componentDidMount() {
         WizApi.getGame(this.props.match.params.id).then((res) => {
             res.json().then((json) => {
@@ -21,11 +27,17 @@ export default class Wiz extends React.PureComponent<IWizProps,IWizState> {
                 this.setState({game: json.game})
             })
         })
+
+        WizApi.getGamePlayers(this.props.match.params.id).then((res) => {
+            res.json().then((json) => {
+                this.setState({players: json.players})
+            })
+        })
     }
     render() {
         return (
             <React.Fragment>
-                <WizGame/>
+                <WizGame players={this.state.players}/>
             </React.Fragment>
         )
     }
