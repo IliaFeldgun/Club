@@ -4,6 +4,7 @@ import WizBuilder from "../wiz_logic/WizBuilder"
 import WizMaster from "../wiz_logic/WizMaster"
 import LobbyMaster from "../engine/lobby_logic/LobbyMaster"
 import LobbyStore from "../engine/lobby_logic/LobbyStore"
+import WizStore from "../wiz_logic/WizStore"
 
 const router = express.Router()
 
@@ -39,7 +40,28 @@ router.post('/wiz/:roomId', async ( req, res ) => {
         res.send("FAIL")
     }
 })
-
+router.get('/wiz/:gameId', async (req, res) => {
+    const playerId = req.playerId
+    if (playerId) {
+        const gameId = req.body.gameId
+        const game = await WizStore.getWizGame(gameId)
+        res.send({game: game})
+    }
+    else {
+        res.status(403).send("Player needs be set")
+    }
+})
+router.get('/wiz/:gameId/round', async (req, res) => {
+    const playerId = req.playerId
+    if (playerId) {
+        const gameId = req.body.gameId
+        const round = await WizMaster.getWizRoundByGame(gameId)
+        res.send({round: round})
+    }
+    else {
+        res.status(403).send("Player needs be set")
+    }
+})
 /*router.get('/wiz', (req, res) => {
     const playerId = req.signedCookies.player_id
     const gameId = req.body.gameId
