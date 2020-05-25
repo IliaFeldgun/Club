@@ -10,6 +10,7 @@ interface ILoginFormState {
 export default class LoginForm extends React.PureComponent<ILoginFormProps,ILoginFormState> {
     constructor(props: ILoginFormProps) {
         super(props)
+        this.state = {playerName: ""}
         this.handleClick = this.handleClick.bind(this)
         this.handleChange = this.handleChange.bind(this)
     }
@@ -19,9 +20,11 @@ export default class LoginForm extends React.PureComponent<ILoginFormProps,ILogi
         })
     }
     handleClick(event: React.MouseEvent<HTMLButtonElement>) {
-        LobbyApi.newPlayer(this.state.playerName).then((response) => {
-            window.location.reload(false)
-        })
+        if(this.state.playerName) {
+            LobbyApi.newPlayer(this.state.playerName).then((response) => {
+                window.location.reload(false)
+            })
+        }
     }
     render() {
         const fieldClass = "form-field"
