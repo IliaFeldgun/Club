@@ -4,6 +4,7 @@ import WizGameRules from "./logic/WizGameRules";
 import IWizRound from "./models/WizRound";
 import WizStore from "./WizStore";
 import IWizGame from "./models/WizGame";
+import LobbyMaster from "../engine/lobby_logic/LobbyMaster";
 
 export default class WizMaster {
     static playCard(round: IWizRound,
@@ -127,4 +128,14 @@ export default class WizMaster {
             return undefined
         }
     }
+    static async getWizPlayersByGame(gameId: IWizGame["id"]):
+        Promise<{id: IPlayer["id"], name: IPlayer["name"]}[]> {
+            const game = await WizStore.getWizGame(gameId)
+            if (game) {
+                return await LobbyMaster.getRoomPlayers(game.roomId)
+            }
+            else {
+                return []
+            }
+        }
 }
