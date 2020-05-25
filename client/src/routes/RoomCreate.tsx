@@ -1,13 +1,13 @@
 import React from 'react'
 import LobbyApi from '../api/LobbyApi'
-interface IRoomCreateState{
+interface IRoomCreateState {
     roomId: string
 }
 export default class Rooms extends React.PureComponent<{},IRoomCreateState> {
     constructor() {
         super({})
 
-        
+        this.state = {roomId: ""}
         this.handleRoomCreation = this.handleRoomCreation.bind(this)
     }
     handleRoomCreation(event: React.MouseEvent<HTMLButtonElement>) {
