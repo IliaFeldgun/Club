@@ -99,7 +99,7 @@ router.post('/:roomId/game/:gameName', async ( req, res ) => {
     const roomId = req.params.roomId
     const gameName = req.params.gameName
 
-    const room : IRoom = await LobbyMaster.getRoom(roomId)
+    const room : IRoom = await LobbyStore.getRoom(roomId)
     if (room) {
         if (room.leader === playerId) {
             await LobbyMaster.setRoomGameType(roomId, gameName)
