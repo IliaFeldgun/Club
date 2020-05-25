@@ -6,9 +6,10 @@ import CardStack from "./CardStack";
 import { ICardProps } from "./Card";
 import { Suit, Rank } from "../../models/Card";
 import WizPlayerList from "./PlayerList";
+import WizOtherPlayers from "./OtherPlayers";
 
 interface IWizGameProps {
-    players: Array<{id: string, name: string}>
+    players: Array<{id: string, name: string, score: number}>
     handleFanCardClick?: (event: React.MouseEvent) => void
 }
 interface IWizGameState {

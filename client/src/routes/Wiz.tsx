@@ -12,7 +12,7 @@ interface IWizProps extends RouteComponentProps<IRouteParams>{
 }
 interface IWizState {
     game: any
-    players: Array<{id: string, name: string}>
+    players: Array<{id: string, name: string, score: number}>
 }
 export default class Wiz extends React.PureComponent<IWizProps,IWizState> {
     constructor(props: IWizProps) {
