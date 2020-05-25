@@ -1,195 +1,131 @@
-import store from "../key_value_state_store"
 import IPlayer from "./models/Player";
 import IRoom from "./models/Room";
+import LobbyStore from "./LobbyStore";
 
 export default class LobbyMaster {
     static async addPlayerToRoom(playerId: IPlayer["id"], roomId: IRoom["id"]): Promise<boolean> {
-        try {
-            const room: IRoom = await LobbyMaster.getRoom(roomId)
-            const player: IPlayer = await LobbyMaster.getPlayer(playerId)
-
+        const room: IRoom = await LobbyStore.getRoom(roomId)
+        const player: IPlayer = await LobbyStore.getPlayer(playerId)
+        
+        if (room && player) {
             player.rooms = player.rooms.concat(roomId)
             room.players = room.players.concat(playerId)
 
             // TODO: Needs to be a single transaction
-            const roomDone = await LobbyMaster.setRoom(room.id, room)
-            const playerDone = await LobbyMaster.setPlayer(player.id, player)
+            const roomDone = await LobbyStore.setRoom(room.id, room)
+            const playerDone = await LobbyStore.setPlayer(player.id, player)
 
             return roomDone && playerDone
         }
-        catch (error) {
-            // TODO: Log it
+        else {
             return false
         }
     }
     static async removePlayerFromRoom(playerId: IPlayer["id"], roomId: IRoom["id"]): Promise<boolean> {
-        try {
-            const room: IRoom = await LobbyMaster.getRoom(roomId)
-            const player: IPlayer = await LobbyMaster.getPlayer(playerId)
-
+        const room: IRoom = await LobbyStore.getRoom(roomId)
+        const player: IPlayer = await LobbyStore.getPlayer(playerId)
+        
+        if (player && room) {
             player.rooms = player.rooms.filter((r) => r !== roomId)
             room.players = room.players.filter((p) => p !== playerId)
 
             // TODO: Needs to be a single transaction
-            const roomDone = await LobbyMaster.setRoom(room.id, room)
-            const playerDone = await LobbyMaster.setPlayer(player.id, player)
+            const roomDone = await LobbyStore.setRoom(room.id, room)
+            const playerDone = await LobbyStore.setPlayer(player.id, player)
 
             return roomDone && playerDone
         }
-        catch (error) {
-            // TODO: Log it
+        else {
             return false
         }
     }
     static async getRoomPlayers(roomId: IRoom["id"]): Promise<IPlayer["id"][]> {
-        try {
-            const room: IRoom = await LobbyMaster.getRoom(roomId)
-
+        const room: IRoom = await LobbyStore.getRoom(roomId)
+        if (room)
             return room.players
-        }
-        catch (error) {
-            // TODO: Log it
-            return undefined
+        else {
+            return []
         }
     }
     static async getRoomPlayerNames(roomId: IRoom["id"]): Promise<IPlayer["name"][]> {
-        try {
-            const playerIds = await LobbyMaster.getRoomPlayers(roomId)
+
+        const playerIds = await LobbyMaster.getRoomPlayers(roomId)
+        if (playerIds) {
             const playerReqs: Promise<IPlayer>[] = []
             playerIds.forEach((id) => {
-                playerReqs.push(LobbyMaster.getPlayer(id))
+                playerReqs.push(LobbyStore.getPlayer(id))
             })
 
             const players = await Promise.all(playerReqs)
 
             return players.map((player) => player.name)
         }
-        catch (error) {
-            // TODO: Log it
-            return undefined
+        else {
+            return []
         }
     }
     static async getRoomLeader(roomId: IRoom["id"]): Promise<IRoom["leader"]> {
-        try {
-            const room: IRoom = await LobbyMaster.getRoom(roomId)
-
+        const room: IRoom = await LobbyStore.getRoom(roomId)
+        if (room)
+        {
             return room.leader
         }
-        catch (error) {
-            // TODO: Log it
-            return undefined
+        else {
+            return ""
         }
     }
     static async setRoomLeader(playerId: IPlayer["id"], roomId: IRoom["id"]): Promise<boolean> {
-        try {
-            const room: IRoom = await LobbyMaster.getRoom(roomId)
+        const room: IRoom = await LobbyStore.getRoom(roomId)
+        if (room) {
             room.leader = playerId
-            const roomDone = await LobbyMaster.setRoom(roomId, room)
+            const roomDone = await LobbyStore.setRoom(roomId, room)
             return roomDone
         }
-        catch (error) {
-            // TODO: Log it
+        else {
             return false
         }
     }
     static async getPlayerRooms(playerId: IPlayer["id"]): Promise<IRoom["id"][]> {
-        try {
-            const player: IPlayer = await LobbyMaster.getPlayer(playerId)
-
+        const player: IPlayer = await LobbyStore.getPlayer(playerId)
+        if (player) {
             return player.rooms
         }
-        catch (error) {
-            // TODO: Log it
-            return undefined
-        }
-    }
-    static async deletePlayer(playerId: IPlayer["id"]): Promise<boolean> {
-        try {
-            const storeResponse = await store.deleteAsync()(playerId)
-            // TODO: Maybe remove player from all rooms and close lead rooms
-            return true
-        }
-        catch(error) {
-            // TODO: Log it
-            return false
-        }
-    }
-    static async getRoom(roomId: IRoom["id"]): Promise<IRoom> {
-        try {
-            const room: IRoom = JSON.parse(await store.getAsync()(roomId))
-            return room
-        }
-        catch(error) {
-            // TODO: Log it
-            return undefined
-        }
-    }
-    private static async setRoom(roomId: IRoom["id"], room: IRoom): Promise<boolean> {
-        try {
-            const storeResponse = await store.setAsync()(roomId, JSON.stringify(room))
-            return true
-        }
-        catch(error) {
-            // TODO: Log it
-            return false
-        }
-    }
-    static async getPlayer(playerId: IPlayer["id"]): Promise<IPlayer> {
-        try {
-            const player: IPlayer = JSON.parse(await store.getAsync()(playerId))
-            return player
-        }
-        catch(error) {
-            // TODO: Log it
-            return undefined
-        }
-    }
-    private static async setPlayer(playerId: IPlayer["id"], player: IPlayer): Promise<boolean> {
-        try {
-            const storeResponse = await store.setAsync()(playerId, JSON.stringify(player))
-            return true
-        }
-        catch(error) {
-            // TODO: Log it
-            return false
+        else {
+            return []
         }
     }
     static async getRoomGameType(roomId: IRoom["id"]): Promise<IRoom["gameName"]> {
-        try {
-            const room: IRoom = await LobbyMaster.getRoom(roomId)
-
+        const room: IRoom = await LobbyStore.getRoom(roomId)
+        if (room){
             return room.gameName
         }
-        catch (error) {
-            // TODO: Log it
-            return undefined
+        else {
+            return ""
         }
     }
     static async setRoomGameType(roomId: IRoom["id"], 
                                  game: IRoom["gameName"]): Promise<boolean> {
-        try {
-            const room: IRoom = await LobbyMaster.getRoom(roomId)
+        const room: IRoom = await LobbyStore.getRoom(roomId)
+        if (room) {
             room.gameName = game
-            const roomDone = await LobbyMaster.setRoom(roomId, room)
+            const roomDone = await LobbyStore.setRoom(roomId, room)
             return roomDone
         }
-        catch (error) {
-            // TODO: Log it
+        else {
             return false
         }
     }
     static async setRoomGame(roomId: IRoom["id"], 
                              game: IRoom["gameName"], 
                              gameId: string): Promise<boolean> {
-        try {
-            const room: IRoom = await LobbyMaster.getRoom(roomId)
+        const room: IRoom = await LobbyStore.getRoom(roomId)
+        if (room) {
             room.gameName = game
             room.gameId = gameId
-            const roomDone = await LobbyMaster.setRoom(roomId, room)
+            const roomDone = await LobbyStore.setRoom(roomId, room)
             return roomDone
         }
-        catch (error) {
-            // TODO: Log it
+        else {
             return false
         }
     }
