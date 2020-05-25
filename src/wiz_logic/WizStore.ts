@@ -6,7 +6,7 @@ export default class WizStore {
     static async getWizGame(gameId: IWizGame["id"]): Promise<IWizGame> {
         try {
             const game: IWizGame = store.getAsync()(gameId)
-            
+
             return game
         }
         catch(error) {
@@ -17,7 +17,7 @@ export default class WizStore {
     static async getWizRound(roundId: IWizRound["id"]): Promise<IWizRound> {
         try {
             const round: IWizRound = store.getAsync()(roundId)
-            
+
             return round
         }
         catch(error) {
@@ -35,7 +35,7 @@ export default class WizStore {
             // TODO: Log it
             return false
         }
-    }    
+    }
     static async setWizRound(roundId: IWizRound["id"], round: IWizRound): Promise<boolean> {
         try {
             const storeResponse = await store.setAsync()(roundId, JSON.stringify(round))

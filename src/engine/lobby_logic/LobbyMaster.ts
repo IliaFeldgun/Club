@@ -6,7 +6,7 @@ export default class LobbyMaster {
     static async addPlayerToRoom(playerId: IPlayer["id"], roomId: IRoom["id"]): Promise<boolean> {
         const room: IRoom = await LobbyStore.getRoom(roomId)
         const player: IPlayer = await LobbyStore.getPlayer(playerId)
-        
+
         if (room && player) {
             player.rooms = player.rooms.concat(roomId)
             room.players = room.players.concat(playerId)
@@ -24,7 +24,7 @@ export default class LobbyMaster {
     static async removePlayerFromRoom(playerId: IPlayer["id"], roomId: IRoom["id"]): Promise<boolean> {
         const room: IRoom = await LobbyStore.getRoom(roomId)
         const player: IPlayer = await LobbyStore.getPlayer(playerId)
-        
+
         if (player && room) {
             player.rooms = player.rooms.filter((r) => r !== roomId)
             room.players = room.players.filter((p) => p !== playerId)
@@ -103,7 +103,7 @@ export default class LobbyMaster {
             return ""
         }
     }
-    static async setRoomGameType(roomId: IRoom["id"], 
+    static async setRoomGameType(roomId: IRoom["id"],
                                  game: IRoom["gameName"]): Promise<boolean> {
         const room: IRoom = await LobbyStore.getRoom(roomId)
         if (room) {
@@ -115,8 +115,8 @@ export default class LobbyMaster {
             return false
         }
     }
-    static async setRoomGame(roomId: IRoom["id"], 
-                             game: IRoom["gameName"], 
+    static async setRoomGame(roomId: IRoom["id"],
+                             game: IRoom["gameName"],
                              gameId: string): Promise<boolean> {
         const room: IRoom = await LobbyStore.getRoom(roomId)
         if (room) {

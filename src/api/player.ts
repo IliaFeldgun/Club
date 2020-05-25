@@ -12,7 +12,7 @@ router.post('/', async (req, res) => {
             res.cookie("player_name", playerName, { signed: true })
             res.cookie("player_id", playerId, { signed: true })
             res.send("Player created, cookie sent")
-        }   
+        }
         else {
             res.status(500)
             res.send("FAIL")

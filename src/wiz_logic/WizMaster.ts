@@ -90,13 +90,13 @@ export default class WizMaster {
         return allEmpty
     }
     static async dealCards(roundId: IWizRound["id"]): Promise<boolean> {
-        
+
         const round = await WizStore.getWizRound(roundId)
-        
+
         if (round) {
             return false
         }
-        else 
+        else
         {
             const totalRounds =
                 WizGameRules.getTotalRounds(round.playerOrder.length)

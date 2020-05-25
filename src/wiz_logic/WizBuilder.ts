@@ -47,7 +47,7 @@ export default class WizBuilder {
 
         if (await WizStore.setWizRound(round.id, round))
             return round.id
-        
+
     }
 
     static generatePlayerOrder(firstPlayer: IPlayer["id"],

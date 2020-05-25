@@ -11,7 +11,7 @@ const router = express.Router()
 router.post('/wiz/:roomId', async ( req, res ) => {
     const playerId = req.playerId
     const roomId = req.params.roomId
-    
+
     const room : IRoom = await LobbyStore.getRoom(roomId)
     if (room) {
         if (room.leader === playerId) {
@@ -23,7 +23,7 @@ router.post('/wiz/:roomId', async ( req, res ) => {
                                                            room.players[0])
             if (isRoomSet && roundId && WizMaster.dealCards(roundId))
             {
-                res.send({gameId: gameId})
+                res.send({gameId})
             }
             else {
                 res.status(500)
@@ -45,7 +45,7 @@ router.get('/wiz/:gameId', async (req, res) => {
     if (playerId) {
         const gameId = req.body.gameId
         const game = await WizStore.getWizGame(gameId)
-        res.send({game: game})
+        res.send({game})
     }
     else {
         res.status(403).send("Player needs be set")
@@ -56,7 +56,7 @@ router.get('/wiz/:gameId/round', async (req, res) => {
     if (playerId) {
         const gameId = req.body.gameId
         const round = await WizMaster.getWizRoundByGame(gameId)
-        res.send({round: round})
+        res.send({round})
     }
     else {
         res.status(403).send("Player needs be set")

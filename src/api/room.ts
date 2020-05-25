@@ -12,7 +12,7 @@ router.post('/', async (req, res) => {
     if (playerId) {
         const roomId = await LobbyBuilder.createRoom(playerId)
         if(roomId) {
-            res.send({roomId: roomId})
+            res.send({roomId})
         }
         else {
             res.status(500)
