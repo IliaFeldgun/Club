@@ -3,6 +3,7 @@ import ICard from "../card_logic/models/Card";
 import WizGameRules from "./logic/WizGameRules";
 import IWizRound from "./models/WizRound";
 import WizStore from "./WizStore";
+import IWizGame from "./models/WizGame";
 
 export default class WizMaster {
     static playCard(round: IWizRound,
@@ -114,6 +115,16 @@ export default class WizMaster {
 
                 return await WizStore.setWizRound(round.id, round)
             }
+        }
+    }
+    static async getWizRoundByGame(gameId: IWizGame["id"]): Promise<IWizRound> {
+        const game = await WizStore.getWizGame(gameId)
+        if (game) {
+            const round = WizStore.getWizRound(game.currentRoundId)
+            return round
+        }
+        else {
+            return undefined
         }
     }
 }
