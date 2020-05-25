@@ -24,6 +24,10 @@ router.post('/wiz/:roomId', async ( req, res ) => {
             {
                 res.send({gameId: gameId})
             }
+            else {
+                res.status(500)
+                res.send("FAIL")
+            }
         }
         else {
             res.status(403)
