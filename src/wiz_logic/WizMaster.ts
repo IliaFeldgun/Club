@@ -2,8 +2,8 @@ import IPlayer from "../engine/lobby_logic/models/Player";
 import ICard from "../card_logic/models/Card";
 import WizGameRules from "./logic/WizGameRules";
 import IWizRound from "./models/WizRound";
-import store from "../engine/key_value_state_store"
 import IWizGame from "./models/WizGame";
+import WizStore from "./WizStore";
 
 export default class WizMaster {
     static playCard(round: IWizRound,
@@ -46,7 +46,7 @@ export default class WizMaster {
         round.turnNumber++
     }
     private static async assertWinner(roundId: IWizRound["id"]): Promise<boolean> {
-        const round = await WizMaster.getWizRound(roundId)
+        const round = await WizStore.getWizRound(roundId)
         if (round) {
             return false
         }
@@ -62,7 +62,7 @@ export default class WizMaster {
                 // TODO: Refactor it somehow
                 round.playerResults[winningPlayer].successfulTakes++
 
-                return await WizMaster.setWizRound(roundId, round)
+                return await WizStore.setWizRound(roundId, round)
             }
         }
     }
@@ -91,7 +91,7 @@ export default class WizMaster {
     }
     static async dealCards(roundId: IWizRound["id"]): Promise<boolean> {
         
-        const round = await WizMaster.getWizRound(roundId)
+        const round = await WizStore.getWizRound(roundId)
         
         if (round) {
             return false
@@ -113,51 +113,8 @@ export default class WizMaster {
                         round.playerHands[playerId].push(round.deck.pop()))
                 }
 
-                return await WizMaster.setWizRound(round.id, round)
+                return await WizStore.setWizRound(round.id, round)
             }
-        }
-    }
-    static async getWizGame(gameId: IWizGame["id"]): Promise<IWizGame> {
-        try {
-            const game: IWizGame = store.getAsync()(gameId)
-            
-            return game
-        }
-        catch(error) {
-            // TODO: Log it
-            return undefined
-        }
-    }
-    static async getWizRound(roundId: IWizRound["id"]): Promise<IWizRound> {
-        try {
-            const round: IWizRound = store.getAsync()(roundId)
-            
-            return round
-        }
-        catch(error) {
-            // TODO: Log it
-            return undefined
-
-        }
-    }
-    private static async setWizGame(gameId: IWizGame["id"], game: IWizGame): Promise<boolean> {
-        try {
-            const storeResponse = await store.setAsync()(gameId, JSON.stringify(game))
-            return true
-        }
-        catch(error) {
-            // TODO: Log it
-            return false
-        }
-    }    
-    private static async setWizRound(roundId: IWizRound["id"], round: IWizRound): Promise<boolean> {
-        try {
-            const storeResponse = await store.setAsync()(roundId, JSON.stringify(round))
-            return true
-        }
-        catch(error) {
-            // TODO: Log it
-            return false
         }
     }
 }
