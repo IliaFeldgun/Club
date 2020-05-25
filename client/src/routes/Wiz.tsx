@@ -15,9 +15,12 @@ interface IWizState {
 }
 export default class Wiz extends React.PureComponent<IWizProps,IWizState> {
     componentDidMount() {
-        const game = WizApi.getGame(this.props.match.params.id)
-        console.log(game)
-        this.setState({game})
+        WizApi.getGame(this.props.match.params.id).then((res) => {
+            res.json().then((json) => {
+                console.log(json.game)
+                this.setState({game: json.game})
+            })
+        })
     }
     render() {
         return (
