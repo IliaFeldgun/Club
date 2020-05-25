@@ -1,6 +1,5 @@
 import React from 'react'
 import { WizApi } from '../../api/WizApi'
-import { runInThisContext } from 'vm'
 
 interface ICreateWizProps {
     roomId: string
