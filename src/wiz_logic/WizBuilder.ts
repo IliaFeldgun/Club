@@ -9,6 +9,7 @@ import Stack from "../card_logic/logic/Stack"
 import WizRound from "./logic/WizRound"
 import { generateId } from "../engine/id_generator"
 import WizStore from "./WizStore"
+import WizPlayerRoundResult from "./logic/WizPlayerRoundResult"
 
 export default class WizBuilder {
 
@@ -29,7 +30,7 @@ export default class WizBuilder {
                          firstPlayer: IPlayer["id"]): Promise<IWizRound["id"]>
     {
 
-        const roundId = generateId(gameId + 1,
+        const roundId = generateId(gameId + roundNumber,
                                    process.env.UUID_ROUND_NAMESPACE)
 
         const roundDeck = new Deck(true)
@@ -41,6 +42,7 @@ export default class WizBuilder {
 
         players.forEach((player) => {
             round.playerHands[player] = []
+            round.playerResults[player] = new WizPlayerRoundResult(roundNumber)
         })
 
         if (await WizStore.setWizRound(round.id, round))
