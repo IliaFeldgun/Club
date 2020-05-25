@@ -3,7 +3,7 @@ import "./Home.css"
 import Description from "../components/Home/Description";
 import Catalog from "../components/Home/Catalog";
 
-interface IHomeState{
+interface IHomeState {
     roomId: string
 }
 export default class Home extends React.PureComponent<{},IHomeState> {
