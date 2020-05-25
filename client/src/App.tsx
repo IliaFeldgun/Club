@@ -15,7 +15,7 @@ export default class App extends React.PureComponent {
                     <Route exact path="/">
                         <Home/>
                     </Route>
-                    <Route exact path="/wiz/:roomId" component={Wiz}>
+                    <Route exact path="/wiz/:id" component={Wiz}>
                     </Route>
                     <Route exact path="/login">
                         <Login/>
