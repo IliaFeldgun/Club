@@ -46,4 +46,25 @@ export default class WizStore {
             return false
         }
     }
+    static async deleteWizGame(gameId: IWizGame["id"]): Promise<boolean> {
+        try {
+            const storeResponse = await store.deleteAsync()(gameId)
+            return true
+        }
+        catch(error) {
+            // TODO: Log it
+            return false
+        }
+    }
+    static async deleteWizRound(roundId: IWizRound["id"]): Promise<boolean> {
+        try {
+            const storeResponse = await store.deleteAsync()(roundId)
+            return true
+        }
+        catch(error) {
+            // TODO: Log it
+            return false
+        }
+    }
+
 }
