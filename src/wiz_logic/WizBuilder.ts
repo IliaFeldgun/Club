@@ -8,7 +8,7 @@ import Deck from "../card_logic/logic/Deck"
 import Stack from "../card_logic/logic/Stack"
 import WizRound from "./logic/WizRound"
 import { generateId } from "../engine/id_generator"
-import store from "../engine/key_value_state_store"
+import WizStore from "./WizStore"
 
 export default class WizBuilder {
 
@@ -20,14 +20,8 @@ export default class WizBuilder {
         players.forEach((player) => {
             game.playerScores[player] = new WizScore()
         })
-
-        try {
-            const storeResponse = await store.setAsync()(gameId, JSON.stringify(game))
+        if (await WizStore.setWizGame(gameId, game))
             return game.id
-        }
-        catch(error){
-            return error
-        }
     }
     static async newRoundState(gameId: IWizGame["id"],
                          roundNumber: number,
@@ -49,13 +43,8 @@ export default class WizBuilder {
             round.playerHands[player] = []
         })
 
-        try {
-            const storeResponse = await store.setAsync()(round.id, JSON.stringify(round))
+        if (await WizStore.setWizRound(round.id, round))
             return round.id
-        }
-        catch(error) {
-            return error
-        }
         
     }
 
