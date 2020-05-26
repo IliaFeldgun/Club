@@ -3,7 +3,6 @@ import EmptyCard from './EmptyCard'
 
 interface IEmptyCardFanProps {
     cards: number
-    className: string
 }
 export default class EmptyCardFan extends React.PureComponent<IEmptyCardFanProps,{}> {
     render() {
@@ -19,9 +18,9 @@ export default class EmptyCardFan extends React.PureComponent<IEmptyCardFanProps
         }
         return (
             <React.Fragment>
-                <div className={this.props.className}>
+                <React.Fragment>
                     {cardsInFan}
-                </div>
+                </React.Fragment>
             </React.Fragment>
         )
     }
