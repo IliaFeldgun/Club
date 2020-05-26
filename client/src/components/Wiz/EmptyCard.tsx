@@ -1,9 +1,13 @@
-import React from 'react'
+import React, { CSSProperties } from 'react'
 
-export default class EmptyCard extends React.PureComponent {
+interface IEmptyCardProps {
+    rotateDegree: number
+}
+export default class EmptyCard extends React.PureComponent<IEmptyCardProps,{}> {
     render() {
-        const classes = `blue card`
-        return (<p className={classes}/>)
+        const classes = `blue other-card`
+        const rotate: CSSProperties = {transform: `rotate(${this.props.rotateDegree}deg)`}
+        return (<p className={classes} style= {rotate}/>)
     }
 
 }
