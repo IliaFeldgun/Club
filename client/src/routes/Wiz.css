@@ -140,6 +140,10 @@ body {
     top: 60%;
     right: 10%;
 }
+.other-player-name {
+    text-shadow: 2px 2px grey;
+    color: white;
+}
 .stack {
     position: absolute;
     top: 20%;
