@@ -36,7 +36,9 @@ export default class CardFan extends React.PureComponent<ICardFanProps,ICardFanS
         })
 
         return (
-            <div className="fan">{cardsInFan}</div>
+            <div className="player-fan">
+                {cardsInFan}
+            </div>
         )
     }
 }
