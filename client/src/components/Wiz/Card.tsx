@@ -29,7 +29,7 @@ export default class Card extends React.PureComponent<ICardProps,ICardState>{
         const red = isRed ? "red-card" : ""
         const rotate: CSSProperties = {transform: `rotate(${this.props.rotateDegree}deg)`}
         
-        const classes = `white card ${red}`
+        const classes = `white player-card ${red}`
         
         return (
             <p className={classes} style={rotate} onClick={this.handleClick}>{suit}<br/>{rank}</p>
