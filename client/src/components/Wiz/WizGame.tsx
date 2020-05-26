@@ -53,6 +53,18 @@ export default class WizGame extends React.PureComponent<IWizGameProps,IWizGameS
                 <CardBoard>
                     <CardStack cards={this.state.stackCards} />
                     <CardFan cards={this.state.handCards} handleCardClick={this.handleFanCardClick}/>
+                    <WizOtherPlayers players={[
+                        {name: "gever", cards: 3},
+                        {name: "logever", cards: 10},
+                        {name: "empty", cards: 15},
+                        {name: "haver", cards: 1},
+                        {name: "sababa", cards: 10},
+                        {name: "ah", cards: 17},
+                        {name: "savir", cards: 6},
+                        {name: "lo-savir", cards: 12},
+                        {name: "gavir", cards: 6},
+                        {name: "lo-gavir", cards: 12}
+                    ]}/>
                 </CardBoard>
                 <ScoreBoard>
                     <WizPlayerList players={this.props.players} />
