@@ -4,10 +4,11 @@ import LobbyStore from "./LobbyStore";
 
 export default class LobbyMaster {
     static async addPlayerToRoom(playerId: IPlayer["id"], roomId: IRoom["id"]): Promise<boolean> {
+        const MAX_PLAYERS = 10
         const room: IRoom = await LobbyStore.getRoom(roomId)
         const player: IPlayer = await LobbyStore.getPlayer(playerId)
 
-        if (room && player) {
+        if (room && player && room.players.length < MAX_PLAYERS) {
             player.rooms = player.rooms.concat(roomId)
             room.players = room.players.concat(playerId)
 
