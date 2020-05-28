@@ -7,6 +7,7 @@ import { ICardProps } from "./Card";
 import { Suit, Rank } from "../../models/Card";
 import WizPlayerList from "./PlayerList";
 import WizOtherPlayers from "./OtherPlayers";
+import { getPlayerId } from "../../utils/Cookie";
 
 interface IWizGameProps {
     players: Array<{id: string, name: string, score: number}>
@@ -48,23 +49,30 @@ export default class WizGame extends React.PureComponent<IWizGameProps,IWizGameS
             {suit: Suit.DIAMOND, rank: Rank.TWO}]})
     }
     render() {
+        //const otherPlayers = this.mockOtherPlayers()
+
+        // TODO: refactor
+        const playerToRemove = this.props.players.findIndex((player) => {
+            return player.id === getPlayerId()
+        })
+        
+        let allPlayers = this.props.players.slice()
+
+        if (playerToRemove !== -1) {
+            allPlayers.splice(playerToRemove, 1)
+        }
+
+        const otherPlayers = allPlayers.map((player) => 
+            {
+                return {name: player.name, cards: 1}
+            })
+
         return (
             <React.Fragment>
                 <CardBoard>
                     <CardStack cards={this.state.stackCards} />
                     <CardFan cards={this.state.handCards} handleCardClick={this.handleFanCardClick}/>
-                    <WizOtherPlayers players={[
-                        {name: "gever", cards: 3},
-                        {name: "logever", cards: 10},
-                        {name: "empty", cards: 15},
-                        {name: "haver", cards: 1},
-                        {name: "sababa", cards: 10},
-                        {name: "ah", cards: 17},
-                        {name: "savir", cards: 6},
-                        {name: "lo-savir", cards: 12},
-                        {name: "gavir", cards: 6},
-                        {name: "lo-gavir", cards: 12}
-                    ]}/>
+                    <WizOtherPlayers players={otherPlayers} />
                 </CardBoard>
                 <ScoreBoard>
                     <WizPlayerList players={this.props.players} />
@@ -72,4 +80,21 @@ export default class WizGame extends React.PureComponent<IWizGameProps,IWizGameS
             </React.Fragment>
         )
     }
+
+    mockOtherPlayers() {
+        const players = [
+            {name: "gever", cards: 3},
+            {name: "logever", cards: 10},
+            {name: "empty", cards: 15},
+            {name: "haver", cards: 1},
+            {name: "sababa", cards: 10},
+            {name: "ah", cards: 17},
+            {name: "savir", cards: 6},
+            {name: "lo-savir", cards: 12},
+            {name: "gavir", cards: 6},
+            {name: "lo-gavir", cards: 12}
+        ]
+        return players
+    }
+
 }
