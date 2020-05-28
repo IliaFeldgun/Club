@@ -5,13 +5,14 @@ import IWizRound from "./interfaces/WizRound";
 import WizStore from "./WizStore";
 import IWizGame from "./interfaces/WizGame";
 import LobbyMaster from "../engine/lobby/LobbyMaster";
+import WizInfo from "./WizInfo";
 
 export default class WizMaster {
     static playCard(round: IWizRound,
                     cardPlayed: ICard,
                     playerId: IPlayer["id"]): IWizRound
     {
-        if (WizMaster.canPlayCard(round, cardPlayed, playerId)) {
+        if (WizInfo.canPlayCard(round, cardPlayed, playerId)) {
             const cardsLeft = round.playerHands[playerId].filter(card =>
                 card.equals(cardPlayed))
 
@@ -23,22 +24,6 @@ export default class WizMaster {
         }
         else
             return null
-    }
-    private static canPlayCard(round: IWizRound,
-                       cardPlayed: ICard,
-                       playerId: IPlayer["id"]): boolean
-    {
-        const isCurrentPlayer = playerId === WizMaster.getCurrentPlayer(round)
-        const isCardInHand = -1 !== round.playerHands[playerId].findIndex(card =>
-            cardPlayed.equals(card))
-
-        const playerCards = round.playerHands[playerId]
-        const topCard = round.tableStack.top()
-        const requiredSuit = WizGameRules.getRequiredSuit(round.tableStack.cards)
-        const isMoveValid = WizGameRules.checkPlayValidity(cardPlayed,
-            playerCards, topCard, requiredSuit)
-
-        return isCurrentPlayer && isCardInHand && isMoveValid
     }
     private static advanceRound(round: IWizRound) {
 
@@ -52,43 +37,20 @@ export default class WizMaster {
             return false
         }
         else {
-            if (WizMaster.didAllPlayTurn(round)) {
+            if (WizInfo.didAllPlayTurn(round)) {
                 const requiredSuit =
                     WizGameRules.getRequiredSuit(round.tableStack.cards)
 
                 const winningCard =
                     WizGameRules.getWinningCard(round.tableStack.cards, requiredSuit)
 
-                const winningPlayer = WizMaster.getPlayerByCard(round, winningCard)
+                const winningPlayer = WizInfo.getPlayerByCard(round, winningCard)
                 // TODO: Refactor it somehow
                 round.playerResults[winningPlayer].successfulTakes++
 
                 return await WizStore.setWizRound(roundId, round)
             }
         }
-    }
-    private static addTakeToPlayerResult(round: IWizRound, winningPlayer: IPlayer["id"]) {
-        round.playerResults[winningPlayer].successfulTakes++
-
-    }
-    private static getPlayerByCard(round: IWizRound, card: ICard): IPlayer["id"] {
-        const cardIndex = round.tableStack.indexOf(card)
-        return round.playerOrder[cardIndex]
-    }
-    private static getCurrentPlayer(round: IWizRound) {
-        const currentPlayerNum = round.turnNumber % round.playerOrder.length
-
-        return round.playerOrder[currentPlayerNum - 1]
-    }
-    private static didAllPlayTurn(round: IWizRound): boolean {
-        return (round.turnNumber % round.playerOrder.length === 0)
-
-    }
-    private static areAllHandsEmpty(round: IWizRound): boolean {
-        const playerHands = Object.entries(round.playerHands)
-        const allEmpty = !playerHands.some(([player,cards]) => cards.length)
-
-        return allEmpty
     }
     static async dealCards(roundId: IWizRound["id"]): Promise<boolean> {
 
@@ -154,7 +116,7 @@ export default class WizMaster {
                 return []
             }
     }
-
+    
     static async isPlayerInGame(playerId: IPlayer["id"], gameId: IWizGame["id"]) : Promise<boolean> {
         const game = await WizStore.getWizGame(gameId)
 
@@ -164,13 +126,10 @@ export default class WizMaster {
     static async getPlayerHandSizes(gameId: IWizGame["id"]):
         Promise<{ [playerId: string]: number }> {
         const round = await WizMaster.getWizRoundByGame(gameId)
-        const playerHandSizes: {[playerId: string]: number} = {}
-        if (round && round.playerHands) {
-            Object.keys(round.playerHands).forEach((playerId) => {
-                playerHandSizes.playerId = round.playerHands[playerId].length
-            })
+        if (round) {
+            return WizInfo.getPlayerHandSizes(round)
         }
-
-        return playerHandSizes
+        else
+            return {}
     }
 }
