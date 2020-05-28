@@ -42,8 +42,8 @@ router.post('/wiz/:roomId', async ( req, res ) => {
 })
 router.get('/wiz/:gameId', async (req, res) => {
     const playerId = req.playerId
-    if (playerId) {
-        const gameId = req.params.gameId
+    const gameId = req.params.gameId
+    if (playerId && WizMaster.isPlayerInGame(playerId, gameId)) {
         const game = await WizStore.getWizGame(gameId)
         res.send({game})
     }
