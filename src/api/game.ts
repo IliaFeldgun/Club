@@ -1,10 +1,10 @@
 import express from "express"
 import IRoom from "../engine/lobby/interfaces/Room"
-import WizBuilder from "../wizard/WizBuilder"
-import WizMaster from "../wizard/WizMaster"
+import WizBuilder from "../wizard_game/WizBuilder"
+import WizMaster from "../wizard_game/WizMaster"
 import LobbyMaster from "../engine/lobby/LobbyMaster"
 import LobbyStore from "../engine/lobby/LobbyStore"
-import WizStore from "../wizard/WizStore"
+import WizStore from "../wizard_game/WizStore"
 
 const router = express.Router()
 
