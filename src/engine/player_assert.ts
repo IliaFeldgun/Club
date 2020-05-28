@@ -1,4 +1,4 @@
-import express, { Request, Response, NextFunction } from "express"
+import { Request, Response, NextFunction } from "express"
 
 export default function assertPlayer(req : Request, res: Response, next: NextFunction) {
     if (req.signedCookies.player_id) {
