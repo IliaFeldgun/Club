@@ -52,6 +52,9 @@ export default class WizMaster {
             }
         }
     }
+    static addTakeToPlayerResult(round: IWizRound, winningPlayer: IPlayer["id"]) {
+        round.playerResults[winningPlayer].successfulTakes++
+    }
     static async dealCards(roundId: IWizRound["id"]): Promise<boolean> {
 
         const round = await WizStore.getWizRound(roundId)

@@ -4,10 +4,6 @@ import ICard from "../card_engine/interfaces/Card"
 import WizGameRules from "./WizGameRules"
 
 export default class WizInfo {
-    static addTakeToPlayerResult(round: IWizRound, winningPlayer: IPlayer["id"]) {
-        round.playerResults[winningPlayer].successfulTakes++
-
-    }
     static getPlayerByCard(round: IWizRound, card: ICard): IPlayer["id"] {
         const cardIndex = round.tableStack.indexOf(card)
         return round.playerOrder[cardIndex]
