@@ -10,8 +10,10 @@ export default class WizOtherPlayer extends React.PureComponent<IWizOtherPlayerP
         return (
             <React.Fragment>
                 <div className={this.props.className} >
-                    <p className="other-player-name">{this.props.name}</p>
-                    <EmptyCardFan cards={this.props.cards} />
+                    <div className="other-player-name">{this.props.name}</div>
+                    <div>
+                        <EmptyCardFan cards={this.props.cards} />
+                    </div>
                 </div>
             </React.Fragment>
         )
