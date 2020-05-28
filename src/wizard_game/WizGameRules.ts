@@ -5,6 +5,7 @@ export default class WizGameRules {
     static TAKE_SCORE = 10
     static TAKE_LOSE_SCORE = 10
     static TOTAL_CARDS = 54
+    static MAX_PLAYERS = 10
 
     static getCardsPerPlayer(round: number) {
         return round
