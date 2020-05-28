@@ -13,17 +13,17 @@ interface IWizProps extends RouteComponentProps<IRouteParams>{
 interface IWizState {
     game: any
     players: Array<{id: string, name: string, score: number}>
+    playerHandSizes: { [playerId: string]: number }
 }
 export default class Wiz extends React.PureComponent<IWizProps,IWizState> {
     constructor(props: IWizProps) {
         super(props)
 
-        this.state = {game: {}, players: []}
+        this.state = {game: {}, players: [], playerHandSizes: {}}
     }
     componentDidMount() {
         WizApi.getGame(this.props.match.params.id).then((res) => {
             res.json().then((json) => {
-                console.log(json.game)
                 this.setState({game: json.game})
             })
         })
@@ -33,9 +33,16 @@ export default class Wiz extends React.PureComponent<IWizProps,IWizState> {
                 this.setState({players: json.players})
             })
         })
+
+        WizApi.getPlayerHandSizes(this.props.match.params.id).then((res) => {
+            res.json().then((json) => {
+                this.setState({playerHandSizes: json.playerHandSizes})
+            })
+        })
     }
     render() {
-        let toRender = <WizGame players={this.state.players}/>
+        let toRender = <WizGame players={this.state.players} 
+                                playerHandSizes={this.state.playerHandSizes}/>
         // TODO: Render error element
         // if (!this.state.game || !this.state.players)
             // toRender = <React.Fragment/>
