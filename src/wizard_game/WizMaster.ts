@@ -165,9 +165,11 @@ export default class WizMaster {
         Promise<{ [playerId: string]: number }> {
         const round = await WizMaster.getWizRoundByGame(gameId)
         const playerHandSizes: {[playerId: string]: number} = {}
-        Object.keys(round.playerHands).forEach((playerId) => {
-            playerHandSizes.playerId = round.playerHands[playerId].length
-        })
+        if (round.playerHands) {
+            Object.keys(round.playerHands).forEach((playerId) => {
+                playerHandSizes.playerId = round.playerHands[playerId].length
+            })
+        }
 
         return playerHandSizes
     }
