@@ -40,6 +40,17 @@ export default class LobbyMaster {
             return false
         }
     }
+    static async isPlayerInRoom(playerId: IPlayer["id"], roomId: IRoom["id"]) :
+        Promise<boolean> {
+        const [roomPlayerIds, playerRoomIds] = await Promise.all([
+            LobbyMaster.getRoomPlayerIds(roomId),
+            LobbyMaster.getPlayerRoomIds(playerId)
+        ])
+        const playerInRoom = roomPlayerIds.indexOf(playerId) !== -1
+        const roomInPlayer = playerRoomIds.indexOf(roomId) !== -1
+        return playerInRoom && roomInPlayer
+
+    }
     static async getRoomPlayerIds(roomId: IRoom["id"]): Promise<IPlayer["id"][]> {
         const room: IRoom = await LobbyStore.getRoom(roomId)
         if (room)
@@ -86,7 +97,7 @@ export default class LobbyMaster {
             return false
         }
     }
-    static async getPlayerRooms(playerId: IPlayer["id"]): Promise<IRoom["id"][]> {
+    static async getPlayerRoomIds(playerId: IPlayer["id"]): Promise<IRoom["id"][]> {
         const player: IPlayer = await LobbyStore.getPlayer(playerId)
         if (player) {
             return player.rooms
