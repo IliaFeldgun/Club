@@ -160,4 +160,15 @@ export default class WizMaster {
 
         return game && LobbyMaster.isPlayerInRoom(playerId, game.roomId)
     }
+
+    static async getPlayerHandSizes(gameId: IWizGame["id"]):
+        Promise<{ [playerId: string]: number }> {
+        const round = await WizMaster.getWizRoundByGame(gameId)
+        const playerHandSizes: {[playerId: string]: number} = {}
+        Object.keys(round.playerHands).forEach((playerId) => {
+            playerHandSizes.playerId = round.playerHands[playerId].length
+        })
+
+        return playerHandSizes
+    }
 }
