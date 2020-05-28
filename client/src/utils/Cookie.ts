@@ -4,8 +4,7 @@ const PLAYER_NAME_KEY = "player_name"
 const PLAYER_ID_KEY = "player_id"
 
 function getSignedCookie(key: string): string {
-    const cookies = new Cookies()
-    const signedCookie = cookies.get(key)
+    const signedCookie = getCookie(key)
     if (signedCookie) {
         return signedCookie.split(".")[0].replace("s:","")
     }
@@ -16,9 +15,13 @@ function getSignedCookie(key: string): string {
 
 function getCookie(key: string): string {
     const cookies = new Cookies()
-    return cookies.get("key")
+    return cookies.get(key)
 }
 
 export function getPlayerName(): string {
     return getSignedCookie(PLAYER_NAME_KEY)
+}
+
+export function getPlayerId(): string {
+    return getSignedCookie(PLAYER_ID_KEY)
 }
