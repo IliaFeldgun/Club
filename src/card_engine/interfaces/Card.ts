@@ -1,4 +1,4 @@
-import { AceHighRank as Rank} from "./Rank"
+import { AceHighRank as Rank} from "../enums/Rank"
 
 export default interface ICard {
     suit: Suit
@@ -22,4 +22,4 @@ export enum Color {
     BLACK
 }
 
-export { AceHighRank as Rank } from "./Rank"
+export { AceHighRank as Rank } from "../enums/Rank"
