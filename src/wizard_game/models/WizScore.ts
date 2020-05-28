@@ -1,4 +1,4 @@
-import WizGameRules from "./WizGameRules"
+import WizGameRules from "../WizGameRules"
 import IWizBet from "../interfaces/WizBet"
 import IWizPlayerRoundResult from "../interfaces/WizPlayerRoundResult"
 import IWizScore from "../interfaces/WizScore"

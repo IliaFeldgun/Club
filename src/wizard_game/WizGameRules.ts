@@ -1,4 +1,4 @@
-import ICard, { Suit, Rank } from "../../card_engine/interfaces/Card"
+import ICard, { Suit, Rank } from "../card_engine/interfaces/Card"
 
 export default class WizGameRules {
     static WIN_SCORE = 20

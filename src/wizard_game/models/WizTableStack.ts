@@ -1,4 +1,4 @@
-import WizGameRules from "./WizGameRules"
+import WizGameRules from "../WizGameRules"
 import Stack from "../../card_engine/models/Stack"
 import { Suit } from "../../card_engine/interfaces/Card"
 import IWizCard from "../interfaces/WizCard"

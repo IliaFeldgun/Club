@@ -1,6 +1,6 @@
 import IPlayer from "../engine/lobby/interfaces/Player";
 import ICard from "../card_engine/interfaces/Card";
-import WizGameRules from "./models/WizGameRules";
+import WizGameRules from "./WizGameRules";
 import IWizRound from "./interfaces/WizRound";
 import WizStore from "./WizStore";
 import IWizGame from "./interfaces/WizGame";
