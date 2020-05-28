@@ -62,12 +62,12 @@ router.get('/wiz/:gameId/players', async (req,res) => {
         res.status(403).send("Player needs be set")
     }
 })
-router.get('/wiz/:gameId/round', async (req, res) => {
+router.get('/wiz/:gameId/handsizes', async (req, res) => {
     const playerId = req.playerId
     if (playerId) {
         const gameId = req.params.gameId
-        const round = await WizMaster.getWizRoundByGame(gameId)
-        res.send({round})
+        const playerHandSizes = await WizMaster.getPlayerHandSizes(gameId)
+        res.send({playerHandSizes})
     }
     else {
         res.status(403).send("Player needs be set")
