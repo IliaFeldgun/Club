@@ -10,6 +10,7 @@ import WizRound from "./models/WizRound"
 import { generateId } from "../engine/id_generator"
 import WizStore from "./WizStore"
 import WizPlayerRoundResult from "./models/WizPlayerRoundResult"
+import { PossibleMoves } from "./enums/PossibleMoves"
 
 export default class WizBuilder {
 
@@ -29,7 +30,6 @@ export default class WizBuilder {
                          players: IPlayer["id"][],
                          firstPlayer: IPlayer["id"]): Promise<IWizRound["id"]>
     {
-
         const roundId = generateId(gameId + roundNumber,
                                    process.env.UUID_ROUND_NAMESPACE)
 
@@ -37,7 +37,7 @@ export default class WizBuilder {
         const roundTableStack = new Stack([])
 
         const round = new WizRound(roundId, gameId, roundNumber, roundDeck, roundTableStack)
-
+        round.nextMove = PossibleMoves.PLACE_BET
         round.playerOrder = WizBuilder.generatePlayerOrder(firstPlayer, players)
 
         players.forEach((player) => {
