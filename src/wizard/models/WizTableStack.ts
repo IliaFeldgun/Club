@@ -1,6 +1,6 @@
 import WizGameRules from "./WizGameRules"
-import Stack from "../../card_logic/models/Stack"
-import { Suit } from "../../card_logic/interfaces/Card"
+import Stack from "../../card_engine/models/Stack"
+import { Suit } from "../../card_engine/interfaces/Card"
 import IWizCard from "../interfaces/WizCard"
 import IWizTableStack from "../interfaces/WizTableStack"
 import IPlayer from "../../engine/lobby/interfaces/Player"

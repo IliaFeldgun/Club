@@ -1,10 +1,10 @@
-import IStack from "../../card_logic/interfaces/Stack";
+import IStack from "../../card_engine/interfaces/Stack";
 import IWizBet from "./WizBet";
-import IDeck from "../../card_logic/interfaces/Deck";
+import IDeck from "../../card_engine/interfaces/Deck";
 import IWizGame from "./WizGame";
 import IPlayer from "../../engine/lobby/interfaces/Player";
 import IWizPlayerRoundResult from "./WizPlayerRoundResult";
-import ICard from "../../card_logic/interfaces/Card";
+import ICard from "../../card_engine/interfaces/Card";
 
 export default interface IWizRound {
     id: string

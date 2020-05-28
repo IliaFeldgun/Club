@@ -1,4 +1,4 @@
-import IStack from "../../card_logic/interfaces/Stack";
+import IStack from "../../card_engine/interfaces/Stack";
 import IWizScore from "./WizScore";
 import IWizPlayerRoundResult from "./WizPlayerRoundResult";
 import IWizBet from "./WizBet";
