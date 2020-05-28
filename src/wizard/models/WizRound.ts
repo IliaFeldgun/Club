@@ -1,11 +1,11 @@
 import IWizRound from "../interfaces/WizRound";
 import IWizGame from "../interfaces/WizGame";
-import IDeck from "../../card_logic/models/Deck";
-import IStack from "../../card_logic/models/Stack";
+import IDeck from "../../card_logic/interfaces/Deck";
+import IStack from "../../card_logic/interfaces/Stack";
 import IWizBet from "../interfaces/WizBet";
 import IPlayer from "../../engine/lobby/interfaces/Player";
 import IWizPlayerRoundResult from "../interfaces/WizPlayerRoundResult";
-import ICard from "../../card_logic/models/Card";
+import ICard from "../../card_logic/interfaces/Card";
 
 export default class WizRound implements IWizRound {
     id: string
