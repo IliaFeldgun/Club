@@ -1,5 +1,5 @@
 import express from "express"
-import IRoom from "../engine/lobby/models/Room"
+import IRoom from "../engine/lobby/interfaces/Room"
 import WizBuilder from "../wiz_logic/WizBuilder"
 import WizMaster from "../wiz_logic/WizMaster"
 import LobbyMaster from "../engine/lobby/LobbyMaster"

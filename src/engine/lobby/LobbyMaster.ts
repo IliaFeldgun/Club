@@ -1,5 +1,5 @@
-import IPlayer from "./models/Player";
-import IRoom from "./models/Room";
+import IPlayer from "./interfaces/Player";
+import IRoom from "./interfaces/Room";
 import LobbyStore from "./LobbyStore";
 
 export default class LobbyMaster {

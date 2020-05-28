@@ -1,8 +1,8 @@
 import { generateId } from "../id_generator";
-import IPlayer from "./models/Player";
-import Player from "./logic/Player";
-import IRoom from "./models/Room";
-import Room from "./logic/Room";
+import IPlayer from "./interfaces/Player";
+import Player from "./models/Player";
+import IRoom from "./interfaces/Room";
+import Room from "./models/Room";
 import LobbyStore from "./LobbyStore";
 
 export default class LobbyBuilder {

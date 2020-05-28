@@ -3,7 +3,7 @@ import Stack from "../../card_logic/logic/Stack"
 import { Suit } from "../../card_logic/models/Card"
 import IWizCard from "../models/WizCard"
 import IWizTableStack from "../models/WizTableStack"
-import IPlayer from "../../engine/lobby/models/Player"
+import IPlayer from "../../engine/lobby/interfaces/Player"
 
 export class WizTableStack extends Stack implements IWizTableStack {
     suitRequired?: Suit

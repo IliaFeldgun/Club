@@ -1,6 +1,6 @@
 import store from "../key_value_state_store"
-import IPlayer from "./models/Player"
-import IRoom from "./models/Room"
+import IPlayer from "./interfaces/Player"
+import IRoom from "./interfaces/Room"
 
 export default class LobbyStore {
 

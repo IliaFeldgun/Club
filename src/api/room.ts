@@ -1,5 +1,5 @@
 import express from "express"
-import IRoom from "../engine/lobby/models/Room";
+import IRoom from "../engine/lobby/interfaces/Room";
 import LobbyBuilder from "../engine/lobby/LobbyBuilder";
 import LobbyMaster from "../engine/lobby/LobbyMaster";
 import LobbyStore from "../engine/lobby/LobbyStore";

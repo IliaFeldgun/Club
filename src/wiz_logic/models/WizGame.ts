@@ -1,6 +1,6 @@
 import IWizScore from "./WizScore";
 import IWizRound from "./WizRound";
-import IRoom from "../../engine/lobby/models/Room";
+import IRoom from "../../engine/lobby/interfaces/Room";
 
 export default interface IWizGame {
     id: string

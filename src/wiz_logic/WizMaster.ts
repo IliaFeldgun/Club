@@ -1,4 +1,4 @@
-import IPlayer from "../engine/lobby/models/Player";
+import IPlayer from "../engine/lobby/interfaces/Player";
 import ICard from "../card_logic/models/Card";
 import WizGameRules from "./logic/WizGameRules";
 import IWizRound from "./models/WizRound";
