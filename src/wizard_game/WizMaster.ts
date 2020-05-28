@@ -8,22 +8,25 @@ import LobbyMaster from "../engine/lobby/LobbyMaster";
 import WizInfo from "./WizInfo";
 
 export default class WizMaster {
-    static playCard(round: IWizRound,
+    static async playCard(roundId: IWizRound["id"],
                     cardPlayed: ICard,
-                    playerId: IPlayer["id"]): IWizRound
+                    playerId: IPlayer["id"]): Promise<boolean>
     {
-        if (WizInfo.canPlayCard(round, cardPlayed, playerId)) {
+        const round = await WizStore.getWizRound(roundId)
+
+        if (round && WizInfo.canPlayCard(round, cardPlayed, playerId)) {
             const cardsLeft = round.playerHands[playerId].filter(card =>
-                card.equals(cardPlayed))
+                card.equals(cardPlayed)
+            )
 
             round.playerHands[playerId] = cardsLeft
-
-            WizMaster.advanceRound(round)
+            
+            // WizMaster.advanceRound(round)
             // if (WizMaster.areAllHandsEmpty(round))
-            return round
+            return await WizStore.setWizRound(roundId, round)
         }
         else
-            return null
+            return false
     }
     private static advanceRound(round: IWizRound) {
 
