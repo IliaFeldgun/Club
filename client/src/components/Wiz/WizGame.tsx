@@ -11,6 +11,7 @@ import { getPlayerId } from "../../utils/Cookie";
 
 interface IWizGameProps {
     players: Array<{id: string, name: string, score: number}>
+    playerHandSizes: { [playerId: string]: number }
     handleFanCardClick?: (event: React.MouseEvent) => void
 }
 interface IWizGameState {
@@ -37,7 +38,6 @@ export default class WizGame extends React.PureComponent<IWizGameProps,IWizGameS
         if(this.props.handleFanCardClick)
             this.props.handleFanCardClick(event)
     }
-
     componentDidMount() {
         // fetch get table stack cards here
         // fetch get player cards here
@@ -64,7 +64,7 @@ export default class WizGame extends React.PureComponent<IWizGameProps,IWizGameS
 
         const otherPlayers = allPlayers.map((player) => 
             {
-                return {name: player.name, cards: 1}
+                return {name: player.name, cards: this.props.playerHandSizes[player.id]}
             })
 
         return (
