@@ -1,6 +1,6 @@
 import IWizGame from "../models/WizGame"
 import IWizScore from "../models/WizScore"
-import IRoom from "../../engine/lobby_logic/models/Room"
+import IRoom from "../../engine/lobby/models/Room"
 import IWizRound from "../models/WizRound"
 
 export default class WizGame implements IWizGame {

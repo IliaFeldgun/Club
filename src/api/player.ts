@@ -1,6 +1,6 @@
 import express from "express"
-import LobbyBuilder from "../engine/lobby_logic/LobbyBuilder"
-import LobbyStore from "../engine/lobby_logic/LobbyStore"
+import LobbyBuilder from "../engine/lobby/LobbyBuilder"
+import LobbyStore from "../engine/lobby/LobbyStore"
 
 const router = express.Router()
 

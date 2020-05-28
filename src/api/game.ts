@@ -1,9 +1,9 @@
 import express from "express"
-import IRoom from "../engine/lobby_logic/models/Room"
+import IRoom from "../engine/lobby/models/Room"
 import WizBuilder from "../wiz_logic/WizBuilder"
 import WizMaster from "../wiz_logic/WizMaster"
-import LobbyMaster from "../engine/lobby_logic/LobbyMaster"
-import LobbyStore from "../engine/lobby_logic/LobbyStore"
+import LobbyMaster from "../engine/lobby/LobbyMaster"
+import LobbyStore from "../engine/lobby/LobbyStore"
 import WizStore from "../wiz_logic/WizStore"
 
 const router = express.Router()

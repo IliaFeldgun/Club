@@ -2,7 +2,7 @@ import IStack from "../../card_logic/models/Stack";
 import IWizBet from "./WizBet";
 import IDeck from "../../card_logic/models/Deck";
 import IWizGame from "./WizGame";
-import IPlayer from "../../engine/lobby_logic/models/Player";
+import IPlayer from "../../engine/lobby/models/Player";
 import IWizPlayerRoundResult from "./WizPlayerRoundResult";
 import ICard from "../../card_logic/models/Card";
 
