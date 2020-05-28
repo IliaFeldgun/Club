@@ -35,9 +35,13 @@ export default class Wiz extends React.PureComponent<IWizProps,IWizState> {
         })
     }
     render() {
+        let toRender = <WizGame players={this.state.players}/>
+        // TODO: Render error element
+        // if (!this.state.game || !this.state.players)
+            // toRender = <React.Fragment/>
         return (
             <React.Fragment>
-                <WizGame players={this.state.players}/>
+                {toRender}
             </React.Fragment>
         )
     }
