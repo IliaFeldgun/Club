@@ -1,6 +1,6 @@
 import store from "../engine/key_value_state_store"
-import IWizGame from "./models/WizGame"
-import IWizRound from "./models/WizRound"
+import IWizGame from "./interfaces/WizGame"
+import IWizRound from "./interfaces/WizRound"
 
 export default class WizStore {
     static async getWizGame(gameId: IWizGame["id"]): Promise<IWizGame> {

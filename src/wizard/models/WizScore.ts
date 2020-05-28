@@ -1,8 +1,16 @@
-import IWizBet from "./WizBet";
-import IWizPlayerRoundResult from "./WizPlayerRoundResult";
+import WizGameRules from "./WizGameRules"
+import IWizBet from "../interfaces/WizBet"
+import IWizPlayerRoundResult from "../interfaces/WizPlayerRoundResult"
+import IWizScore from "../interfaces/WizScore"
 
-export default interface IWizScore {
+export default class WizScore implements IWizScore {
     total: number
 
-    calculateScore: (bet: IWizBet, playerResult: IWizPlayerRoundResult) => void
+    constructor() {
+        this.total = 0
+    }
+
+    calculateScore(bet: IWizBet, playerResult: IWizPlayerRoundResult) {
+        WizGameRules.calculateScore(this.total, bet.takes, playerResult.successfulTakes)
+    }
 }

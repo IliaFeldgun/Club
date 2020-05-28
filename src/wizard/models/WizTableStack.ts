@@ -1,11 +1,32 @@
-import { Suit } from "../../card_logic/models/Card";
-import IStack from "../../card_logic/models/Stack";
-import IWizCard from "./WizCard";
-import IPlayer from "../../engine/lobby/interfaces/Player";
+import WizGameRules from "./WizGameRules"
+import Stack from "../../card_logic/logic/Stack"
+import { Suit } from "../../card_logic/models/Card"
+import IWizCard from "../interfaces/WizCard"
+import IWizTableStack from "../interfaces/WizTableStack"
+import IPlayer from "../../engine/lobby/interfaces/Player"
 
-export default interface IWizTableStack extends IStack {
+export class WizTableStack extends Stack implements IWizTableStack {
     suitRequired?: Suit
     cards: IWizCard[]
-    playCard: (card: IWizCard) => boolean
-    getWinningPlayer: () => IPlayer
+    constructor() {
+        super([])
+    }
+
+    getWinningPlayer() : IPlayer {
+        return (WizGameRules.getWinningCard(this.cards, this.suitRequired) as IWizCard).ownerPlayer
+    }
+
+    playCard(card: IWizCard) : boolean {
+
+        const isValid = WizGameRules.checkPlayValidity(card, card.ownerPlayer.stack.cards,
+                                          this.top(), this.suitRequired)
+
+        if(isValid) {
+            this.push(card)
+            if(!this.suitRequired)
+                this.suitRequired = card.suit
+        }
+
+        return isValid
+    }
 }

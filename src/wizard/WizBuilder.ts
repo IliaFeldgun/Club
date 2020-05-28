@@ -1,15 +1,15 @@
-import IWizGame from "./models/WizGame"
+import IWizGame from "./interfaces/WizGame"
 import IRoom from "../engine/lobby/interfaces/Room"
 import IPlayer from "../engine/lobby/interfaces/Player"
-import WizGame from "./logic/WizGame"
-import WizScore from "./logic/WizScore"
-import IWizRound from "./models/WizRound"
+import WizGame from "./models/WizGame"
+import WizScore from "./models/WizScore"
+import IWizRound from "./interfaces/WizRound"
 import Deck from "../card_logic/logic/Deck"
 import Stack from "../card_logic/logic/Stack"
-import WizRound from "./logic/WizRound"
+import WizRound from "./models/WizRound"
 import { generateId } from "../engine/id_generator"
 import WizStore from "./WizStore"
-import WizPlayerRoundResult from "./logic/WizPlayerRoundResult"
+import WizPlayerRoundResult from "./models/WizPlayerRoundResult"
 
 export default class WizBuilder {
 

@@ -1,9 +1,9 @@
 import IPlayer from "../engine/lobby/interfaces/Player";
 import ICard from "../card_logic/models/Card";
-import WizGameRules from "./logic/WizGameRules";
-import IWizRound from "./models/WizRound";
+import WizGameRules from "./models/WizGameRules";
+import IWizRound from "./interfaces/WizRound";
 import WizStore from "./WizStore";
-import IWizGame from "./models/WizGame";
+import IWizGame from "./interfaces/WizGame";
 import LobbyMaster from "../engine/lobby/LobbyMaster";
 
 export default class WizMaster {
