@@ -1,10 +1,10 @@
-import IPlayer from "../engine/lobby_logic/models/Player";
+import IPlayer from "../engine/lobby/models/Player";
 import ICard from "../card_logic/models/Card";
 import WizGameRules from "./logic/WizGameRules";
 import IWizRound from "./models/WizRound";
 import WizStore from "./WizStore";
 import IWizGame from "./models/WizGame";
-import LobbyMaster from "../engine/lobby_logic/LobbyMaster";
+import LobbyMaster from "../engine/lobby/LobbyMaster";
 
 export default class WizMaster {
     static playCard(round: IWizRound,
@@ -153,5 +153,11 @@ export default class WizMaster {
             else {
                 return []
             }
-        }
+    }
+
+    static async isPlayerInGame(playerId: IPlayer["id"], gameId: IWizGame["id"]) : Promise<boolean> {
+        const game = await WizStore.getWizGame(gameId)
+
+        return game && LobbyMaster.isPlayerInRoom(playerId, game.roomId)
+    }
 }
