@@ -42,7 +42,8 @@ export default class WizInfo {
     {
         const isCurrentPlayer = playerId === WizInfo.getCurrentPlayer(round)
         const isCardInHand = -1 !== round.playerHands[playerId].findIndex(card =>
-            cardPlayed.equals(card))
+            cardPlayed.equals(card)
+        )
 
         const playerCards = round.playerHands[playerId]
         const topCard = round.tableStack.top()
