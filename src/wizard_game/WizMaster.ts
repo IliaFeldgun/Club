@@ -23,12 +23,20 @@ export default class WizMaster {
 
             round.playerHands[playerId] = cardsLeft
             Stack.push(round.tableStack, cardPlayed)
+            WizMaster.nextTurn(round)
+            WizMaster.nextPlayer(round)
             // WizMaster.advanceRound(round)
             // if (WizMaster.areAllHandsEmpty(round))
             return await WizStore.setWizRound(round.id, round)
         }
         else
             return false
+    }
+    private static nextTurn(round: IWizRound) {
+        round.turnNumber++
+    }
+    private static nextPlayer(round: IWizRound) {
+        round.playerOrder.push(round.playerOrder.shift())
     }
     private static advanceRound(round: IWizRound) {
 
