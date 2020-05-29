@@ -4,14 +4,16 @@ import CardFan from "./CardFan";
 import ScoreBoard from "./ScoreBoard";
 import CardStack from "./CardStack";
 import { ICardProps } from "./Card";
-import { Suit, Rank } from "../../interfaces/Card";
+import ICard, { Suit, Rank } from "../../interfaces/Card";
 import WizPlayerList from "./PlayerList";
 import WizOtherPlayers from "./OtherPlayers";
 import { getPlayerId } from "../../utils/Cookie";
 
 interface IWizGameProps {
     players: Array<{id: string, name: string, score: number}>
+    playerHand: ICard[]
     playerHandSizes: { [playerId: string]: number }
+    tableStack: ICard[]
     handleFanCardClick?: (event: React.MouseEvent) => void
 }
 interface IWizGameState {
@@ -41,12 +43,13 @@ export default class WizGame extends React.PureComponent<IWizGameProps,IWizGameS
     componentDidMount() {
         // fetch get table stack cards here
         // fetch get player cards here
-        this.setState({handCards: [
-            {suit: Suit.SPADE, rank: Rank.QUEEN},
-            {suit: Suit.HEART, rank: Rank.SEVEN},
-            {suit: Suit.CLUB, rank: Rank.JACK},
-            {suit: Suit.DIAMOND, rank: Rank.ACE},
-            {suit: Suit.DIAMOND, rank: Rank.TWO}]})
+        // this.setState({handCards: [
+            // {suit: Suit.SPADE, rank: Rank.QUEEN},
+            // {suit: Suit.HEART, rank: Rank.SEVEN},
+            // {suit: Suit.CLUB, rank: Rank.JACK},
+            // {suit: Suit.DIAMOND, rank: Rank.ACE},
+            // {suit: Suit.DIAMOND, rank: Rank.TWO}]})
+            
     }
     render() {
         //const otherPlayers = this.mockOtherPlayers()
@@ -70,8 +73,8 @@ export default class WizGame extends React.PureComponent<IWizGameProps,IWizGameS
         return (
             <React.Fragment>
                 <CardBoard>
-                    <CardStack cards={this.state.stackCards} />
-                    <CardFan cards={this.state.handCards} handleCardClick={this.handleFanCardClick}/>
+                    <CardStack cards={this.props.tableStack} />
+                    <CardFan cards={this.props.playerHand} handleCardClick={this.handleFanCardClick}/>
                     <WizOtherPlayers players={otherPlayers} />
                 </CardBoard>
                 <ScoreBoard>
