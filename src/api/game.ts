@@ -107,15 +107,17 @@ router.post('/wiz/:gameId/play', async ( req, res ) => {
     const playerId = req.playerId
     if (playerId) {
         const gameId = req.params.gameId
-        const card = req.body.card
+        const card = req.body
         const isCardPlayed = await WizMaster.playCard(gameId, card, playerId)
         if (isCardPlayed)
-            res.send()
+            res.send({isCardPlayed})
         else {
             res.status(500).send()
         }
     }
-    res.send("Player made his move")
+    else {
+        res.status(403).send("Player not set")
+    }
 })
 
 export default router
