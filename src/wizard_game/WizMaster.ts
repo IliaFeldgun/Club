@@ -7,6 +7,7 @@ import IWizGame from "./interfaces/WizGame";
 import LobbyMaster from "../engine/lobby/LobbyMaster";
 import WizInfo from "./WizInfo";
 import Card from "../card_engine/models/Card";
+import Stack from "../card_engine/models/Stack";
 
 export default class WizMaster {
     static async playCard(gameId: IWizRound["id"],
@@ -17,11 +18,11 @@ export default class WizMaster {
 
         if (round && WizInfo.canPlayCard(round, cardPlayed, playerId)) {
             const cardsLeft = round.playerHands[playerId].filter(card =>
-                Card.equals(cardPlayed, card)
+                !Card.equals(cardPlayed, card)
             )
 
             round.playerHands[playerId] = cardsLeft
-
+            Stack.push(round.tableStack, cardPlayed)
             // WizMaster.advanceRound(round)
             // if (WizMaster.areAllHandsEmpty(round))
             return await WizStore.setWizRound(round.id, round)
