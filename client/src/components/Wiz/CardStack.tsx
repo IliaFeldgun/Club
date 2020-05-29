@@ -1,9 +1,10 @@
 import React from "react";
 import PlaceholderCard from "./PlaceholderCard";
 import Card, { ICardProps } from "./Card";
+import ICard from "../../interfaces/Card";
 
 interface ICardStackProps {
-    cards: Array<{suit: ICardProps["suit"], rank: ICardProps["rank"]}>
+    cards: ICard[]
     handleCardClick?: (event: React.MouseEvent, 
                        suit: ICardProps["suit"], 
                        rank: ICardProps["rank"]) => void
@@ -22,13 +23,16 @@ export default class CardStack extends React.PureComponent<ICardStackProps,ICard
             this.props.handleCardClick(event, suit, rank)
     }
     render() {
-        const cardsInStack = this.props.cards.map(card => { 
+        let cardsInStack: JSX.Element[] = []
+        if (!this.props.cards) {
+            cardsInStack.push(<PlaceholderCard/>)
+        }
+        else {
+            this.props.cards.map((card) => { 
             return <Card key={`${card.suit},${card.rank}`} 
                          suit={card.suit} rank={card.rank} 
                          rotateDegree={0} 
                          handleClick={this.handleCardClick}/>})
-        if(cardsInStack.length === 0) {
-            cardsInStack.push(<PlaceholderCard/>)
         }
         const classes = "stack"
         return (
