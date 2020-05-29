@@ -21,7 +21,10 @@ router.post('/wiz/:roomId', async ( req, res ) => {
                                                            1,
                                                            room.players,
                                                            room.players[0])
-            if (gameId && isRoomSet && roundId && WizMaster.dealCards(roundId))
+            const isGameSet = await WizMaster.setGameRound(gameId, roundId)
+            const areCardsDealt  = await WizMaster.dealCards(roundId)
+
+            if (gameId && isRoomSet && roundId && isGameSet && areCardsDealt)
             {
                 res.send({gameId})
             }
