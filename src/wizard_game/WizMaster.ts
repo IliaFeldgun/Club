@@ -8,11 +8,11 @@ import LobbyMaster from "../engine/lobby/LobbyMaster";
 import WizInfo from "./WizInfo";
 
 export default class WizMaster {
-    static async playCard(roundId: IWizRound["id"],
+    static async playCard(gameId: IWizRound["id"],
                     cardPlayed: ICard,
                     playerId: IPlayer["id"]): Promise<boolean>
     {
-        const round = await WizStore.getWizRound(roundId)
+        const round = await WizMaster.getGameRound(gameId)
 
         if (round && WizInfo.canPlayCard(round, cardPlayed, playerId)) {
             const cardsLeft = round.playerHands[playerId].filter(card =>
@@ -23,7 +23,7 @@ export default class WizMaster {
 
             // WizMaster.advanceRound(round)
             // if (WizMaster.areAllHandsEmpty(round))
-            return await WizStore.setWizRound(roundId, round)
+            return await WizStore.setWizRound(round.id, round)
         }
         else
             return false
@@ -166,6 +166,15 @@ export default class WizMaster {
         const round = await WizMaster.getGameRound(gameId)
         if (round) {
             return WizInfo.getPlayerHand(round, playerId)
+        }
+        else {
+            return []
+        }
+    }
+    static async getTableStack(gameId: IWizGame["id"]): Promise<ICard[]> {
+        const round = await WizMaster.getGameRound(gameId)
+        if (round) {
+            return WizInfo.getTableStack(round)
         }
         else {
             return []
