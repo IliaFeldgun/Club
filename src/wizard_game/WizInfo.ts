@@ -30,7 +30,7 @@ export default class WizInfo {
 
         if (round && round.playerHands) {
             Object.keys(round.playerHands).forEach((playerId) => {
-                playerHandSizes.playerId = round.playerHands[playerId].length
+                playerHandSizes[playerId] = round.playerHands[playerId].length
             })
         }
 
