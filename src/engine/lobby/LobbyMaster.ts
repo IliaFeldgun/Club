@@ -6,7 +6,7 @@ export default class LobbyMaster {
     static async addPlayerToRoom(playerId: IPlayer["id"], roomId: IRoom["id"]): Promise<boolean> {
         const MAX_PLAYERS = 10
         const room: IRoom = await LobbyStore.getRoom(roomId)
-        
+
         if (LobbyMaster.isGameInProgress(room)) {
             return false
         }
@@ -29,7 +29,7 @@ export default class LobbyMaster {
     }
     static async removePlayerFromRoom(playerId: IPlayer["id"], roomId: IRoom["id"]): Promise<boolean> {
         const room: IRoom = await LobbyStore.getRoom(roomId)
-        
+
         if (LobbyMaster.isGameInProgress(room)) {
             return false
         }
