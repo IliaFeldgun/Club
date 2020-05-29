@@ -76,6 +76,17 @@ router.get('/wiz/:gameId/handsizes', async (req, res) => {
         res.status(403).send("Player needs be set")
     }
 })
+router.get('/wiz/:gameId/hand', async (req,res) => {
+    const playerId = req.playerId
+    if (playerId) {
+        const gameId = req.params.gameId
+        const playerHand = await WizMaster.getPlayerHand(gameId, playerId)
+        res.send({playerHand})
+    }
+    else {
+        res.status(403).send("Player needs to be set")
+    }
+})
 
 router.post('/wiz/bet/:bet', (req, res) => {
     res.send("Bet submitted")

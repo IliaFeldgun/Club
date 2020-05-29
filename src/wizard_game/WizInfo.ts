@@ -53,4 +53,7 @@ export default class WizInfo {
 
         return isCurrentPlayer && isCardInHand && isMoveValid
     }
+    static getPlayerHand(round: IWizRound, playerId: IPlayer["id"]): ICard[] {
+        return round.playerHands[playerId]
+    }
 }

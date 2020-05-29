@@ -153,4 +153,22 @@ export default class WizMaster {
             return false
         }
     }
+    static async getGameRound(gameId: IWizGame["id"]): Promise<IWizRound> {
+        const game = await WizStore.getWizGame(gameId)
+        if (game) {
+            return WizStore.getWizRound(game.currentRoundId)
+        }
+        else {
+            return undefined
+        }
+    }
+    static async getPlayerHand(gameId: IWizGame["id"], playerId: IPlayer["id"]): Promise<ICard[]> {
+        const round = await WizMaster.getGameRound(gameId)
+        if (round) {
+            return WizInfo.getPlayerHand(round, playerId)
+        }
+        else {
+            return []
+        }
+    }
 }
