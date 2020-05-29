@@ -13,3 +13,9 @@ More games
 
 ### Database
 Persistent data, such as players and rooms need to be managed in a database, not in Redis
+
+### Normalize errors
+Create error handling with standartized errors
+
+### Log everything
+Logging isn't implemented
