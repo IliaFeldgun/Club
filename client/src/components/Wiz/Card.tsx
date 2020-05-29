@@ -27,12 +27,15 @@ export default class Card extends React.PureComponent<ICardProps,ICardState>{
         
         const isRed = this.isRed()
         const red = isRed ? "red-card" : ""
-        const rotate: CSSProperties = {transform: `rotate(${this.props.rotateDegree}deg)`}
+        let rotate: CSSProperties = {}
+        if (this.props.rotateDegree) {
+            rotate = {transform: `rotate(${this.props.rotateDegree}deg)`}
+        }
         
         const classes = `white player-card ${red}`
         
         return (
-            <p className={classes} style={rotate} onClick={this.handleClick}>{suit}<br/>{rank}</p>
+            <span className={classes} style={rotate} onClick={this.handleClick}>{suit}<br/>{rank}</span>
         )
     }
     isRed() : boolean {
