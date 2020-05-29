@@ -14,7 +14,7 @@ interface IWizGameProps {
     playerHand: ICard[]
     playerHandSizes: { [playerId: string]: number }
     tableStack: ICard[]
-    handleFanCardClick?: (event: React.MouseEvent) => void
+    handleFanCardClick?: (card: ICard) => void
 }
 interface IWizGameState {
     handCards: {suit: ICardProps["suit"], rank: ICardProps["rank"]}[]
@@ -38,7 +38,7 @@ export default class WizGame extends React.PureComponent<IWizGameProps,IWizGameS
         // fetch post card move here
         this.moveCard(suit, rank)
         if(this.props.handleFanCardClick)
-            this.props.handleFanCardClick(event)
+            this.props.handleFanCardClick({suit,rank})
     }
     componentDidMount() {
         // fetch get table stack cards here
