@@ -2,10 +2,12 @@ import IWizRound from "./interfaces/WizRound"
 import IPlayer from "../engine/lobby/interfaces/Player"
 import ICard from "../card_engine/interfaces/Card"
 import WizGameRules from "./WizGameRules"
+import Card from "../card_engine/models/Card"
+import Stack from "../card_engine/models/Stack"
 
 export default class WizInfo {
     static getPlayerByCard(round: IWizRound, card: ICard): IPlayer["id"] {
-        const cardIndex = round.tableStack.indexOf(card)
+        const cardIndex = Stack.indexOf(round.tableStack, card)
         return round.playerOrder[cardIndex]
     }
     static getCurrentPlayer(round: IWizRound): IPlayer["id"] {
@@ -42,11 +44,11 @@ export default class WizInfo {
     {
         const isCurrentPlayer = playerId === WizInfo.getCurrentPlayer(round)
         const isCardInHand = -1 !== round.playerHands[playerId].findIndex(card =>
-            cardPlayed.equals(card)
+            Card.equals(cardPlayed, card)
         )
 
         const playerCards = round.playerHands[playerId]
-        const topCard = round.tableStack.top()
+        const topCard = Stack.top(round.tableStack)
         const requiredSuit = WizGameRules.getRequiredSuit(round.tableStack.cards)
         const isMoveValid = WizGameRules.checkPlayValidity(cardPlayed,
             playerCards, topCard, requiredSuit)

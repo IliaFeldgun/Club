@@ -6,6 +6,7 @@ import WizStore from "./WizStore";
 import IWizGame from "./interfaces/WizGame";
 import LobbyMaster from "../engine/lobby/LobbyMaster";
 import WizInfo from "./WizInfo";
+import Card from "../card_engine/models/Card";
 
 export default class WizMaster {
     static async playCard(gameId: IWizRound["id"],
@@ -16,7 +17,7 @@ export default class WizMaster {
 
         if (round && WizInfo.canPlayCard(round, cardPlayed, playerId)) {
             const cardsLeft = round.playerHands[playerId].filter(card =>
-                card.equals(cardPlayed)
+                Card.equals(cardPlayed, card)
             )
 
             round.playerHands[playerId] = cardsLeft

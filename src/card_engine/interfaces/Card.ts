@@ -6,7 +6,6 @@ export default interface ICard {
     face: boolean
     flip: () => void
     getColor: () => Color
-    equals: (card: ICard) => boolean
 }
 
 

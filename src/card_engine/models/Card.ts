@@ -32,7 +32,7 @@ export default class Card implements ICard {
         return color
     }
 
-    equals(card: ICard): boolean {
-        return (card.rank === this.rank && card.suit === this.suit)
+    static equals(card1: ICard, card2: ICard): boolean {
+        return (card1.rank === card2.rank && card1.suit === card2.suit)
     }
 }

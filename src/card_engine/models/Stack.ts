@@ -6,7 +6,7 @@ export default class Stack implements IStack {
     constructor(cards: ICard[]) {
         this.cards = [...cards]
     }
-    shuffle() {
+    static shuffle(stack: IStack) {
         function stackShuffle(cards: ICard[])
         {
             let cardsRemain = cards.length;
@@ -17,19 +17,19 @@ export default class Stack implements IStack {
             }
         }
 
-        stackShuffle(this.cards)
+        stackShuffle(stack.cards)
     }
-    pop() {
-        return this.cards.pop()
+    static pop(stack: IStack) {
+        return stack.cards.pop()
     }
-    top() {
-        return this.cards.slice(-1).pop()
+    static top(stack: IStack) {
+        return stack.cards.slice(-1).pop()
     }
-    push(card: ICard) {
-        this.cards.push(card);
+    static push(stack: IStack, card: ICard) {
+        stack.cards.push(card);
     }
-    indexOf(card: ICard): number {
-        return this.cards.findIndex((stackCard) =>
+    static indexOf(stack: IStack, card: ICard): number {
+        return stack.cards.findIndex((stackCard) =>
             stackCard.rank === card.rank && stackCard.suit === card.suit)
     }
 }

@@ -19,10 +19,10 @@ export class WizTableStack extends Stack implements IWizTableStack {
     playCard(card: IWizCard) : boolean {
 
         const isValid = WizGameRules.checkPlayValidity(card, card.ownerPlayer.stack.cards,
-                                          this.top(), this.suitRequired)
+                                          Stack.top(this), this.suitRequired)
 
         if(isValid) {
-            this.push(card)
+            Stack.push(this, card)
             if(!this.suitRequired)
                 this.suitRequired = card.suit
         }
