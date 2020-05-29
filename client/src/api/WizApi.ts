@@ -27,7 +27,7 @@ export class WizApi {
         }
         return fetch(`/api/game/wiz/${gameId}`, options)
     }
-    static getGamePlayers(gameId: string) {
+    static async getGamePlayers(gameId: string) {
         const options: RequestInit = {
             method: "GET",
             cache: "no-cache",
@@ -35,9 +35,14 @@ export class WizApi {
                 'Content-Type': 'application/json'
             },
         }
-        return fetch(`/api/game/wiz/${gameId}/players`, options)
+        const res = await fetch(`/api/game/wiz/${gameId}/players`, options)
+        if (res.status !== 200) {
+            // TODO: Handle
+        }
+
+        return (await res.json()).players
     }
-    static getPlayerHandSizes(gameId: string) {
+    static async getPlayerHandSizes(gameId: string) {
         const options: RequestInit = {
             method: "GET",
             cache: "no-cache",
@@ -45,9 +50,14 @@ export class WizApi {
                 'Content-Type': 'application/json'
             },
         }
-        return fetch(`/api/game/wiz/${gameId}/handsizes`, options)
+        const res = await  fetch(`/api/game/wiz/${gameId}/handsizes`, options)
+        if (res.status !== 200) {
+            // TODO: Handle
+        }
+
+        return (await res.json()).playerHandSizes
     }
-    static getPlayerHand(gameId: string) {
+    static async getPlayerHand(gameId: string) {
         const options: RequestInit = {
             method: "GET",
             cache: "no-cache",
@@ -55,6 +65,25 @@ export class WizApi {
                 'Content-Type': 'application/json'
             },
         }
-        return fetch(`/api/game/wiz/${gameId}/hand`)
+        const res = await fetch(`/api/game/wiz/${gameId}/hand`, options)
+        if (res.status !== 200) {
+            // TODO: Handle
+        }
+
+        return (await res.json()).playerHand
+    }
+    static async getTableStack(gameId: string) {
+        const options: RequestInit = {
+            method: "GET",
+            cache: "no-cache",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        }
+        const res = await fetch(`/api/game/wiz/${gameId}/hand`, options) 
+        if (res.status !== 200) {
+            // TODO: Handle
+        }
+        return (await res.json()).stack
     }
 }
