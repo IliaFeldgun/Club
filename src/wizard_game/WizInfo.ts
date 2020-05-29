@@ -11,9 +11,7 @@ export default class WizInfo {
         return round.playerOrder[cardIndex]
     }
     static getCurrentPlayer(round: IWizRound): IPlayer["id"] {
-        const currentPlayerNum = round.turnNumber % round.playerOrder.length
-
-        return round.playerOrder[currentPlayerNum]
+        return round.playerOrder[0]
     }
     static didAllPlayTurn(round: IWizRound): boolean {
         return (round.turnNumber % round.playerOrder.length === 0)
