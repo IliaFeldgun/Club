@@ -78,7 +78,7 @@ export class WizApi {
                 'Content-Type': 'application/json'
             },
         }
-        const res = await fetch(`/api/game/wiz/${gameId}/hand`, options) 
+        const res = await fetch(`/api/game/wiz/${gameId}/stack`, options) 
         if (res.status !== 200) {
             // TODO: Handle
         }
