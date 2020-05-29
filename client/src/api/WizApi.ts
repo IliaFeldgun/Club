@@ -1,8 +1,6 @@
+import ICard from "../interfaces/Card"
+
 export class WizApi {
-    static sendCard(suit: string) {
-
-    }
-
     static getState() {
         
     }
@@ -85,5 +83,23 @@ export class WizApi {
             // TODO: Handle
         }
         return (await res.json()).stack
+    }
+    static async sendCard(gameId: string, card: ICard): Promise<boolean> {
+        const options: RequestInit = {
+            method: "POST",
+            cache: "no-cache",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(card)
+        }
+
+        const res = await fetch(`/api/game/wiz/${gameId}/play`, options)
+        if (res.status === 200) {
+            return true
+        }
+        else {
+            return false
+        }
     }
 }
