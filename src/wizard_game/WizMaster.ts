@@ -62,7 +62,7 @@ export default class WizMaster {
 
         const round = await WizStore.getWizRound(roundId)
 
-        if (round) {
+        if (!round) {
             return false
         }
         else
@@ -79,7 +79,7 @@ export default class WizMaster {
 
                 for (let i = cardsToDeal; i > 0; i--) {
                     round.playerOrder.forEach(playerId =>
-                        round.playerHands[playerId].push(round.deck.pop()))
+                        round.playerHands[playerId].push(round.deck.cards.pop()))
                 }
 
                 return await WizStore.setWizRound(round.id, round)
