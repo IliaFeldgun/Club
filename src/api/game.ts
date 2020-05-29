@@ -87,13 +87,34 @@ router.get('/wiz/:gameId/hand', async (req,res) => {
         res.status(403).send("Player needs to be set")
     }
 })
+router.get('/wiz/:gameId/stack', async (req,res) => {
+    const playerId = req.playerId
+    if (playerId) {
+        const gameId = req.params.gameId
+        const stack = await WizMaster.getTableStack(gameId)
+        res.send({stack})
+    }
+    else {
+        res.status(403).send("Player not set")
+    }
+})
 
 router.post('/wiz/bet/:bet', (req, res) => {
     res.send("Bet submitted")
 })
 
-router.post('/wiz/play/:card', ( req, res ) => {
-    // set next player
+router.post('/wiz/:gameId/play', async ( req, res ) => {
+    const playerId = req.playerId
+    if (playerId) {
+        const gameId = req.params.gameId
+        const card = req.body.card
+        const isCardPlayed = await WizMaster.playCard(gameId, card, playerId)
+        if (isCardPlayed)
+            res.send()
+        else {
+            res.status(500).send()
+        }
+    }
     res.send("Player made his move")
 })
 
