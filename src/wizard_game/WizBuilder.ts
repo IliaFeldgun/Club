@@ -26,9 +26,9 @@ export default class WizBuilder {
             return game.id
     }
     static async newRoundState(gameId: IWizGame["id"],
-                         roundNumber: number,
-                         players: IPlayer["id"][],
-                         firstPlayer: IPlayer["id"]): Promise<IWizRound["id"]>
+                               roundNumber: number,
+                               players: IPlayer["id"][],
+                               firstPlayer: IPlayer["id"]): Promise<IWizRound["id"]>
     {
         const roundId = generateId(gameId + roundNumber,
                                    process.env.UUID_ROUND_NAMESPACE)
@@ -50,7 +50,7 @@ export default class WizBuilder {
 
     }
 
-    static generatePlayerOrder(firstPlayer: IPlayer["id"],
+    private static generatePlayerOrder(firstPlayer: IPlayer["id"],
                                players: IPlayer["id"][]): IPlayer["id"][]
     {
         const newOrder = [...players]
