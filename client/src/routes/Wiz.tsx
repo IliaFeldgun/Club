@@ -3,6 +3,7 @@ import './Wiz.css';
 import WizGame from "../components/Wiz/WizGame";
 import { match, RouteComponentProps } from "react-router";
 import { WizApi } from "../api/WizApi";
+import ICard from "../interfaces/Card";
 
 interface IRouteParams {
     id: string
@@ -14,35 +15,38 @@ interface IWizState {
     game: any
     players: Array<{id: string, name: string, score: number}>
     playerHandSizes: { [playerId: string]: number }
+    playerHand: ICard[]
+    tableStack: ICard[]
 }
 export default class Wiz extends React.PureComponent<IWizProps,IWizState> {
     constructor(props: IWizProps) {
         super(props)
 
-        this.state = {game: {}, players: [], playerHandSizes: {}}
+        this.state = {
+            game: {}, 
+            players: [], 
+            playerHandSizes: {}, 
+            playerHand: [], 
+            tableStack: []}
     }
     componentDidMount() {
-        WizApi.getGame(this.props.match.params.id).then((res) => {
-            res.json().then((json) => {
-                this.setState({game: json.game})
-            })
-        })
+        const AllRequests: Promise<any>[] = []
+        const gameId = this.props.match.params.id
 
-        WizApi.getGamePlayers(this.props.match.params.id).then((res) => {
-            res.json().then((json) => {
-                this.setState({players: json.players})
-            })
-        })
+        AllRequests.push(WizApi.getGamePlayers(gameId))
+        AllRequests.push(WizApi.getPlayerHandSizes(gameId))
+        AllRequests.push(WizApi.getPlayerHand(gameId))
+        AllRequests.push(WizApi.getTableStack(gameId))
 
-        WizApi.getPlayerHandSizes(this.props.match.params.id).then((res) => {
-            res.json().then((json) => {
-                this.setState({playerHandSizes: json.playerHandSizes})
-            })
+        Promise.all(AllRequests).then(([players, playerHandSizes, playerHand, tableStack]) => {
+            this.setState({players, playerHandSizes, playerHand, tableStack})
         })
     }
     render() {
         let toRender = <WizGame players={this.state.players} 
-                                playerHandSizes={this.state.playerHandSizes}/>
+                                playerHandSizes={this.state.playerHandSizes}
+                                playerHand={this.state.playerHand}
+                                tableStack={this.state.tableStack}/>
         // TODO: Render error element
         // if (!this.state.game || !this.state.players)
             // toRender = <React.Fragment/>
