@@ -20,7 +20,7 @@ export default class WizMaster {
             )
 
             round.playerHands[playerId] = cardsLeft
-            
+
             // WizMaster.advanceRound(round)
             // if (WizMaster.areAllHandsEmpty(round))
             return await WizStore.setWizRound(roundId, round)
@@ -122,7 +122,7 @@ export default class WizMaster {
                 return []
             }
     }
-    
+
     static async isPlayerInGame(playerId: IPlayer["id"], gameId: IWizGame["id"]) : Promise<boolean> {
         const game = await WizStore.getWizGame(gameId)
 
@@ -137,5 +137,20 @@ export default class WizMaster {
         }
         else
             return {}
+    }
+    static async setGameRound(gameId: IWizGame["id"], roundId: IWizRound["id"]) : Promise<boolean> {
+        const [game, round] = await Promise.all([
+            WizStore.getWizGame(gameId),
+            WizStore.getWizRound(roundId)
+        ])
+        if (game) {
+            game.currentRound = round.roundNumber
+            game.currentRoundId = round.id
+
+            return await WizStore.setWizGame(gameId, game)
+        }
+        else {
+            return false
+        }
     }
 }
