@@ -22,12 +22,12 @@ export default class WizInfo {
         const allEmpty = !playerHands.some(([player,cards]) => cards.length)
 
         return allEmpty
-    }    
+    }
     static getPlayerHandSizes(round: IWizRound):
         { [playerId: string]: number } {
-        
+
         const playerHandSizes: {[playerId: string]: number} = {}
-        
+
         if (round && round.playerHands) {
             Object.keys(round.playerHands).forEach((playerId) => {
                 playerHandSizes.playerId = round.playerHands[playerId].length
