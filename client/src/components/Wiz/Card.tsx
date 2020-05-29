@@ -1,5 +1,5 @@
 import React, { CSSProperties } from "react";
-import ICard, { Suit, Rank } from "../../models/Card"
+import ICard, { Suit, Rank } from "../../interfaces/Card"
 
 export interface ICardProps {
     rotateDegree: number

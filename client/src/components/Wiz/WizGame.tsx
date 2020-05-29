@@ -4,7 +4,7 @@ import CardFan from "./CardFan";
 import ScoreBoard from "./ScoreBoard";
 import CardStack from "./CardStack";
 import { ICardProps } from "./Card";
-import { Suit, Rank } from "../../models/Card";
+import { Suit, Rank } from "../../interfaces/Card";
 import WizPlayerList from "./PlayerList";
 import WizOtherPlayers from "./OtherPlayers";
 import { getPlayerId } from "../../utils/Cookie";
