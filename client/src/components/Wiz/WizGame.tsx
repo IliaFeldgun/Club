@@ -26,29 +26,29 @@ export default class WizGame extends React.PureComponent<IWizGameProps,IWizGameS
         this.state = {handCards: [], stackCards: []}
         this.handleFanCardClick = this.handleFanCardClick.bind(this)
     }
-    moveCard(suit: ICardProps["suit"], rank: ICardProps["rank"]) {
-        const newHandCards = [...this.state.handCards].filter((card) => 
-            !(card.suit === suit && card.rank === rank))
-        const newStackCards = [...this.state.stackCards, {suit,rank}]
-        this.setState({handCards: newHandCards, stackCards: newStackCards})
-    }
+    // moveCard(suit: ICardProps["suit"], rank: ICardProps["rank"]) {
+    //     const newHandCards = [...this.state.handCards].filter((card) => 
+    //         !(card.suit === suit && card.rank === rank))
+    //     const newStackCards = [...this.state.stackCards, {suit,rank}]
+    //     this.setState({handCards: newHandCards, stackCards: newStackCards})
+    // }
     handleFanCardClick(event: React.MouseEvent, 
                        suit: ICardProps["suit"], 
                        rank: ICardProps["rank"]) {
         // fetch post card move here
-        this.moveCard(suit, rank)
+        // this.moveCard(suit, rank)
         if(this.props.handleFanCardClick)
             this.props.handleFanCardClick({suit,rank})
     }
     componentDidMount() {
         // fetch get table stack cards here
         // fetch get player cards here
-        // this.setState({handCards: [
-            // {suit: Suit.SPADE, rank: Rank.QUEEN},
-            // {suit: Suit.HEART, rank: Rank.SEVEN},
-            // {suit: Suit.CLUB, rank: Rank.JACK},
-            // {suit: Suit.DIAMOND, rank: Rank.ACE},
-            // {suit: Suit.DIAMOND, rank: Rank.TWO}]})
+        this.setState({handCards: [
+            {suit: Suit.SPADE, rank: Rank.QUEEN},
+            {suit: Suit.HEART, rank: Rank.SEVEN},
+            {suit: Suit.CLUB, rank: Rank.JACK},
+            {suit: Suit.DIAMOND, rank: Rank.ACE},
+            {suit: Suit.DIAMOND, rank: Rank.TWO}]})
             
     }
     render() {
@@ -74,7 +74,8 @@ export default class WizGame extends React.PureComponent<IWizGameProps,IWizGameS
             <React.Fragment>
                 <CardBoard>
                     <CardStack cards={this.props.tableStack} />
-                    <CardFan cards={this.props.playerHand} handleCardClick={this.handleFanCardClick}/>
+                    <CardFan cards={this.props.playerHand.concat(this.state.handCards)} 
+                             handleCardClick={this.handleFanCardClick}/>
                     <WizOtherPlayers players={otherPlayers} />
                 </CardBoard>
                 <ScoreBoard>
