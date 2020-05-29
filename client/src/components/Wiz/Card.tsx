@@ -16,7 +16,7 @@ export default class Card extends React.PureComponent<ICardProps,ICardState>{
 
         this.handleClick = this.handleClick.bind(this)
     }
-    handleClick(event: React.MouseEvent) {
+    handleClick(event: React.MouseEvent<HTMLSpanElement>) {
         if (this.props.handleClick) {
             this.props.handleClick(event, this.props.suit, this.props.rank)
         }
