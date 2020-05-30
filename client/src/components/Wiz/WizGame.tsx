@@ -8,8 +8,10 @@ import ICard, { Suit, Rank } from "../../interfaces/Card";
 import WizPlayerList from "./PlayerList";
 import WizOtherPlayers from "./OtherPlayers";
 import { getPlayerId } from "../../utils/Cookie";
+import { PossibleMoves } from "../../interfaces/PossibleMoves";
 
 interface IWizGameProps {
+    instructions: PossibleMoves
     players: Array<{id: string, name: string, score: number}>
     playerHand: ICard[]
     playerHandSizes: { [playerId: string]: number }
@@ -48,8 +50,8 @@ export default class WizGame extends React.PureComponent<IWizGameProps,IWizGameS
             {suit: Suit.HEART, rank: Rank.SEVEN},
             {suit: Suit.CLUB, rank: Rank.JACK},
             {suit: Suit.DIAMOND, rank: Rank.ACE},
-            {suit: Suit.DIAMOND, rank: Rank.TWO}]})
-            
+            {suit: Suit.DIAMOND, rank: Rank.TWO}
+        ]})
     }
     render() {
         //const otherPlayers = this.mockOtherPlayers()
