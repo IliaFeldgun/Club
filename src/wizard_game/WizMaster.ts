@@ -13,6 +13,23 @@ import WizBet from "./models/WizBet";
 import { PossibleMoves } from "./enums/PossibleMoves";
 
 export default class WizMaster {
+    static async getGameInstruction(gameId: IWizGame["id"]): Promise<PossibleMoves> {
+        let nextMove = PossibleMoves.NONE
+        const game = await WizStore.getWizGame(gameId)
+        if (game) {
+            if (game.isDone){
+                nextMove = PossibleMoves.ANNOUNCE_WIN
+            }
+        }
+        else {
+            const round = await WizMaster.getGameRound(gameId)
+            if (round) {
+                nextMove = round.nextMove
+            }
+        }
+
+        return nextMove
+    }
     static async playBet(gameId: IWizGame["id"],
                          bet: number,
                          playerId: IPlayer["id"]): Promise<boolean>{
