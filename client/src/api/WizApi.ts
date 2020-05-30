@@ -103,4 +103,37 @@ export class WizApi {
             return false
         }
     }
+    static async sendBet(gameId: string, bet: number): Promise<boolean> {
+        const options: RequestInit = {
+            method: "POST",
+            cache: "no-cache",
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+
+        const res = await fetch(`/api/game/wiz/${gameId}/bet/${bet}`, options)
+        if (res.status === 200) {
+            return true
+        }
+        else {
+            return false
+        }
+    }
+    static async getPlayerBets(gameId: string): 
+        Promise<{ [playerId: string]: number }> {
+            const options: RequestInit = {
+                method: "GET",
+                cache: "no-cache",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            }
+            const res = await fetch(`/api/game/wiz/${gameId}/bets`, options)
+            if (res.status !== 200) {
+                // TODO: Handle
+            }
+    
+            return (await res.json()).bets
+    }
 }
