@@ -102,7 +102,17 @@ router.get('/wiz/:gameId/stack', async (req,res) => {
 router.post('/wiz/bet/:bet', (req, res) => {
     res.send("Bet submitted")
 })
-
+router.get('/wiz/:gameId/bets', async (req, res) => {
+    const playerId = req.playerId
+    if (playerId) {
+        const gameId = req.params.gameId
+        const bets = await WizMaster.getGameBets(gameId)
+        res.send({bets})
+    }
+    else {
+        res.status(403).send("Player not set")
+    }
+})
 router.post('/wiz/:gameId/play', async ( req, res ) => {
     const playerId = req.playerId
     if (playerId) {
