@@ -4,6 +4,7 @@ import ICard from "../card_engine/interfaces/Card"
 import WizGameRules from "./WizGameRules"
 import Card from "../card_engine/models/Card"
 import Stack from "../card_engine/models/Stack"
+import { PossibleMoves } from "./enums/PossibleMoves"
 
 export default class WizInfo {
     static getPlayerByCard(round: IWizRound, card: ICard): IPlayer["id"] {
@@ -15,13 +16,17 @@ export default class WizInfo {
     }
     static didAllPlayTurn(round: IWizRound): boolean {
         return (round.turnNumber % round.playerOrder.length === 0)
-
     }
     static areAllHandsEmpty(round: IWizRound): boolean {
         const playerHands = Object.entries(round.playerHands)
         const allEmpty = !playerHands.some(([player,cards]) => cards.length)
 
         return allEmpty
+    }
+    static didAllBet(round: IWizRound): boolean {
+        const playerBets = Object.entries(round.playerBets).length
+        const players = round.playerOrder.length
+        return playerBets === players
     }
     static getPlayerHandSizes(round: IWizRound):
         { [playerId: string]: number } {
@@ -52,6 +57,15 @@ export default class WizInfo {
             playerCards, topCard, requiredSuit)
 
         return isCurrentPlayer && isCardInHand && isMoveValid
+    }
+    static canPlayBet(round: IWizRound,
+                      bet: number,
+                      playerId: IPlayer["id"]): boolean {
+        const isCurrentPlayer = playerId === WizInfo.getCurrentPlayer(round)
+        const isBetValid = bet <= round.roundNumber && bet >= 0
+        const shouldBet = round.nextMove == PossibleMoves.PLACE_BET
+
+        return isCurrentPlayer && isBetValid
     }
     static getPlayerHand(round: IWizRound, playerId: IPlayer["id"]): ICard[] {
         return round.playerHands[playerId]
