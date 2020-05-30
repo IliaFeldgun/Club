@@ -6,10 +6,10 @@ header {
     padding-right: 1vw;
     padding-left: 1vw;
     position: relative;
-    z-index: 2000;
+    z-index: 1000;
 }
 footer {
-    z-index:2000;
+    z-index: 1000;
 }
 .main-title {
     margin-left: 0.5vmax;
