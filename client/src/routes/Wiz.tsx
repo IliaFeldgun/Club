@@ -4,6 +4,7 @@ import WizGame from "../components/Wiz/WizGame";
 import { match, RouteComponentProps } from "react-router";
 import { WizApi } from "../api/WizApi";
 import ICard from "../interfaces/Card";
+import { PossibleMoves } from "../interfaces/PossibleMoves";
 
 interface IRouteParams {
     id: string
@@ -12,6 +13,7 @@ interface IWizProps extends RouteComponentProps<IRouteParams>{
     match: match<IRouteParams>
 }
 interface IWizState {
+    instructions: PossibleMoves
     game: any
     players: Array<{id: string, name: string, score: number}>
     playerHandSizes: { [playerId: string]: number }
@@ -23,6 +25,7 @@ export default class Wiz extends React.PureComponent<IWizProps,IWizState> {
         super(props)
 
         this.state = {
+            instructions: PossibleMoves.NONE,
             game: {}, 
             players: [], 
             playerHandSizes: {}, 
@@ -47,7 +50,8 @@ export default class Wiz extends React.PureComponent<IWizProps,IWizState> {
                                 playerHandSizes={this.state.playerHandSizes}
                                 playerHand={this.state.playerHand}
                                 tableStack={this.state.tableStack}
-                                handleFanCardClick={this.handleCardSend}/>
+                                handleFanCardClick={this.handleCardSend}
+                                instructions={this.state.instructions}/>
         // TODO: Render error element
         // if (!this.state.game || !this.state.players)
             // toRender = <React.Fragment/>
@@ -61,13 +65,14 @@ export default class Wiz extends React.PureComponent<IWizProps,IWizState> {
         const AllRequests: Promise<any>[] = []
         const gameId = this.props.match.params.id
 
+        AllRequests.push(WizApi.getGameInstructions(gameId))
         AllRequests.push(WizApi.getGamePlayers(gameId))
         AllRequests.push(WizApi.getPlayerHandSizes(gameId))
         AllRequests.push(WizApi.getPlayerHand(gameId))
         AllRequests.push(WizApi.getTableStack(gameId))
 
-        Promise.all(AllRequests).then(([players, playerHandSizes, playerHand, tableStack]) => {
-            this.setState({players, playerHandSizes, playerHand, tableStack})
+        Promise.all(AllRequests).then(([instructions, players, playerHandSizes, playerHand, tableStack]) => {
+            this.setState({instructions, players, playerHandSizes, playerHand, tableStack})
         })
     }
 }
