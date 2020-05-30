@@ -1,10 +1,7 @@
 import ICard from "../interfaces/Card"
+import { PossibleMoves } from "../interfaces/PossibleMoves"
 
 export class WizApi {
-    static getState() {
-        
-    }
-
     static newGame(roomId: string) {
         const options: RequestInit = {
             method: "POST",
@@ -15,7 +12,7 @@ export class WizApi {
         }
         return fetch(`/api/game/wiz/${roomId}`, options)
     }
-    static getGame(gameId: string) {
+    static async getGameInstructions(gameId: string): Promise<PossibleMoves> {
         const options: RequestInit = {
             method: "GET",
             cache: "no-cache",
@@ -23,7 +20,11 @@ export class WizApi {
                 'Content-Type': 'application/json'
             },
         }
-        return fetch(`/api/game/wiz/${gameId}`, options)
+        const res = await fetch(`/api/game/wiz/${gameId}`, options) 
+        if (res.status !== 200) {
+            // TODO: Handle
+        }
+        return (await res.json()).instruction
     }
     static async getGamePlayers(gameId: string) {
         const options: RequestInit = {
