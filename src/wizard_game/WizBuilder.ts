@@ -20,6 +20,7 @@ export default class WizBuilder {
         const gameId = generateId(roomId,process.env.UUID_GAME_NAMESPACE)
         const game = new WizGame(gameId, roomId)
         players.forEach((player) => {
+            game.playerOrder.push(player)
             game.playerScores[player] = new WizScore()
         })
         if (await WizStore.setWizGame(gameId, game))
@@ -38,6 +39,7 @@ export default class WizBuilder {
 
         const round = new WizRound(roundId, gameId, roundNumber, roundDeck, roundTableStack)
         round.nextMove = PossibleMoves.PLACE_BET
+        
         round.playerOrder = WizBuilder.generatePlayerOrder(firstPlayer, players)
 
         players.forEach((player) => {
