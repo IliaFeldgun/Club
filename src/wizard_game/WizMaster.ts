@@ -16,7 +16,7 @@ export default class WizMaster {
     static async playBet(gameId: IWizGame["id"],
                          bet: number,
                          playerId: IPlayer["id"]): Promise<boolean>{
-        
+
         const round = await WizMaster.getGameRound(gameId)
 
         if (round && WizInfo.canPlayBet(round, bet, playerId)) {
@@ -46,14 +46,14 @@ export default class WizMaster {
             round.playerHands[playerId] = cardsLeft
             Stack.push(round.tableStack, cardPlayed)
             WizMaster.advanceRound(round)
-            
+
             if (WizInfo.areAllHandsEmpty(round)) {
                 const game = await WizStore.getWizGame(gameId)
                 if (game) {
                     WizMaster.calculateScores(round, game)
                     WizMaster.nextRound(game)
                     game.isDone = WizMaster.isGameDone(game)
-                    
+
                     return await WizStore.setWizGame(game.id, game)
                 }
             }
@@ -100,7 +100,7 @@ export default class WizMaster {
     }
     private static calculateScores(round: IWizRound, game: IWizGame) {
         round.playerOrder.forEach((playerId) => {
-            const newScore = 
+            const newScore =
                 WizGameRules.calculateScore(game.playerScores[playerId].total,
                     round.playerBets[playerId].takes,
                     round.playerResults[playerId].successfulTakes)
@@ -123,7 +123,7 @@ export default class WizMaster {
         }
     }
     private static isGameDone(game: IWizGame): boolean {
-        const totalRounds = 
+        const totalRounds =
             WizGameRules.getTotalRounds(game.playerOrder.length)
         return game.currentRound > totalRounds
     }
@@ -249,7 +249,7 @@ export default class WizMaster {
             return []
         }
     }
-    static async getGameBets(gameId: IWizGame["id"]): 
+    static async getGameBets(gameId: IWizGame["id"]):
         Promise<{ [playerId: string]: number}> {
         const round = await WizMaster.getGameRound(gameId)
         if (round) {

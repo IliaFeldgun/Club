@@ -39,7 +39,7 @@ export default class WizBuilder {
 
         const round = new WizRound(roundId, gameId, roundNumber, roundDeck, roundTableStack)
         round.nextMove = PossibleMoves.PLACE_BET
-        
+
         round.playerOrder = WizBuilder.generatePlayerOrder(firstPlayer, players)
 
         players.forEach((player) => {

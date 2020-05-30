@@ -63,7 +63,7 @@ export default class WizInfo {
                       playerId: IPlayer["id"]): boolean {
         const isCurrentPlayer = playerId === WizInfo.getCurrentPlayer(round)
         const isBetValid = bet <= round.roundNumber && bet >= 0
-        const shouldBet = round.nextMove == PossibleMoves.PLACE_BET
+        const shouldBet = round.nextMove === PossibleMoves.PLACE_BET
 
         return isCurrentPlayer && isBetValid
     }
