@@ -47,13 +47,13 @@ export default class WizGame extends React.PureComponent<IWizGameProps,IWizGameS
     componentDidMount() {
         // fetch get table stack cards here
         // fetch get player cards here
-        this.setState({handCards: [
-            {suit: Suit.SPADE, rank: Rank.QUEEN},
-            {suit: Suit.HEART, rank: Rank.SEVEN},
-            {suit: Suit.CLUB, rank: Rank.JACK},
-            {suit: Suit.DIAMOND, rank: Rank.ACE},
-            {suit: Suit.DIAMOND, rank: Rank.TWO}
-        ]})
+        // this.setState({handCards: [
+        //     {suit: Suit.SPADE, rank: Rank.QUEEN},
+        //     {suit: Suit.HEART, rank: Rank.SEVEN},
+        //     {suit: Suit.CLUB, rank: Rank.JACK},
+        //     {suit: Suit.DIAMOND, rank: Rank.ACE},
+        //     {suit: Suit.DIAMOND, rank: Rank.TWO}
+        // ]})
     }
     render() {
         //const otherPlayers = this.mockOtherPlayers()
