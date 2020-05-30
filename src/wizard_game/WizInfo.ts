@@ -59,4 +59,15 @@ export default class WizInfo {
     static getTableStack(round: IWizRound): ICard[] {
         return round.tableStack.cards
     }
+    static getBets(round: IWizRound): { [playerId: string]: number} {
+        const playerBets: {[playerId: string]: number} = {}
+
+        if(round && round.playerBets) {
+            Object.keys(round.playerBets).forEach((playerId) => {
+                playerBets[playerId] = round.playerBets[playerId].takes
+            })
+        }
+
+        return playerBets
+    }
 }
