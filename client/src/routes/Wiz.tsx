@@ -17,6 +17,7 @@ interface IWizState {
     game: any
     players: Array<{id: string, name: string, score: number}>
     playerHandSizes: { [playerId: string]: number }
+    playerBets: { [playerId: string]: number }
     playerHand: ICard[]
     tableStack: ICard[]
 }
@@ -28,7 +29,8 @@ export default class Wiz extends React.PureComponent<IWizProps,IWizState> {
             instructions: PossibleMoves.NONE,
             game: {}, 
             players: [], 
-            playerHandSizes: {}, 
+            playerHandSizes: {},
+            playerBets: {},
             playerHand: [], 
             tableStack: []
         }
@@ -48,6 +50,7 @@ export default class Wiz extends React.PureComponent<IWizProps,IWizState> {
     render() {
         let toRender = <WizGame players={this.state.players} 
                                 playerHandSizes={this.state.playerHandSizes}
+                                playerBets={this.state.playerBets}
                                 playerHand={this.state.playerHand}
                                 tableStack={this.state.tableStack}
                                 handleFanCardClick={this.handleCardSend}
@@ -68,11 +71,25 @@ export default class Wiz extends React.PureComponent<IWizProps,IWizState> {
         AllRequests.push(WizApi.getGameInstructions(gameId))
         AllRequests.push(WizApi.getGamePlayers(gameId))
         AllRequests.push(WizApi.getPlayerHandSizes(gameId))
+        AllRequests.push(WizApi.getPlayerBets(gameId))
         AllRequests.push(WizApi.getPlayerHand(gameId))
         AllRequests.push(WizApi.getTableStack(gameId))
 
-        Promise.all(AllRequests).then(([instructions, players, playerHandSizes, playerHand, tableStack]) => {
-            this.setState({instructions, players, playerHandSizes, playerHand, tableStack})
+        Promise.all(AllRequests).then(([
+            instructions, 
+            players, 
+            playerHandSizes, 
+            playerBets, 
+            playerHand, 
+            tableStack
+        ]) => {
+            this.setState({
+                instructions, 
+                players, 
+                playerHandSizes, 
+                playerBets, 
+                playerHand, 
+                tableStack})
         })
     }
 }
