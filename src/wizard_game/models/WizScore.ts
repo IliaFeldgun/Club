@@ -9,8 +9,4 @@ export default class WizScore implements IWizScore {
     constructor() {
         this.total = 0
     }
-
-    calculateScore(bet: IWizBet, playerResult: IWizPlayerRoundResult) {
-        WizGameRules.calculateScore(this.total, bet.takes, playerResult.successfulTakes)
-    }
 }
