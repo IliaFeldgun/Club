@@ -20,14 +20,13 @@ export default class WizMaster {
             if (game.isDone){
                 nextMove = PossibleMoves.ANNOUNCE_WIN
             }
-        }
-        else {
-            const round = await WizMaster.getGameRound(gameId)
-            if (round) {
-                nextMove = round.nextMove
+            else {
+                const round = await WizMaster.getGameRound(gameId)
+                if (round) {
+                    nextMove = round.nextMove
+                }
             }
         }
-
         return nextMove
     }
     static async playBet(gameId: IWizGame["id"],
