@@ -228,4 +228,14 @@ export default class WizMaster {
             return []
         }
     }
+    static async getGameBets(gameId: IWizGame["id"]): 
+        Promise<{ [playerId: string]: number}> {
+        const round = await WizMaster.getGameRound(gameId)
+        if (round) {
+            return WizInfo.getBets(round)
+        }
+        else {
+            return {}
+        }
+    }
 }
