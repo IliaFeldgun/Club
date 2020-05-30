@@ -47,8 +47,8 @@ router.get('/wiz/:gameId', async (req, res) => {
     const playerId = req.playerId
     const gameId = req.params.gameId
     if (playerId && WizMaster.isPlayerInGame(playerId, gameId)) {
-        const game = await WizStore.getWizGame(gameId)
-        res.send({game})
+        const instruction = await WizMaster.getGameInstruction(gameId)
+        res.send({instruction})
     }
     else {
         res.status(403).send("Player needs be set")
