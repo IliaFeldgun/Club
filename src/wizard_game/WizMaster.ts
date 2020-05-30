@@ -9,9 +9,30 @@ import WizInfo from "./WizInfo";
 import Card from "../card_engine/models/Card";
 import Stack from "../card_engine/models/Stack";
 import WizBuilder from "./WizBuilder";
+import WizBet from "./models/WizBet";
+import { PossibleMoves } from "./enums/PossibleMoves";
 
 export default class WizMaster {
-    static async playCard(gameId: IWizRound["id"],
+    static async playBet(gameId: IWizGame["id"],
+                         bet: number,
+                         playerId: IPlayer["id"]): Promise<boolean>{
+        
+        const round = await WizMaster.getGameRound(gameId)
+
+        if (round && WizInfo.canPlayBet(round, bet, playerId)) {
+            round.playerBets[playerId] = new WizBet(bet)
+            WizMaster.nextPlayer(round.playerOrder)
+            if (WizInfo.didAllBet(round)) {
+                round.nextMove = PossibleMoves.PLAY_CARD
+            }
+
+            return await WizStore.setWizRound(round.id, round)
+        }
+        else {
+            return false
+        }
+    }
+    static async playCard(gameId: IWizGame["id"],
                     cardPlayed: ICard,
                     playerId: IPlayer["id"]): Promise<boolean>
     {
