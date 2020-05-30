@@ -2,17 +2,6 @@ import React from "react"
 import PostButton from "../PostButton"
 import ReactModal from 'react-modal'
 
-const modalStyles = {
-    content : {
-      top                   : '50%',
-      left                  : '50%',
-      right                 : 'auto',
-      bottom                : 'auto',
-      marginRight           : '-50%',
-      transform             : 'translate(-50%, -50%)'
-    }
-  }
-
 ReactModal.setAppElement('#root');
 interface ISetBetProps {
     maxBet: number
@@ -26,7 +15,7 @@ export default class SetBet extends React.PureComponent<ISetBetProps, ISetBetSta
         super(props)
         this.state = {
             bet: -1,
-            showModal: true
+            showModal: false
         }
         this.handleBetChange = this.handleBetChange.bind(this)
         this.handleOpenModal = this.handleOpenModal.bind(this);
@@ -34,10 +23,8 @@ export default class SetBet extends React.PureComponent<ISetBetProps, ISetBetSta
     }
     handleBetChange(event: React.ChangeEvent<HTMLInputElement>) {
         this.setState({bet: parseInt(event.target.value)})
-        this.handleCloseModal()
     }
     handleResponse(res: Response) {
-        
     }
     handleOpenModal () {
         this.setState({ showModal: true });
@@ -46,9 +33,13 @@ export default class SetBet extends React.PureComponent<ISetBetProps, ISetBetSta
     handleCloseModal () {
         this.setState({ showModal: false });
     }
+    componentDidMount() {
+        this.handleOpenModal()
+    }
     render(){
         return (
-            <ReactModal isOpen={this.state.showModal}>
+            <ReactModal className="bet-modal"
+                        isOpen={this.state.showModal}>
                 <input type="range" name="setBet" min="0" max={this.props.maxBet}
                        onChange={this.handleBetChange}/>
                 <PostButton text="Bet!" route="/api/game/wiz/bet" body={this.state.bet}
