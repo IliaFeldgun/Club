@@ -110,12 +110,12 @@ router.get('/wiz/:gameId/bets', async (req, res) => {
     }
 })
 
-router.post('/wiz/:gameId/bet', async (req, res) => {
+router.post('/wiz/:gameId/bet/:bet', async (req, res) => {
     const playerId = req.playerId
     if (playerId) {
         const gameId = req.params.gameId
-        const bet = req.body
-        const isBetPlayed = await WizMaster.playBet(gameId, bet, playerId)
+        const bet = req.params.bet
+        const isBetPlayed = await WizMaster.playBet(gameId, +bet, playerId)
         if (isBetPlayed)
             res.send({isBetPlayed})
         else {
