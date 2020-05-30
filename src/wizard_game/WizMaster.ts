@@ -8,6 +8,7 @@ import LobbyMaster from "../engine/lobby/LobbyMaster";
 import WizInfo from "./WizInfo";
 import Card from "../card_engine/models/Card";
 import Stack from "../card_engine/models/Stack";
+import WizBuilder from "./WizBuilder";
 
 export default class WizMaster {
     static async playCard(gameId: IWizRound["id"],
@@ -23,50 +24,87 @@ export default class WizMaster {
 
             round.playerHands[playerId] = cardsLeft
             Stack.push(round.tableStack, cardPlayed)
-            WizMaster.nextTurn(round)
-            WizMaster.nextPlayer(round)
-            // WizMaster.advanceRound(round)
-            // if (WizMaster.areAllHandsEmpty(round))
-            return await WizStore.setWizRound(round.id, round)
+            WizMaster.advanceRound(round)
+            
+            if (WizInfo.areAllHandsEmpty(round)) {
+                const game = await WizStore.getWizGame(gameId)
+                if (game) {
+                    WizMaster.calculateScores(round, game)
+                    WizMaster.nextRound(game)
+                    game.isDone = WizMaster.isGameDone(game)
+                    
+                    return await WizStore.setWizGame(game.id, game)
+                }
+            }
+            else {
+                return await WizStore.setWizRound(round.id, round)
+            }
         }
         else
             return false
     }
+    private static advanceRound(round: IWizRound) {
+        WizMaster.nextTurn(round)
+        WizMaster.nextPlayer(round.playerOrder)
+
+        const winningPlayer = WizMaster.assertWinner(round)
+        if (winningPlayer) {
+            WizMaster.addTakeToPlayerResult(round, winningPlayer)
+        }
+    }
     private static nextTurn(round: IWizRound) {
         round.turnNumber++
     }
-    private static nextPlayer(round: IWizRound) {
-        round.playerOrder.push(round.playerOrder.shift())
+    private static nextPlayer(playerOrder: IPlayer["id"][]) {
+        playerOrder.push(playerOrder.shift())
     }
-    private static advanceRound(round: IWizRound) {
+    private static assertWinner(round: IWizRound): IPlayer["id"] {
+        if (round && WizInfo.didAllPlayTurn(round)) {
+            const requiredSuit =
+                WizGameRules.getRequiredSuit(round.tableStack.cards)
 
-        WizMaster.assertWinner(round.id)
+            const winningCard =
+                WizGameRules.getWinningCard(round.tableStack.cards, requiredSuit)
 
-        round.turnNumber++
-    }
-    private static async assertWinner(roundId: IWizRound["id"]): Promise<boolean> {
-        const round = await WizStore.getWizRound(roundId)
-        if (round) {
-            return false
+            const winningPlayer = WizInfo.getPlayerByCard(round, winningCard)
+
+            return winningPlayer
         }
         else {
-            if (WizInfo.didAllPlayTurn(round)) {
-                const requiredSuit =
-                    WizGameRules.getRequiredSuit(round.tableStack.cards)
-
-                const winningCard =
-                    WizGameRules.getWinningCard(round.tableStack.cards, requiredSuit)
-
-                const winningPlayer = WizInfo.getPlayerByCard(round, winningCard)
-                // TODO: Refactor it somehow
-                round.playerResults[winningPlayer].successfulTakes++
-
-                return await WizStore.setWizRound(roundId, round)
-            }
+            return ""
         }
     }
-    static addTakeToPlayerResult(round: IWizRound, winningPlayer: IPlayer["id"]) {
+    private static addTakeToPlayerResult(round: IWizRound, winningPlayer: IPlayer["id"]) {
         round.playerResults[winningPlayer].successfulTakes++
+    }
+    private static calculateScores(round: IWizRound, game: IWizGame) {
+        round.playerOrder.forEach((playerId) => {
+            const newScore = 
+                WizGameRules.calculateScore(game.playerScores[playerId].total,
+                    round.playerBets[playerId].takes,
+                    round.playerResults[playerId].successfulTakes)
+            game.playerScores[playerId].total = newScore
+        })
+    }
+    private static async nextRound(game: IWizGame): Promise<boolean> {
+        game.currentRound++
+        WizMaster.nextPlayer(game.playerOrder)
+
+        const newRound = await WizBuilder.newRoundState(
+            game.id, game.currentRound, game.playerOrder, game.playerOrder[0])
+
+        if (newRound) {
+            game.currentRoundId = newRound
+            return true
+        }
+        else {
+            return false
+        }
+    }
+    private static isGameDone(game: IWizGame): boolean {
+        const totalRounds = 
+            WizGameRules.getTotalRounds(game.playerOrder.length)
+        return game.currentRound > totalRounds
     }
     static async dealCards(roundId: IWizRound["id"]): Promise<boolean> {
 
@@ -138,16 +176,6 @@ export default class WizMaster {
 
         return game && LobbyMaster.isPlayerInRoom(playerId, game.roomId)
     }
-
-    static async getPlayerHandSizes(gameId: IWizGame["id"]):
-        Promise<{ [playerId: string]: number }> {
-        const round = await WizMaster.getWizRoundByGame(gameId)
-        if (round) {
-            return WizInfo.getPlayerHandSizes(round)
-        }
-        else
-            return {}
-    }
     static async setGameRound(gameId: IWizGame["id"], roundId: IWizRound["id"]) : Promise<boolean> {
         const [game, round] = await Promise.all([
             WizStore.getWizGame(gameId),
@@ -171,6 +199,16 @@ export default class WizMaster {
         else {
             return undefined
         }
+    }
+
+    static async getPlayerHandSizes(gameId: IWizGame["id"]):
+        Promise<{ [playerId: string]: number }> {
+        const round = await WizMaster.getWizRoundByGame(gameId)
+        if (round) {
+            return WizInfo.getPlayerHandSizes(round)
+        }
+        else
+            return {}
     }
     static async getPlayerHand(gameId: IWizGame["id"], playerId: IPlayer["id"]): Promise<ICard[]> {
         const round = await WizMaster.getGameRound(gameId)
