@@ -36,6 +36,7 @@ export default class Wiz extends React.PureComponent<IWizProps,IWizState> {
         }
 
         this.handleCardSend = this.handleCardSend.bind(this)
+        this.handleBet = this.handleBet.bind(this)
     }
     componentDidMount() {
         this.fetchDataToState()
@@ -47,6 +48,13 @@ export default class Wiz extends React.PureComponent<IWizProps,IWizState> {
             }
         })
     }
+    handleBet(bet: number) {
+        WizApi.sendBet(this.props.match.params.id, bet).then((isBetSent) => {
+            if (isBetSent) {
+                this.fetchDataToState()
+            }
+        })
+    }
     render() {
         let toRender = <WizGame players={this.state.players} 
                                 playerHandSizes={this.state.playerHandSizes}
@@ -54,6 +62,7 @@ export default class Wiz extends React.PureComponent<IWizProps,IWizState> {
                                 playerHand={this.state.playerHand}
                                 tableStack={this.state.tableStack}
                                 handleFanCardClick={this.handleCardSend}
+                                handleBet={this.handleBet}
                                 instructions={this.state.instructions}/>
         // TODO: Render error element
         // if (!this.state.game || !this.state.players)
