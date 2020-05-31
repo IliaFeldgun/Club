@@ -8,7 +8,7 @@ export default class WizPlayerList extends React.PureComponent<IWizPlayerListPro
         const players = this.props.players.map((player) => {
             const playerBet = this.props.playerBets[player.id]
             let betText = "Bet: "
-            if (!playerBet) {
+            if (playerBet === undefined) {
                 betText += "None"
             }
             else {
