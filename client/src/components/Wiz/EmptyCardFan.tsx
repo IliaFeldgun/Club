@@ -1,4 +1,4 @@
-import React, { CSSProperties } from 'react'
+import React from 'react'
 import EmptyCard from './EmptyCard'
 
 interface IEmptyCardFanProps {
@@ -9,7 +9,6 @@ export default class EmptyCardFan extends React.PureComponent<IEmptyCardFanProps
         const totalCards = this.props.cards
         const increment = 10
         const firstDegree = (-1) * increment * ((totalCards % 2) ? (totalCards-1)/2 : totalCards/2)
-        let currentDegree = firstDegree
 
         const cardsInFan : any[] = []
 
