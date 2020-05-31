@@ -193,6 +193,13 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: white;
+    padding: 1%;
+}
+.bet-modal input {
+    display: block;
+}
+.bet-modal button {
+    float: right
 }
 .bet-overlay {
     position: absolute;
