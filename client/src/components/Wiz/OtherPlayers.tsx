@@ -1,5 +1,4 @@
 import React from 'react'
-import EmptyCardFan from './EmptyCardFan'
 import WizOtherPlayer from './OtherPlayer'
 
 interface IWizOtherPlayersProps {
