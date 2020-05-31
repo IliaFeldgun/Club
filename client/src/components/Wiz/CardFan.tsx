@@ -1,5 +1,6 @@
 import React from "react";
 import Card, { ICardProps } from "./Card";
+import ICard from "../../interfaces/Card";
 
 interface ICardFanProps {
     cards: Array<{suit: ICardProps["suit"], rank: ICardProps["rank"]}>
@@ -29,14 +30,17 @@ export default class CardFan extends React.PureComponent<ICardFanProps,ICardFanS
         const firstDegree = (-1) * increment * ((totalCards % 2) ? (totalCards-1)/2 : totalCards/2)
         let currentDegree = firstDegree
         
-        const cardsInFan = this.props.cards.map(card => {
-            const currentRotate = currentDegree
-            currentDegree+= increment
-            return <Card key={`${card.suit},${card.rank}`} 
-                         suit={card.suit} rank={card.rank} 
-                         rotateDegree={currentRotate} 
-                         handleClick={this.handleCardClick}/>
-        })
+        let cardsInFan: any = <React.Fragment />
+        if (this.props.cards.length) {
+            cardsInFan = this.props.cards.map((card: ICard) => {
+                const currentRotate = currentDegree
+                currentDegree+= increment
+                return <Card key={`${card.suit},${card.rank}`} 
+                            suit={card.suit} rank={card.rank} 
+                            rotateDegree={currentRotate} 
+                            handleClick={this.handleCardClick}/>
+            })
+        }
 
         return (
             <div className="player-fan">
