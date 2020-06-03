@@ -107,6 +107,8 @@ export default class WizMaster {
 
             const winningPlayer = WizInfo.getPlayerByCard(round, winningCard)
             WizMaster.addTakeToPlayerResult(round, winningPlayer)
+            // TODO: Refactor
+            round.tableStack.cards = []
             return winningPlayer
         }
         else {
