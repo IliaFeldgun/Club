@@ -65,7 +65,7 @@ export default class WizInfo {
         const isBetValid = bet <= round.roundNumber && bet >= 0
         const shouldBet = round.nextMove === PossibleMoves.PLACE_BET
 
-        return isCurrentPlayer && isBetValid
+        return isCurrentPlayer && isBetValid && shouldBet
     }
     static getPlayerHand(round: IWizRound, playerId: IPlayer["id"]): ICard[] {
         return round.playerHands[playerId]
