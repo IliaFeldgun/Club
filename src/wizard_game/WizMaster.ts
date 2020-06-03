@@ -48,47 +48,49 @@ export default class WizMaster {
             return false
         }
     }
-    static async playCard(gameId: IWizGame["id"],
-                    cardPlayed: ICard,
-                    playerId: IPlayer["id"]): Promise<boolean>
+    static async tryPlayCard(gameId: IWizGame["id"],
+        cardPlayed: ICard,
+        playerId: IPlayer["id"]): Promise<boolean>
     {
         const round = await WizMaster.getGameRound(gameId)
 
         if (round && WizInfo.canPlayCard(round, cardPlayed, playerId)) {
-            const cardsLeft = round.playerHands[playerId].filter(card =>
-                !Card.equals(cardPlayed, card)
-            )
-
-            round.playerHands[playerId] = cardsLeft
-            Stack.push(round.tableStack, cardPlayed)
-            WizMaster.advanceRound(round)
-
-            if (WizInfo.areAllHandsEmpty(round)) {
-                const game = await WizStore.getWizGame(gameId)
-                if (game) {
-                    WizMaster.calculateScores(round, game)
-                    WizMaster.nextRound(game)
-                    game.isDone = WizMaster.isGameDone(game)
-
-                    return await WizStore.setWizGame(game.id, game)
-                }
-            }
-            else {
-                return await WizStore.setWizRound(round.id, round)
-            }
+            return WizMaster.playCard(round, gameId, cardPlayed, playerId)
         }
         else
             return false
     }
-    private static advanceRound(round: IWizRound) {
-        WizMaster.nextTurn(round)
-        WizMaster.nextPlayer(round.playerOrder)
+    private static async playCard(
+        round: IWizRound,
+        gameId: IWizGame["id"],
+        cardPlayed: ICard,
+        playerId: IPlayer["id"]): Promise<boolean>
+    {
+        const cardsLeft = round.playerHands[playerId].filter(card =>
+            !Card.equals(cardPlayed, card)
+        )
 
-        const winningPlayer = WizMaster.assertWinner(round)
-        if (winningPlayer) {
-            WizMaster.addTakeToPlayerResult(round, winningPlayer)
+        round.playerHands[playerId] = cardsLeft
+        Stack.push(round.tableStack, cardPlayed)
+        WizMaster.nextPlayer(round.playerOrder)
+        WizMaster.assertWinner(round)
+
+        if (WizInfo.areAllHandsEmpty(round)) {
+            const game = await WizStore.getWizGame(gameId)
+            if (game) {
+                WizMaster.calculateScores(round, game)
+                WizMaster.nextRound(game)
+                game.isDone = WizMaster.isGameDone(game)
+
+                return await WizStore.setWizGame(game.id, game)
+            }
+        }
+        else {
+            WizMaster.nextTurn(round)
+            return await WizStore.setWizRound(round.id, round)
         }
     }
+
     private static nextTurn(round: IWizRound) {
         round.turnNumber++
     }
@@ -104,7 +106,7 @@ export default class WizMaster {
                 WizGameRules.getWinningCard(round.tableStack.cards, requiredSuit)
 
             const winningPlayer = WizInfo.getPlayerByCard(round, winningCard)
-
+            WizMaster.addTakeToPlayerResult(round, winningPlayer)
             return winningPlayer
         }
         else {
