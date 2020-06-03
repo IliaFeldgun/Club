@@ -132,7 +132,9 @@ export default class WizMaster {
         const newRound = await WizBuilder.newRoundState(
             game.id, game.currentRound, game.playerOrder, game.playerOrder[0])
 
-        if (newRound) {
+        const areCardsDealt  = await WizMaster.dealCards(newRound)
+
+        if (newRound && areCardsDealt) {
             game.currentRoundId = newRound
             return true
         }
