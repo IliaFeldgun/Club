@@ -131,7 +131,7 @@ router.post('/wiz/:gameId/play', async ( req, res ) => {
     if (playerId) {
         const gameId = req.params.gameId
         const card = req.body
-        const isCardPlayed = await WizMaster.playCard(gameId, card, playerId)
+        const isCardPlayed = await WizMaster.tryPlayCard(gameId, card, playerId)
         if (isCardPlayed)
             res.send({isCardPlayed})
         else {
