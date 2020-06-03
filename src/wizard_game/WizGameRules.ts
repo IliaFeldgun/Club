@@ -52,7 +52,7 @@ export default class WizGameRules {
     static getWinningCard(cards: ICard[], suitRequired: Suit): ICard {
         const relevantCards = cards.filter(card =>
             card.suit === suitRequired || card.rank === Rank.JOKER)
-        return relevantCards.sort((cardA, cardB) =>
+        return relevantCards.slice().sort((cardA, cardB) =>
             cardA.rank - cardB.rank).pop()
     }
 }
