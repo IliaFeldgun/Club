@@ -45,6 +45,7 @@ export default class WizInfo {
                        cardPlayed: ICard,
                        playerId: IPlayer["id"]): boolean
     {
+        const shouldPlayCard = round.nextMove === PossibleMoves.PLAY_CARD
         const isCurrentPlayer = playerId === WizInfo.getCurrentPlayer(round)
         const isCardInHand = -1 !== round.playerHands[playerId].findIndex(card =>
             Card.equals(cardPlayed, card)
@@ -56,7 +57,7 @@ export default class WizInfo {
         const isMoveValid = WizGameRules.checkPlayValidity(cardPlayed,
             playerCards, topCard, requiredSuit)
 
-        return isCurrentPlayer && isCardInHand && isMoveValid
+        return shouldPlayCard && isCurrentPlayer && isCardInHand && isMoveValid
     }
     static canPlayBet(round: IWizRound,
                       bet: number,
