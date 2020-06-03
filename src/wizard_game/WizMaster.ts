@@ -79,7 +79,7 @@ export default class WizMaster {
             const game = await WizStore.getWizGame(gameId)
             if (game) {
                 WizMaster.calculateScores(round, game)
-                WizMaster.nextRound(game)
+                await WizMaster.nextRound(game)
                 game.isDone = WizMaster.isGameDone(game)
 
                 return await WizStore.setWizGame(game.id, game)
