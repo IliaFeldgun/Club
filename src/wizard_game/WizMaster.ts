@@ -281,4 +281,14 @@ export default class WizMaster {
             return {}
         }
     }
+    static async getGamePlayerIds(gameId: IWizGame["id"]):
+        Promise<IPlayer["id"][]> {
+            const game = await WizStore.getWizGame(gameId)
+            if (game) {
+                return game.playerOrder
+            }
+            else {
+                return []
+            }
+    }
 }
