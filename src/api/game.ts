@@ -1,10 +1,10 @@
-import express from "express"
+import express, { Response } from "express"
 import IRoom from "../engine/lobby/interfaces/Room"
 import WizBuilder from "../wizard_game/WizBuilder"
 import WizMaster from "../wizard_game/WizMaster"
 import LobbyMaster from "../engine/lobby/LobbyMaster"
 import LobbyStore from "../engine/lobby/LobbyStore"
-import WizStore from "../wizard_game/WizStore"
+import IPlayer from "../engine/lobby/interfaces/Player"
 
 const router = express.Router()
 
@@ -116,8 +116,11 @@ router.post('/wiz/:gameId/bet/:bet', async (req, res) => {
         const gameId = req.params.gameId
         const bet = req.params.bet
         const isBetPlayed = await WizMaster.playBet(gameId, +bet, playerId)
-        if (isBetPlayed)
+        if (isBetPlayed) {
+            const playerIds = await WizMaster.getGamePlayerIds(gameId)
+            sendUpdateState(playerIds)
             res.send({isBetPlayed})
+        }
         else {
             res.status(500).send()
         }
@@ -132,8 +135,11 @@ router.post('/wiz/:gameId/play', async ( req, res ) => {
         const gameId = req.params.gameId
         const card = req.body
         const isCardPlayed = await WizMaster.tryPlayCard(gameId, card, playerId)
-        if (isCardPlayed)
+        if (isCardPlayed){
+            const playerIds = await WizMaster.getGamePlayerIds(gameId)
+            sendUpdateState(playerIds)
             res.send({isCardPlayed})
+        }
         else {
             res.status(500).send()
         }
@@ -143,4 +149,40 @@ router.post('/wiz/:gameId/play', async ( req, res ) => {
     }
 })
 
+// TODO: Move away to another api route and use it
+router.get('/wiz/updates', async (req, res, next) => {
+    res.set({
+        'Cache-Control': 'no-cache',
+        'Content-Type': 'text/event-stream',
+        'Connection': 'keep-alive'
+    })
+    res.flushHeaders()
+
+    res.write(`data: ${JSON.stringify({update: true})}\n\n`)
+    // TODO: Refactor it to session ID
+    const clientId = req.playerId
+    const newClient = {
+        id: clientId,
+        res
+    }
+    clients.push(newClient);
+
+    req.on('close', () => {
+        // TODO: Possibly log this
+        clients = clients.filter(client => client.id !== clientId)
+    })
+})
+
+function sendUpdateState(playerIds: IPlayer["id"][]) {
+    clients.forEach(client => {
+        if (playerIds.indexOf(client.id) !== -1) {
+            client.res.write(`data: ${JSON.stringify({update: true})}\n\n`)
+        }
+    })
+}
+let clients: {
+    // TODO: Convert to sessionId
+    id: string
+    res: Response
+}[] = []
 export default router
