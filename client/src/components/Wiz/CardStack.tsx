@@ -25,7 +25,7 @@ export default class CardStack extends React.PureComponent<ICardStackProps,ICard
     render() {
         let cardsInStack: JSX.Element[] = []
         if (!this.props.cards || this.props.cards.length === 0) {
-            cardsInStack.push(<PlaceholderCard/>)
+            cardsInStack.push(<PlaceholderCard key="placeholder"/>)
         }
         else {
             cardsInStack = this.props.cards.map((card) => { 

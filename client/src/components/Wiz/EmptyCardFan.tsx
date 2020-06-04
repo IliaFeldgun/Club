@@ -13,7 +13,7 @@ export default class EmptyCardFan extends React.PureComponent<IEmptyCardFanProps
         const cardsInFan : any[] = []
 
         for (let i = 0; i < this.props.cards; i++) {
-            cardsInFan.push(<EmptyCard rotateDegree={firstDegree + (increment * i)}/>)
+            cardsInFan.push(<EmptyCard key={Math.random()} rotateDegree={firstDegree + (increment * i)}/>)
         }
         return (
             <React.Fragment>
