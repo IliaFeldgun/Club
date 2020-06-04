@@ -1,5 +1,8 @@
 # Club Roadmap
 
+### Redis cleanup
+Game state destruction needs to be implemented. Use Key Value State Store to clean up objects that are no longer needed
+
 ### Locking mechanism
 The lobby is VERY likely to access and edit the same resource at the same time.
 Lock should be managed in Redis or changed to work with a database
@@ -13,6 +16,7 @@ Persistent data, such as players and rooms need to be managed in a database, not
 
 ### Normalize errors
 Create error handling with standartized errors
+
 ### Log everything
 Logging isn't implemented
 
