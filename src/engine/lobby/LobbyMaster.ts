@@ -116,6 +116,18 @@ export default class LobbyMaster {
             return []
         }
     }
+    static async getRoomGame(roomId: IRoom["id"]): Promise<{
+        id: IRoom["gameId"],
+        name: IRoom["gameName"],
+    }> {
+        const room: IRoom = await LobbyStore.getRoom(roomId)
+        if (room) {
+            return {id: room.gameId, name: room.gameName}
+        }
+        else {
+            return undefined
+        }
+    }
     static async getRoomGameType(roomId: IRoom["id"]): Promise<IRoom["gameName"]> {
         const room: IRoom = await LobbyStore.getRoom(roomId)
         if (room){
