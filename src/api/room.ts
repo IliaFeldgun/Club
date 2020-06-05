@@ -131,8 +131,18 @@ router.post('/:roomId/game/:gameName', async ( req, res ) => {
 });
 
 router.get('/:roomId/game', async ( req, res ) => {
-    // req.isPlayerinRoom?
-    res.send( "Game type is:" );
+    const playerId = req.playerId
+    if (playerId) {
+        const roomId = req.params.roomId
+
+        const game = await LobbyMaster.getRoomGame(roomId)
+        if (game) {
+            res.send({game})
+        }
+    }
+    else {
+        res.status(403).send("FAIL")
+    }
 } );
 router.put('/leader', ( req, res ) => {
     // req.player
