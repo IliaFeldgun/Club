@@ -8,6 +8,36 @@ import IPlayer from "../engine/lobby/interfaces/Player"
 
 const router = express.Router()
 
+// TODO: Move away to another api route and ".use" it
+const SSE_RESPONSE_HEADER = {
+  'Connection': 'keep-alive',
+  'Content-Type': 'text/event-stream',
+  'Cache-Control': 'no-cache',
+  'X-Accel-Buffering': 'no',
+};
+
+// TODO: Move away to another api route and ".use" it
+router.get('/wiz/updates', async (req, res) => {
+    req.socket.setTimeout(0)
+    req.socket.setNoDelay(true)
+    req.socket.setKeepAlive(true)
+    res.writeHead(200, SSE_RESPONSE_HEADER)
+
+    res.write(`data: ${JSON.stringify("OK")}\n\n`)
+    // TODO: Refactor it to session ID
+    const clientId = req.playerId
+    const newClient = {
+        id: clientId,
+        res
+    }
+    clients.push(newClient);
+
+    req.on('close', () => {
+        // TODO: Possibly log this
+        clients = clients.filter(client => client.id !== clientId)
+    })
+})
+
 router.post('/wiz/:roomId', async ( req, res ) => {
     const playerId = req.playerId
     const roomId = req.params.roomId
@@ -43,6 +73,7 @@ router.post('/wiz/:roomId', async ( req, res ) => {
         res.send("FAIL")
     }
 })
+
 router.get('/wiz/:gameId', async (req, res) => {
     const playerId = req.playerId
     const gameId = req.params.gameId
@@ -54,6 +85,7 @@ router.get('/wiz/:gameId', async (req, res) => {
         res.status(403).send("Player needs be set")
     }
 })
+
 router.get('/wiz/:gameId/players', async (req,res) => {
     const playerId = req.playerId
     if (playerId) {
@@ -149,34 +181,12 @@ router.post('/wiz/:gameId/play', async ( req, res ) => {
     }
 })
 
-// TODO: Move away to another api route and use it
-router.get('/wiz/updates', async (req, res, next) => {
-    res.set({
-        'Cache-Control': 'no-cache',
-        'Content-Type': 'text/event-stream',
-        'Connection': 'keep-alive'
-    })
-    res.flushHeaders()
-
-    res.write(`data: ${JSON.stringify({update: true})}\n\n`)
-    // TODO: Refactor it to session ID
-    const clientId = req.playerId
-    const newClient = {
-        id: clientId,
-        res
-    }
-    clients.push(newClient);
-
-    req.on('close', () => {
-        // TODO: Possibly log this
-        clients = clients.filter(client => client.id !== clientId)
-    })
-})
-
 function sendUpdateState(playerIds: IPlayer["id"][]) {
     clients.forEach(client => {
         if (playerIds.indexOf(client.id) !== -1) {
             client.res.write(`data: ${JSON.stringify({update: true})}\n\n`)
+            // Without this response isn't sent
+            client.res.writeProcessing()
         }
     })
 }
