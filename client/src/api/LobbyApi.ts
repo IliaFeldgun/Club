@@ -75,4 +75,21 @@ export default class LobbyApi {
 
         return (await res.json()).leader
     }
+    static async getRoomGame(roomId: string): Promise<{id: string, name: string}>
+    {
+        const options: RequestInit = {
+            method: "GET",
+            cache: "no-cache",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        }
+        const res = await fetch(`/api/room/${roomId}/game`, options)
+        if (res.status !== 200) {
+            // TODO: Handle
+        }
+
+        return (await res.json()).game
+        
+    }
 }
