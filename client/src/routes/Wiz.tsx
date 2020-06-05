@@ -39,12 +39,13 @@ export default class Wiz extends React.PureComponent<IWizProps,IWizState> {
         this.handleBet = this.handleBet.bind(this)
     }
     componentDidMount() {
-        WizApi.listenToUpdateEvent().then((source) => {
+        // WizApi.listenToUpdateEvent().addEventListener("message", (event) => {
+            // this.fetchDataToState()
+        // })
+        WizApi.listenToUpdateEvent().onmessage = (event) => {
             this.fetchDataToState()
-            source.addEventListener("message", (event) =>{
-                this.fetchDataToState()
-            })
-        })
+        }
+        this.fetchDataToState()
     }
     handleCardSend(card: ICard) {
         WizApi.sendCard(this.props.match.params.id, card).then((isCardSent) => {
