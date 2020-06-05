@@ -1,6 +1,7 @@
 import express from "express"
 import LobbyBuilder from "../engine/lobby/LobbyBuilder"
 import LobbyStore from "../engine/lobby/LobbyStore"
+import LobbyMaster from "../engine/lobby/LobbyMaster"
 
 const router = express.Router()
 
@@ -39,6 +40,21 @@ router.delete('/', async (req, res) => {
     }
     else {
         res.send("You are not any player (No cookies)")
+    }
+})
+
+router.get('/rooms', async (req, res) => {
+    const playerId = req.playerId
+
+    if (playerId) {
+        const rooms = await LobbyMaster.getPlayerRoomIds(playerId)
+        if (rooms) {
+            res.send({rooms})
+        }
+        else {
+            res.status(500)
+            res.send("FAIL")
+        }
     }
 })
 
