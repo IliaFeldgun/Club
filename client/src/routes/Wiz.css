@@ -141,6 +141,11 @@ body {
     text-shadow: 2px 2px grey;
     color: white;
 }
+.stack {
+    position: fixed;
+    bottom: 50%;
+    left: 25%;
+}
 .stack .player-card {
     position: fixed;
     bottom: 50%;
