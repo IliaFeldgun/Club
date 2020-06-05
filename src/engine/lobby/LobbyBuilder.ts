@@ -19,7 +19,6 @@ export default class LobbyBuilder {
         const roomId = generateId(playerId, process.env.UUID_ROOM_NAMESPACE)
 
         const room: IRoom = new Room(roomId, playerId)
-        room.players = [... room.players, playerId]
 
         if (await LobbyStore.setRoom(roomId, room))
             return roomId
