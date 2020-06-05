@@ -60,4 +60,19 @@ export default class LobbyApi {
 
         return (await res.json()).rooms
     }
+    static async getRoomLeader(roomId: string): Promise<string> {
+        const options: RequestInit = {
+            method: "GET",
+            cache: "no-cache",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        }
+        const res = await fetch(`/api/room/${roomId}/leader`, options)
+        if (res.status !== 200) {
+            // TODO: Handle
+        }
+
+        return (await res.json()).leader
+    }
 }
