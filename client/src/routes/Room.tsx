@@ -3,9 +3,10 @@ import { RouteComponentProps, match } from 'react-router-dom'
 import LobbyApi from '../api/LobbyApi'
 import PlayerList from '../components/PlayerList'
 import "./Room.css"
-import { getPlayerName } from '../utils/Cookie'
+import { getPlayerName, getPlayerId } from '../utils/Cookie'
 import JoinButton from '../components/Room/JoinButton'
 import CreateWiz from '../components/Wiz/CreateWiz'
+import PlayButton from '../components/Room/PlayButton'
 interface IRouteParams {
     id: string
 }
@@ -14,31 +15,57 @@ interface IRoomProps extends RouteComponentProps<IRouteParams>{
 }
 interface IRoomState {
     players: string[]
+    leader: string
+    roomId: string
+    gameName: string
+    gameId: string
 }
 export default class Room extends React.PureComponent<IRoomProps,IRoomState>{
     constructor(props: IRoomProps) {
         super(props)
 
         this.state = {
-            players: []
+            players: [],
+            leader: "",
+            roomId: this.props.match.params.id,
+            gameName: "",
+            gameId: ""
         }
     }
     componentDidMount() {
-        LobbyApi.getRoomPlayers(this.props.match.params.id).then((res: Response) => {
+        LobbyApi.getRoomPlayers(this.state.roomId).then((res: Response) => {
             if (res.status === 200) {
                 res.json().then((json) => {
                     this.setState({players: [...json.playerNames]})
                 })
             }
         })
+
+        LobbyApi.getRoomLeader(this.state.roomId).then((leader) => {
+            this.setState({leader})
+        })
+
+        LobbyApi.getRoomGame(this.state.roomId).then((game) => {
+            this.setState({gameName: game.name, gameId: game.id})
+        })
     }
     render() {
-        let joinButton = <JoinButton roomId={this.props.match.params.id} />
-        if (this.state.players.some((player) => player === getPlayerName()))
+        let joinButton = <React.Fragment/>
+        if (!this.state.players.some((player) => player === getPlayerName()))
         {
-            joinButton = <React.Fragment/>
+            joinButton = <JoinButton roomId={this.props.match.params.id} />
         }
-        let createWizButton = <CreateWiz roomId={this.props.match.params.id} />
+        let createWizButton = <React.Fragment/>
+        if (this.state.leader === getPlayerId()) {
+            createWizButton = <CreateWiz roomId={this.props.match.params.id} />
+        }
+        let playButton = <React.Fragment/>
+        if (this.state.gameId && this.state.gameName) {
+            playButton = <PlayButton 
+                gameId={this.state.gameId} 
+                gameName={this.state.gameName} 
+            />
+        }
         return (
             <React.Fragment>
             <div className="centered-top">
@@ -48,6 +75,7 @@ export default class Room extends React.PureComponent<IRoomProps,IRoomState>{
                 <PlayerList players={this.state.players} />
                 {joinButton}
                 {createWizButton}
+                {playButton}
             </div>
             </React.Fragment>
         )
