@@ -57,6 +57,21 @@ router.get('/:roomId/players', async (req,res) => {
         }
     }
 })
+router.get('/:roomId/leader', async (req,res) => {
+    const roomId = req.params.roomId
+    const playerId = req.playerId
+
+    if (playerId) {
+        const leader = await LobbyMaster.getRoomLeader(roomId)
+        if (leader) {
+            res.send({leader})
+        }
+        else {
+            res.status(500)
+            res.send("FAIL")
+        }
+    }
+})
 router.post('/:roomId/join', async ( req, res ) => {
     const playerId = req.playerId
     const roomId = req.params.roomId
