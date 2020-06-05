@@ -4,7 +4,7 @@ interface IRoomCreateState {
     roomId: string
 }
 export default class Rooms extends React.PureComponent<{},IRoomCreateState> {
-    constructor() {
+    constructor({}) {
         super({})
 
         this.state = {roomId: ""}
