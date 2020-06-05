@@ -136,7 +136,7 @@ export class WizApi {
     
             return (await res.json()).bets
     }
-    static async listenToUpdateEvent() {
+    static listenToUpdateEvent() {
         return new EventSource('/api/game/wiz/updates')
     }
 }
