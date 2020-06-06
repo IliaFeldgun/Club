@@ -34,3 +34,13 @@ li {
     left: 50%;
     transform: translate(-50%, 0);
 }
+.login-modal {
+    text-align: center;
+}
+.login-modal .login-form {
+    position: relative;
+    text-align: center;
+}
+.login-modal .close-button {
+    margin-top: 2%;
+}
