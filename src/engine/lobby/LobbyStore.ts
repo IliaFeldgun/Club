@@ -66,4 +66,13 @@ export default class LobbyStore {
             return false
         }
     }
+    static async setPlayerAndRoom(player: IPlayer, room: IRoom): Promise<boolean> {
+        return store.multiple()
+        .SET(player.id, JSON.stringify(player))
+        .SET(room.id, JSON.stringify(room))
+        .EXEC()
+    }
+    static lock(resourceId: string[]) {
+        return store.lock(resourceId)
+    }
 }
