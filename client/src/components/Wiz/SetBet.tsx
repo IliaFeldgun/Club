@@ -42,7 +42,7 @@ export default class SetBet extends React.PureComponent<ISetBetProps, ISetBetSta
     render(){
         const buttonClass = "form-button"
         return (
-            <ReactModal className="bet-modal"
+            <ReactModal className="bet-modal box-modal"
                         isOpen={this.state.showModal}>
                 <input type="range" defaultValue="0" name="setBet" min="0" max={this.props.maxBet}
                        onChange={this.handleBetChange}/>
