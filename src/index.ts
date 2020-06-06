@@ -3,7 +3,7 @@ dotenv.config()
 
 import express from "express"
 import cookieParser from "cookie-parser"
-import game from "./api/games/game"
+import wizard from "./api/games/wizard"
 import player from "./api/player"
 import room from "./api/room"
 import {logger} from "./winston"
@@ -19,7 +19,7 @@ app.use(assertPlayer)
 
 app.use(express.static('./client/build'))
 
-app.use("/api/game", game)
+app.use("/api/game/wizard", wizard)
 app.use("/api/player", player)
 app.use("/api/room", room)
 
