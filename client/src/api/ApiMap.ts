@@ -1,7 +1,7 @@
 const API_MAP = {
     WIZ: {
         SEND_CARD: {
-            URL: "/api/wiz",
+            URL: "/api/game/wizard",
             METHOD: "POST"
         }
     },

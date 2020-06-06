@@ -16,7 +16,7 @@ export default class CreateWiz extends React.PureComponent<ICreateWizProps,{}>{
             // Statuses not failed
             if (res.status !== 403 && res.status !== 500) {
                 res.json().then((json) => 
-                    window.location.assign("/wiz/" + json.gameId) 
+                    window.location.assign("/wizard/" + json.gameId) 
                 )
             }
         })

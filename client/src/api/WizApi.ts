@@ -10,7 +10,7 @@ export class WizApi {
                 'Content-Type': 'application/json'
             },
         }
-        return fetch(`/api/game/wiz/${roomId}`, options)
+        return fetch(`/api/game/wizard/${roomId}`, options)
     }
     static async getGameInstructions(gameId: string): Promise<PossibleMoves> {
         const options: RequestInit = {
@@ -20,7 +20,7 @@ export class WizApi {
                 'Content-Type': 'application/json'
             },
         }
-        const res = await fetch(`/api/game/wiz/${gameId}`, options) 
+        const res = await fetch(`/api/game/wizard/${gameId}`, options) 
         if (res.status !== 200) {
             // TODO: Handle
         }
@@ -34,7 +34,7 @@ export class WizApi {
                 'Content-Type': 'application/json'
             },
         }
-        const res = await fetch(`/api/game/wiz/${gameId}/players`, options)
+        const res = await fetch(`/api/game/wizard/${gameId}/players`, options)
         if (res.status !== 200) {
             // TODO: Handle
         }
@@ -49,7 +49,7 @@ export class WizApi {
                 'Content-Type': 'application/json'
             },
         }
-        const res = await  fetch(`/api/game/wiz/${gameId}/handsizes`, options)
+        const res = await  fetch(`/api/game/wizard/${gameId}/handsizes`, options)
         if (res.status !== 200) {
             // TODO: Handle
         }
@@ -64,7 +64,7 @@ export class WizApi {
                 'Content-Type': 'application/json'
             },
         }
-        const res = await fetch(`/api/game/wiz/${gameId}/hand`, options)
+        const res = await fetch(`/api/game/wizard/${gameId}/hand`, options)
         if (res.status !== 200) {
             // TODO: Handle
         }
@@ -79,7 +79,7 @@ export class WizApi {
                 'Content-Type': 'application/json'
             },
         }
-        const res = await fetch(`/api/game/wiz/${gameId}/stack`, options) 
+        const res = await fetch(`/api/game/wizard/${gameId}/stack`, options) 
         if (res.status !== 200) {
             // TODO: Handle
         }
@@ -95,7 +95,7 @@ export class WizApi {
             body: JSON.stringify(card)
         }
 
-        const res = await fetch(`/api/game/wiz/${gameId}/play`, options)
+        const res = await fetch(`/api/game/wizard/${gameId}/play`, options)
         if (res.status === 200) {
             return true
         }
@@ -112,7 +112,7 @@ export class WizApi {
             }
         }
 
-        const res = await fetch(`/api/game/wiz/${gameId}/bet/${bet}`, options)
+        const res = await fetch(`/api/game/wizard/${gameId}/bet/${bet}`, options)
         if (res.status === 200) {
             return true
         }
@@ -129,7 +129,7 @@ export class WizApi {
                     'Content-Type': 'application/json'
                 },
             }
-            const res = await fetch(`/api/game/wiz/${gameId}/bets`, options)
+            const res = await fetch(`/api/game/wizard/${gameId}/bets`, options)
             if (res.status !== 200) {
                 // TODO: Handle
             }
@@ -137,6 +137,6 @@ export class WizApi {
             return (await res.json()).bets
     }
     static listenToUpdateEvent() {
-        return new EventSource('/api/game/wiz/updates')
+        return new EventSource('/api/game/wizard/updates')
     }
 }
