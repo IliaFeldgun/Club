@@ -8,6 +8,8 @@ import JoinButton from '../components/Room/JoinButton'
 import CreateWiz from '../components/Wiz/CreateWiz'
 import PlayButton from '../components/Room/PlayButton'
 import ShareButton from '../components/Room/ShareButton'
+import ReactModal from 'react-modal'
+import LoginModal from '../components/Login/LoginModal'
 interface IRouteParams {
     id: string
 }
@@ -20,6 +22,7 @@ interface IRoomState {
     roomId: string
     gameName: string
     gameId: string
+    isLoggedIn: boolean
 }
 export default class Room extends React.PureComponent<IRoomProps,IRoomState>{
     constructor(props: IRoomProps) {
@@ -30,7 +33,8 @@ export default class Room extends React.PureComponent<IRoomProps,IRoomState>{
             leader: "",
             roomId: this.props.match.params.id,
             gameName: "",
-            gameId: ""
+            gameId: "",
+            isLoggedIn: getPlayerId() !== ""
         }
     }
     componentDidMount() {
@@ -77,6 +81,7 @@ export default class Room extends React.PureComponent<IRoomProps,IRoomState>{
                 {createWizButton}
                 {playButton}
                 <ShareButton targetUrl={document.URL} />
+                <LoginModal show={!this.state.isLoggedIn} />
             </div>
         )
     }
