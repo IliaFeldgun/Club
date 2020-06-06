@@ -141,6 +141,17 @@ router.get('/:gameId/bets', async (req, res) => {
         res.status(403).send("Player not set")
     }
 })
+router.get('/:gameId/kozer', async (req, res) => {
+    const playerId = req.playerId
+    if (playerId) {
+        const gameId = req.params.gameId
+        const strongSuit = await WizMaster.getStrongSuit(gameId)
+        res.send({strongSuit})
+    }
+    else {
+        res.status(403).send("Player not set")
+    }
+})
 
 router.post('/:gameId/bet/:bet', async (req, res) => {
     const playerId = req.playerId

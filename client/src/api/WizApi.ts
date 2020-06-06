@@ -1,4 +1,4 @@
-import ICard from "../interfaces/Card"
+import ICard, { Suit } from "../interfaces/Card"
 import { PossibleMoves } from "../interfaces/PossibleMoves"
 
 export class WizApi {
@@ -136,6 +136,22 @@ export class WizApi {
     
             return (await res.json()).bets
     }
+    static async getStrongSuit(gameId: string):
+        Promise<Suit> {
+            const options: RequestInit = {
+                method: "GET",
+                cache: "no-cache",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            }
+            const res = await fetch(`/api/game/wizard/${gameId}/kozer`, options)
+            if (res.status !== 200) {
+                // TODO: Handle
+            }
+    
+            return (await res.json()).strongSuit
+        }
     static listenToUpdateEvent() {
         return new EventSource('/api/game/wizard/updates')
     }

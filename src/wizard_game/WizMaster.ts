@@ -293,4 +293,14 @@ export default class WizMaster {
                 return []
             }
     }
+    static async getStrongSuit(gameId: IWizGame["id"]):
+        Promise<Suit> {
+            const round = await WizMaster.getGameRound(gameId)
+            if (round) {
+                return round.strongSuit
+            }
+            else {
+                return undefined
+            }
+        }
 }
