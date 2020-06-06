@@ -7,3 +7,30 @@ li {
 .block {
     display: block;
 }
+.box-modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 1%;
+}
+.bet-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: white;
+}
+.share-modal {
+    width: 80%
+}
+.share-modal input {
+    width: 99%
+}
+.share-modal button {
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
