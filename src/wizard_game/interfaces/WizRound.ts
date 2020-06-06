@@ -4,7 +4,7 @@ import IDeck from "../../card_engine/interfaces/Deck";
 import IWizGame from "./WizGame";
 import IPlayer from "../../engine/lobby/interfaces/Player";
 import IWizPlayerRoundResult from "./WizPlayerRoundResult";
-import ICard from "../../card_engine/interfaces/Card";
+import ICard, { Suit } from "../../card_engine/interfaces/Card";
 import { PossibleMoves } from "../enums/PossibleMoves";
 
 export default interface IWizRound {
@@ -14,6 +14,7 @@ export default interface IWizRound {
     gameId: IWizGame["id"]
     nextMove: PossibleMoves
     deck: IDeck
+    strongSuit: Suit
     tableStack: IStack
     playerOrder: IPlayer["id"][]
     playerHands: { [playerId: string]: ICard[] }

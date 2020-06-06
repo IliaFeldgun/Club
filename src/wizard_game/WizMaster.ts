@@ -1,5 +1,5 @@
 import IPlayer from "../engine/lobby/interfaces/Player";
-import ICard from "../card_engine/interfaces/Card";
+import ICard, { Suit } from "../card_engine/interfaces/Card";
 import WizGameRules from "./WizGameRules";
 import IWizRound from "./interfaces/WizRound";
 import WizStore from "./WizStore";
@@ -103,7 +103,7 @@ export default class WizMaster {
                 WizGameRules.getRequiredSuit(round.tableStack.cards)
 
             const winningCard =
-                WizGameRules.getWinningCard(round.tableStack.cards, requiredSuit)
+                WizGameRules.getWinningCard(round.tableStack.cards, requiredSuit, round.strongSuit)
 
             const winningPlayer = WizInfo.getPlayerByCard(round, winningCard)
             WizMaster.addTakeToPlayerResult(round, winningPlayer)
@@ -167,6 +167,8 @@ export default class WizMaster {
             else {
                 const cardsToDeal =
                     WizGameRules.getCardsPerPlayer(round.roundNumber)
+
+                round.strongSuit = WizGameRules.getStrongSuit(round.deck.cards)
 
                 for (let i = cardsToDeal; i > 0; i--) {
                     round.playerOrder.forEach(playerId =>
