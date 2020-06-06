@@ -54,10 +54,10 @@ export default class WizGameRules {
             card.suit === suitRequired || card.rank === Rank.JOKER)
 
         if (relevantCards.some(card => card.suit === strongSuit)) {
-            relevantCards = relevantCards.filter(card => 
+            relevantCards = relevantCards.filter(card =>
                 card.suit === strongSuit || card.rank === Rank.JOKER)
         }
-        
+
         return relevantCards.slice().sort((cardA, cardB) =>
             cardA.rank - cardB.rank).pop()
     }
