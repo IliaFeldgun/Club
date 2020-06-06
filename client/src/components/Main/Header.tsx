@@ -6,7 +6,7 @@ export default class Header extends React.PureComponent{
             <React.Fragment>
                 <header className="top wide">
                     <a href="/">
-                        <span className="main-title">Wiz</span>
+                        <span className="main-title">♣ Club</span>
                     </a>
                     {this.props.children}
                 </header>
