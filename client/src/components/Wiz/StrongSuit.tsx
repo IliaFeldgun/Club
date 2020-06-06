@@ -13,6 +13,7 @@ export default class StrongSuit extends React.PureComponent<IStrongSuitProps> {
         return (
             <span className={`strong-suit ${red}`}>
                 {suit}
+                <span className="tooltip-text">Strong suit</span>
             </span>
         )
     }
