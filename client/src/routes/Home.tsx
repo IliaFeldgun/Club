@@ -17,7 +17,7 @@ export default class Home extends React.PureComponent<{},IHomeState> {
         return (
             <React.Fragment>
                 <Description/>
-                <Catalog games={[{name: "Wizard", url: "/wizard",
+                <Catalog games={[{name: "Wizard", url: "/room",
                                   img:"https://norskpokerforbund.com/wp-content/uploads/2018/08/Card-Game.jpg"}]} />
             </React.Fragment>
         )
