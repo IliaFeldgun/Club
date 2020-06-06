@@ -54,6 +54,12 @@ body {
 .blue {
     background-color: royalblue;
 }
+.strong-suit {
+    font-size: 10vh;
+    position: absolute;
+    bottom: 0;
+    transform: translate(50%, -50%);
+}
 .player-card {
     width: 12vmax;
     height: 18vmax;
