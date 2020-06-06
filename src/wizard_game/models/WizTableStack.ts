@@ -11,7 +11,7 @@ export class WizTableStack extends Stack implements IWizTableStack {
     constructor() {
         super([])
     }
-
+/*
     getWinningPlayer() : IPlayer {
         return (WizGameRules.getWinningCard(this.cards, this.suitRequired) as IWizCard).ownerPlayer
     }
@@ -29,4 +29,5 @@ export class WizTableStack extends Stack implements IWizTableStack {
 
         return isValid
     }
+    */
 }
