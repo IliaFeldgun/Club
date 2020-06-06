@@ -54,11 +54,42 @@ body {
 .blue {
     background-color: royalblue;
 }
+.tooltip-text {
+    font-size: 2vh;
+    background-color: #555;
+    color: white;
+    text-align: center;
+    padding: 5px 5px;
+    border-radius: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 100%;
+    left: 0;
+    opacity: 0;
+    transition: opacity 0.3s;
+    visibility: hidden;
+}
+/* Tooltip arrow */
+.tooltip-text::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translate(-50%, 0);
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+}
 .strong-suit {
     font-size: 10vh;
     position: absolute;
     bottom: 0;
     transform: translate(50%, -50%);
+    z-index: 101;
+}
+.strong-suit:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
 }
 .player-card {
     width: 12vmax;
