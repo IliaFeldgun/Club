@@ -199,6 +199,9 @@ body {
     transform: translate(-50%, -50%);
     background-color: white;
     padding: 1%;
+    border-style: solid;
+    border-width: thin;
+    border-radius: 5px;
 }
 .bet-modal input {
     display: block;
