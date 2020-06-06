@@ -192,7 +192,7 @@ body {
     animation-name: to-stack, rotate-right
 }
 
-.bet-modal {
+.box-modal {
     position: absolute;
     top: 50%;
     left: 50%;
