@@ -3,7 +3,7 @@ dotenv.config()
 
 import express from "express"
 import cookieParser from "cookie-parser"
-import game from "./api/game"
+import game from "./api/games/game"
 import player from "./api/player"
 import room from "./api/room"
 import {logger} from "./winston"
