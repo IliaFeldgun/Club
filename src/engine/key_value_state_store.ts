@@ -1,4 +1,4 @@
-import { redisClient } from "./redis"
+import { redisClient, redLock } from "./redis"
 import { promisify } from "util"
 
 export default class KeyValueStateStore {
@@ -12,5 +12,11 @@ export default class KeyValueStateStore {
 
     static getAsync() {
         return promisify(redisClient.GET).bind(redisClient)
+    }
+    static multiple() {
+        return redisClient.MULTI()
+    }
+    static lock(resourceKey: string[]) {
+        return redLock.lock(resourceKey,1000)
     }
 }
