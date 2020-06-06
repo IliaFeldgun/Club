@@ -11,7 +11,11 @@
         "paths": {
             "*": [
                 "node_modules/*"
-            ]
+            ],
+            "@api/*":  ["src/api/*"],
+            "@card_engine/*": ["src/card_engine/*"],
+            "@engine/*": ["src/engine/*"],
+            "@wizard_game/*": ["src/engine/*"]
         }
     },
     "include": [
