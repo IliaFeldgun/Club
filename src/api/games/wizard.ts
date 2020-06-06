@@ -17,7 +17,7 @@ const SSE_RESPONSE_HEADER = {
 };
 
 // TODO: Move away to another api route and ".use" it
-router.get('/wizard/updates', async (req, res) => {
+router.get('/updates', async (req, res) => {
     req.socket.setTimeout(0)
     req.socket.setNoDelay(true)
     req.socket.setKeepAlive(true)
@@ -38,7 +38,7 @@ router.get('/wizard/updates', async (req, res) => {
     })
 })
 
-router.post('/wizard/:roomId', async ( req, res ) => {
+router.post('/:roomId', async ( req, res ) => {
     const playerId = req.playerId
     const roomId = req.params.roomId
 
@@ -74,7 +74,7 @@ router.post('/wizard/:roomId', async ( req, res ) => {
     }
 })
 
-router.get('/wizard/:gameId', async (req, res) => {
+router.get('/:gameId', async (req, res) => {
     const playerId = req.playerId
     const gameId = req.params.gameId
     if (playerId && WizMaster.isPlayerInGame(playerId, gameId)) {
@@ -86,7 +86,7 @@ router.get('/wizard/:gameId', async (req, res) => {
     }
 })
 
-router.get('/wizard/:gameId/players', async (req,res) => {
+router.get('/:gameId/players', async (req,res) => {
     const playerId = req.playerId
     if (playerId) {
         const gameId = req.params.gameId
@@ -97,7 +97,7 @@ router.get('/wizard/:gameId/players', async (req,res) => {
         res.status(403).send("Player needs be set")
     }
 })
-router.get('/wizard/:gameId/handsizes', async (req, res) => {
+router.get('/:gameId/handsizes', async (req, res) => {
     const playerId = req.playerId
     if (playerId) {
         const gameId = req.params.gameId
@@ -108,7 +108,7 @@ router.get('/wizard/:gameId/handsizes', async (req, res) => {
         res.status(403).send("Player needs be set")
     }
 })
-router.get('/wizard/:gameId/hand', async (req,res) => {
+router.get('/:gameId/hand', async (req,res) => {
     const playerId = req.playerId
     if (playerId) {
         const gameId = req.params.gameId
@@ -119,7 +119,7 @@ router.get('/wizard/:gameId/hand', async (req,res) => {
         res.status(403).send("Player needs to be set")
     }
 })
-router.get('/wizard/:gameId/stack', async (req,res) => {
+router.get('/:gameId/stack', async (req,res) => {
     const playerId = req.playerId
     if (playerId) {
         const gameId = req.params.gameId
@@ -130,7 +130,7 @@ router.get('/wizard/:gameId/stack', async (req,res) => {
         res.status(403).send("Player not set")
     }
 })
-router.get('/wizard/:gameId/bets', async (req, res) => {
+router.get('/:gameId/bets', async (req, res) => {
     const playerId = req.playerId
     if (playerId) {
         const gameId = req.params.gameId
@@ -142,7 +142,7 @@ router.get('/wizard/:gameId/bets', async (req, res) => {
     }
 })
 
-router.post('/wizard/:gameId/bet/:bet', async (req, res) => {
+router.post('/:gameId/bet/:bet', async (req, res) => {
     const playerId = req.playerId
     if (playerId) {
         const gameId = req.params.gameId
@@ -161,7 +161,7 @@ router.post('/wizard/:gameId/bet/:bet', async (req, res) => {
         res.status(403).send("Player not set")
     }
 })
-router.post('/wizard/:gameId/play', async ( req, res ) => {
+router.post('/:gameId/play', async ( req, res ) => {
     const playerId = req.playerId
     if (playerId) {
         const gameId = req.params.gameId
