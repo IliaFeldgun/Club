@@ -3,7 +3,7 @@ import './Wiz.css';
 import WizGame from "../components/Wiz/WizGame";
 import { match, RouteComponentProps } from "react-router";
 import { WizApi } from "../api/WizApi";
-import ICard from "../interfaces/Card";
+import ICard, { Suit } from "../interfaces/Card";
 import { PossibleMoves } from "../interfaces/PossibleMoves";
 
 interface IRouteParams {
@@ -14,12 +14,12 @@ interface IWizProps extends RouteComponentProps<IRouteParams>{
 }
 interface IWizState {
     instructions: PossibleMoves
-    game: any
     players: Array<{id: string, name: string, score: number}>
     playerHandSizes: { [playerId: string]: number }
     playerBets: { [playerId: string]: number }
     playerHand: ICard[]
     tableStack: ICard[]
+    strongSuit?: Suit
 }
 export default class Wiz extends React.PureComponent<IWizProps,IWizState> {
     constructor(props: IWizProps) {
@@ -27,7 +27,6 @@ export default class Wiz extends React.PureComponent<IWizProps,IWizState> {
 
         this.state = {
             instructions: PossibleMoves.NONE,
-            game: {}, 
             players: [], 
             playerHandSizes: {},
             playerBets: {},
@@ -69,6 +68,7 @@ export default class Wiz extends React.PureComponent<IWizProps,IWizState> {
                                 tableStack={this.state.tableStack}
                                 handleFanCardClick={this.handleCardSend}
                                 handleBet={this.handleBet}
+                                strongSuit={this.state.strongSuit}
                                 instructions={this.state.instructions}/>
         // TODO: Render error element
         // if (!this.state.game || !this.state.players)
@@ -89,6 +89,7 @@ export default class Wiz extends React.PureComponent<IWizProps,IWizState> {
         AllRequests.push(WizApi.getPlayerBets(gameId))
         AllRequests.push(WizApi.getPlayerHand(gameId))
         AllRequests.push(WizApi.getTableStack(gameId))
+        AllRequests.push(WizApi.getStrongSuit(gameId))
 
         Promise.all(AllRequests).then(([
             instructions, 
@@ -96,7 +97,8 @@ export default class Wiz extends React.PureComponent<IWizProps,IWizState> {
             playerHandSizes, 
             playerBets, 
             playerHand, 
-            tableStack
+            tableStack,
+            strongSuit
         ]) => {
             this.setState({
                 instructions, 
@@ -104,7 +106,8 @@ export default class Wiz extends React.PureComponent<IWizProps,IWizState> {
                 playerHandSizes, 
                 playerBets, 
                 playerHand, 
-                tableStack})
+                tableStack,
+                strongSuit})
         })
     }
 }
