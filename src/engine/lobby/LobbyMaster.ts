@@ -12,8 +12,8 @@ export default class LobbyMaster {
         }
 
         const player: IPlayer = await LobbyStore.getPlayer(playerId)
-        const isPlayerInRoom = player.rooms.indexOf(roomId) !== -1
-        const isRoomInPlayer = room.players.indexOf(playerId) !== -1
+        const isRoomInPlayer = player.rooms.indexOf(roomId) !== -1
+        const isPlayerInRoom = room.players.indexOf(playerId) !== -1
 
         if (room && player && room.players.length < MAX_PLAYERS) {
             if (!isRoomInPlayer)
@@ -22,9 +22,9 @@ export default class LobbyMaster {
                 room.players = room.players.concat(playerId)
 
             // TODO: Needs to be a single transaction
-            const roomDone = !isPlayerInRoom ? 
+            const roomDone = !isPlayerInRoom ?
                 await LobbyStore.setRoom(room.id, room) : true
-            const playerDone = !isRoomInPlayer ? 
+            const playerDone = !isRoomInPlayer ?
                 await LobbyStore.setPlayer(player.id, player) : true
 
             return roomDone && playerDone
