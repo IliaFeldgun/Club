@@ -4,16 +4,18 @@ import CardFan from "./CardFan";
 import ScoreBoard from "./ScoreBoard";
 import CardStack from "./CardStack";
 import { ICardProps } from "./Card";
-import ICard from "../../interfaces/Card";
+import ICard, { Suit } from "../../interfaces/Card";
 import WizPlayerList from "./PlayerList";
 import WizOtherPlayers from "./OtherPlayers";
 import { getPlayerId } from "../../utils/Cookie";
 import { PossibleMoves } from "../../interfaces/PossibleMoves";
 import SetBet from "./SetBet";
+import StrongSuit from "./StrongSuit";
 
 interface IWizGameProps {
     instructions: PossibleMoves
     players: Array<{id: string, name: string, score: number}>
+    strongSuit?: Suit
     playerHand: ICard[]
     playerHandSizes: { [playerId: string]: number }
     playerBets: { [playerId: string]: number }
@@ -86,11 +88,16 @@ export default class WizGame extends React.PureComponent<IWizGameProps,IWizGameS
             this.props.playerBets[getPlayerId()] === undefined) {
             setBet = <SetBet maxBet={this.props.playerHand.length} handleBet={this.handleBet}/>
         }
+        let strongSuit = <React.Fragment />
+        if (this.props.strongSuit) {
+            strongSuit = <StrongSuit strongSuit={this.props.strongSuit} />
+        }
 
         return (
             <React.Fragment>
                 {setBet}
                 <CardBoard>
+                    {strongSuit}
                     <CardStack cards={this.props.tableStack} />
                     <CardFan cards={this.state.handCards.concat(this.props.playerHand)} 
                              handleCardClick={this.handleFanCardClick}/>
