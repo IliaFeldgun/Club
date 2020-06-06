@@ -47,7 +47,8 @@ export default class ShareButton extends React.PureComponent<IShareButtonProps, 
                     <h3>Share this link:</h3>
                     <input className="url-textbox" 
                            type="url" value={this.props.targetUrl} 
-                           onClick={this.handleInputClick} >
+                           onClick={this.handleInputClick} 
+                           readOnly={true}>
                     </input>
                     <button className="form-button" onClick={this.handleCloseModal}>
                         Close
