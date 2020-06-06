@@ -7,6 +7,7 @@ import { getPlayerName, getPlayerId } from '../utils/Cookie'
 import JoinButton from '../components/Room/JoinButton'
 import CreateWiz from '../components/Wiz/CreateWiz'
 import PlayButton from '../components/Room/PlayButton'
+import ShareButton from '../components/Room/ShareButton'
 interface IRouteParams {
     id: string
 }
@@ -67,7 +68,6 @@ export default class Room extends React.PureComponent<IRoomProps,IRoomState>{
             />
         }
         return (
-            <React.Fragment>
             <div className="centered-top">
                 <span className="bold">This is room: </span>
                 <span>{this.props.match.params.id}</span>
@@ -76,8 +76,8 @@ export default class Room extends React.PureComponent<IRoomProps,IRoomState>{
                 {joinButton}
                 {createWizButton}
                 {playButton}
+                <ShareButton targetUrl={document.URL} />
             </div>
-            </React.Fragment>
         )
     }
 }
