@@ -2,7 +2,7 @@ import React from "react";
 import LobbyApi from "../../api/LobbyApi";
 
 interface ILoginFormProps {
-
+    className: string
 }
 interface ILoginFormState {
     playerName: string
@@ -28,7 +28,7 @@ export default class LoginForm extends React.PureComponent<ILoginFormProps,ILogi
     }
     render() {
         const fieldClass = "form-field"
-        const allClass = "centered-top"
+        const allClass = this.props.className + " login-form"
         const buttonClass = "form-button"
         return (
             <React.Fragment>
