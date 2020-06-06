@@ -8,6 +8,9 @@ The lobby is VERY likely to access and edit the same resource at the same time.
 Lock should be managed in Redis or changed to work with a database
 The games are turn based so it is unlikely cuncurrency problems will occur
 
+### Modulize
+Decouple engine from its games
+
 ### Room list
 A place to find a room to play
 
