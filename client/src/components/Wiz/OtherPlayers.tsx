@@ -1,19 +1,36 @@
 import React from 'react'
 import WizOtherPlayer from './OtherPlayer'
+import { getPlayerId } from '../../utils/Cookie'
 
 interface IWizOtherPlayersProps {
-    players: Array<{name: string, cards: number}>
+    players: Array<{id: string, name: string, score: number}>
+    playerHands: { [playerId: string]: number }
 }
 export default class WizOtherPlayers extends React.PureComponent<IWizOtherPlayersProps,{}> {
     render() {
-        const cards = this.props.players.map((player, index) => {
-            return (
-                    <WizOtherPlayer key={player.name} 
-                                    name={player.name} 
-                                    cards={player.cards} 
-                                    className={`other-fan-${index + 1}`}/>
-            )
-        })
+        let cards: JSX.Element[] = [<React.Fragment />]
+        if (this.props.players) {
+            const otherPlayers = this.props.players.filter((player) => {
+                return player.id !== getPlayerId()
+            })
+        
+            const otherPlayerHands = otherPlayers.map((player) => 
+            {
+                return {
+                    name: player.name, 
+                    cards: this.props.playerHands[player.id]
+                }
+            })
+            
+            const cards = otherPlayerHands.map((player, index) => {
+                return (
+                        <WizOtherPlayer key={player.name} 
+                                        name={player.name} 
+                                        cards={player.cards} 
+                                        className={`other-fan-${index + 1}`}/>
+                )
+            })
+        }
         return (
             <div className="other-players">
                 {cards}
