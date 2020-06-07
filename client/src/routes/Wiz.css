@@ -59,13 +59,15 @@ body {
 }
 .tooltip-text {
     font-size: 2vh;
+    line-height: 2vh;
+    font-weight: normal;
     background-color: #555;
     color: white;
     text-align: center;
     padding: 5px 5px;
     border-radius: 5px;
     position: absolute;
-    z-index: 1;
+    z-index: 1000;
     bottom: 100%;
     left: 0;
     opacity: 0;
@@ -92,10 +94,12 @@ body {
     margin-left: 1vw;
     z-index: 101;
     user-select: none; 
+    text-shadow: 0.25vh 0.5vh darkgreen;
 }
 .strong-suit:hover .tooltip-text {
     visibility: visible;
     opacity: 1;
+    text-shadow: none;
 }
 .player-card {
     width: 12vmax;
@@ -105,12 +109,15 @@ body {
     transform-origin: left bottom;
     font-size: 2.5vmax;
     font-family: sans-serif;
-    border-style: ridge;
+    border-style: double;
+    border-width: thin;
     border-radius: 5px;
     padding-left: 0.5vmax;
     user-select: none; 
     writing-mode: vertical-lr;
     text-orientation: upright;
+    box-shadow: 5px 10px darkgreen;
+
 }
 .player-fan {
     position: absolute;
@@ -144,6 +151,7 @@ body {
     border-radius: 5px;
     padding-left: 0.5vmax;
     user-select: none;
+    box-shadow: 0.25vmax 0.5vmax darkgreen;
 }
 .other-fan-1 {
     position: absolute;
@@ -194,7 +202,7 @@ body {
     right: 10%;
 }
 .other-player-name {
-    text-shadow: 2px 2px grey;
+    text-shadow: 1px 2px darkgreen;
     color: white;
 }
 .stack {
@@ -206,6 +214,11 @@ body {
 .stack .player-card {
     position: relative;
     margin-right: -13vmax;
+}
+.stack .placeholder-card{
+    box-shadow: none;
+    border-style: ridge;
+    border-width: medium;
 }
 .stack:hover .player-card {
     margin-right: -10vmax;
