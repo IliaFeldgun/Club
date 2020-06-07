@@ -99,7 +99,7 @@ export default class WizGame extends React.PureComponent<IWizGameProps,IWizGameS
         return getPlayerId() === this.props.nextPlayer
     }
     shouldPlayCard() {
-        return this.props.instructions == PossibleMoves.PLAY_CARD
+        return this.props.instructions === PossibleMoves.PLAY_CARD
     }
 
     mockOtherPlayers() {
