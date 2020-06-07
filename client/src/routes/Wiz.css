@@ -54,6 +54,9 @@ body {
 .blue {
     background-color: royalblue;
 }
+.highlight {
+    font-weight: bold;
+}
 .tooltip-text {
     font-size: 2vh;
     background-color: #555;
@@ -84,8 +87,10 @@ body {
     font-size: 10vh;
     position: absolute;
     bottom: 0;
-    transform: translate(50%, -50%);
+    transform: translate(0, -50%);
+    margin-left: 1vw;
     z-index: 101;
+    user-select: none; 
 }
 .strong-suit:hover .tooltip-text {
     visibility: visible;
@@ -101,13 +106,26 @@ body {
     font-family: sans-serif;
     border-style: ridge;
     border-radius: 5px;
-    padding-left: 5px;
+    padding-left: 0.5vmax;
     user-select: none; 
+    writing-mode: vertical-lr;
+    text-orientation: upright;
 }
-.player-fan .player-card {
-    left: 25%;
+.player-fan {
+    position: absolute;
+    left: 33%;
+    top: 66%;
     bottom: 0;
     z-index: 101;
+}
+.player-fan:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+    width: max-content;
+    z-index: 1001;
+}
+.player-fan .player-card {
+    bottom: 0;
 }
 .player-fan .player-card:hover {
     z-index: 1000;
@@ -123,7 +141,7 @@ body {
     font-family: sans-serif;
     border-style: ridge;
     border-radius: 5px;
-    padding-left: 3px;
+    padding-left: 0.5vmax;
     user-select: none;
 }
 .other-fan-1 {
@@ -179,20 +197,16 @@ body {
     color: white;
 }
 .stack {
-    position: fixed;
+    position: absolute;
     bottom: 50%;
-    left: 25%;
-}
-.stack .player-card {
-    position: fixed;
-    bottom: 50%;
-    left: 25%;
-}
-.stack:hover {
+    left: 33%;
     display: flex;
 }
-.stack:hover .player-card {
+.stack .player-card {
     position: relative;
+    margin-right: -13vmax;
+}
+.stack:hover .player-card {
     margin-right: -10vmax;
 }
 .red-card { color: red; }
@@ -200,10 +214,10 @@ body {
 @keyframes to-stack {
     0% {bottom: 0}
     50% {
-        bottom: 45%;
+        bottom: 40%;
     }
     100% {
-        bottom: 55%;
+        bottom: 50%;
     }
 }
 @keyframes rotate-right {
@@ -217,6 +231,7 @@ body {
     100% {transform: rotate3d(0,0,0.1,-0.1turn)}
 }
 .play-card {
+    left:33%;
     animation-duration: 0.5s;
     animation-timing-function: cubic-bezier(.62,1.18,.75,.79);
     animation-fill-mode: forwards;
