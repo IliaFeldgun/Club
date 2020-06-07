@@ -26,7 +26,7 @@ export class WizApi {
         }
         return (await res.json()).instruction
     }
-    static async getGamePlayers(gameId: string) {
+    static async getGamePlayers(gameId: string): Promise<{players: {id: string, name: string}[]}> {
         const options: RequestInit = {
             method: "GET",
             cache: "no-cache",
@@ -40,6 +40,21 @@ export class WizApi {
         }
 
         return (await res.json()).players
+    }
+    static async getNextPlayer(gameId: string): Promise<string> {
+        const options: RequestInit = {
+            method: "GET",
+            cache: "no-cache",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        }
+        const res = await fetch(`/api/game/wizard/${gameId}/nextplayer`, options)
+        if (res.status !== 200) {
+            // TODO: Handle
+        }
+
+        return (await res.json()).nextPlayer
     }
     static async getPlayerHandSizes(gameId: string) {
         const options: RequestInit = {
