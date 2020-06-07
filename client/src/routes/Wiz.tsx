@@ -50,9 +50,11 @@ export default class Wiz extends React.PureComponent<IWizProps,IWizState> {
     }
     handleCardSend(card: ICard) {
         WizApi.sendCard(this.props.match.params.id, card).then((isCardSent) => {
-            if (isCardSent) {
-                this.fetchDataToState()
+            if (!isCardSent) {
+                alert("NOPE")
+                window.location.reload()
             }
+            this.fetchDataToState()
         })
     }
     handleBet(bet: number) {
