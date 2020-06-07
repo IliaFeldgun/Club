@@ -27,6 +27,8 @@ export default class Card extends React.PureComponent<ICardProps,ICardState>{
         
         const isRed = this.isRed()
         const red = isRed ? "red-card" : ""
+        const isJoker = this.props.rank === Rank.JOKER
+        const joker = isJoker ? "vertical-text" : ""
         let rotate: CSSProperties = {}
         const degrees = this.props.rotateDegree
         const spread = degrees
@@ -34,11 +36,11 @@ export default class Card extends React.PureComponent<ICardProps,ICardState>{
             rotate = {transform: `rotate(${degrees}deg) translate(${spread}%,0)`}
         }
         
-        const classes = `white player-card ${red}`
+        const classes = `white player-card ${red} ${joker}`
         
         return (
             <p className={classes} style={rotate} onClick={this.handleClick}>
-                {suit}{rank}
+                {suit}<br/>{rank}
             </p>
         )
     }
