@@ -52,7 +52,7 @@ export default class WizBuilder {
 
     }
 
-    private static generatePlayerOrder(firstPlayer: IPlayer["id"],
+    static generatePlayerOrder(firstPlayer: IPlayer["id"],
                                players: IPlayer["id"][]): IPlayer["id"][]
     {
         const newOrder = [...players]
