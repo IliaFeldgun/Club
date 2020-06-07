@@ -15,6 +15,7 @@ interface IWizProps extends RouteComponentProps<IRouteParams>{
 interface IWizState {
     instructions: PossibleMoves
     players: Array<{id: string, name: string, score: number}>
+    nextPlayer: string
     playerHandSizes: { [playerId: string]: number }
     playerBets: { [playerId: string]: number }
     playerHand: ICard[]
@@ -28,6 +29,7 @@ export default class Wiz extends React.PureComponent<IWizProps,IWizState> {
         this.state = {
             instructions: PossibleMoves.NONE,
             players: [], 
+            nextPlayer: "",
             playerHandSizes: {},
             playerBets: {},
             playerHand: [], 
@@ -62,6 +64,7 @@ export default class Wiz extends React.PureComponent<IWizProps,IWizState> {
     }
     render() {
         let toRender = <WizGame players={this.state.players} 
+                                nextPlayer={this.state.nextPlayer}
                                 playerHandSizes={this.state.playerHandSizes}
                                 playerBets={this.state.playerBets}
                                 playerHand={this.state.playerHand}
@@ -82,9 +85,10 @@ export default class Wiz extends React.PureComponent<IWizProps,IWizState> {
     fetchDataToState() {
         const AllRequests: Promise<any>[] = []
         const gameId = this.props.match.params.id
-
+        // TODO: Maybe unite API
         AllRequests.push(WizApi.getGameInstructions(gameId))
         AllRequests.push(WizApi.getGamePlayers(gameId))
+        AllRequests.push(WizApi.getNextPlayer(gameId))
         AllRequests.push(WizApi.getPlayerHandSizes(gameId))
         AllRequests.push(WizApi.getPlayerBets(gameId))
         AllRequests.push(WizApi.getPlayerHand(gameId))
@@ -94,6 +98,7 @@ export default class Wiz extends React.PureComponent<IWizProps,IWizState> {
         Promise.all(AllRequests).then(([
             instructions, 
             players, 
+            nextPlayer,
             playerHandSizes, 
             playerBets, 
             playerHand, 
@@ -103,6 +108,7 @@ export default class Wiz extends React.PureComponent<IWizProps,IWizState> {
             this.setState({
                 instructions, 
                 players, 
+                nextPlayer,
                 playerHandSizes, 
                 playerBets, 
                 playerHand, 
