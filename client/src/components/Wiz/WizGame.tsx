@@ -81,7 +81,8 @@ export default class WizGame extends React.PureComponent<IWizGameProps,IWizGameS
                 <CardBoard>
                     {strongSuit}
                     <CardStack cards={this.props.tableStack} />
-                    <CardFan yourTurn={this.isYourTurn()} cards={this.state.handCards.concat(this.props.playerHand)} 
+                    <CardFan yourTurn={this.isYourTurn() && this.shouldPlayCard()} 
+                             cards={this.state.handCards.concat(this.props.playerHand)} 
                              handleCardClick={this.handleFanCardClick}/>
                     <WizOtherPlayers players={this.props.players} 
                                      playerHands={this.props.playerHandSizes} />
@@ -96,6 +97,9 @@ export default class WizGame extends React.PureComponent<IWizGameProps,IWizGameS
     }
     isYourTurn() {
         return getPlayerId() === this.props.nextPlayer
+    }
+    shouldPlayCard() {
+        return this.props.instructions == PossibleMoves.PLAY_CARD
     }
 
     mockOtherPlayers() {
