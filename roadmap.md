@@ -19,6 +19,9 @@ A place to find a room to play
 ### Database
 Persistent data, such as players and rooms need to be managed in a database, not in Redis
 
+### OAuth
+Sign in with facebook/google
+
 ### Normalize errors
 Create error handling with standartized errors
 
