@@ -15,6 +15,7 @@ import StrongSuit from "./StrongSuit";
 interface IWizGameProps {
     instructions: PossibleMoves
     players: Array<{id: string, name: string, score: number}>
+    nextPlayer: string
     strongSuit?: Suit
     playerHand: ICard[]
     playerHandSizes: { [playerId: string]: number }
@@ -43,8 +44,6 @@ export default class WizGame extends React.PureComponent<IWizGameProps,IWizGameS
     handleFanCardClick(event: React.MouseEvent, 
                        suit: ICardProps["suit"], 
                        rank: ICardProps["rank"]) {
-        // fetch post card move here
-        // this.moveCard(suit, rank)
         if(this.props.handleFanCardClick)
             this.props.handleFanCardClick({suit,rank})
     }
@@ -54,8 +53,6 @@ export default class WizGame extends React.PureComponent<IWizGameProps,IWizGameS
         }
     }
     componentDidMount() {
-        // fetch get table stack cards here
-        // fetch get player cards here
         // this.setState({handCards: [
         //     {suit: Suit.SPADE, rank: Rank.QUEEN},
         //     {suit: Suit.HEART, rank: Rank.SEVEN},
@@ -65,26 +62,11 @@ export default class WizGame extends React.PureComponent<IWizGameProps,IWizGameS
         // ]})
     }
     render() {
-        //const otherPlayers = this.mockOtherPlayers()
-
-        // TODO: refactor
-        const playerToRemove = this.props.players.findIndex((player) => {
-            return player.id === getPlayerId()
-        })
+        //const otherPlayerHands = this.mockOtherPlayers()
         
-        let allPlayers = this.props.players.slice()
-
-        if (playerToRemove !== -1) {
-            allPlayers.splice(playerToRemove, 1)
-        }
-
-        const otherPlayers = allPlayers.map((player) => 
-            {
-                return {name: player.name, cards: this.props.playerHandSizes[player.id]}
-            })
-
         let setBet = <React.Fragment />
-        if (this.props.playerHand && this.props.instructions === PossibleMoves.PLACE_BET &&
+        if (this.isYourTurn() && this.props.playerHand && 
+            this.props.instructions === PossibleMoves.PLACE_BET &&
             this.props.playerBets[getPlayerId()] === undefined) {
             setBet = <SetBet maxBet={this.props.playerHand.length} handleBet={this.handleBet}/>
         }
@@ -99,16 +81,21 @@ export default class WizGame extends React.PureComponent<IWizGameProps,IWizGameS
                 <CardBoard>
                     {strongSuit}
                     <CardStack cards={this.props.tableStack} />
-                    <CardFan cards={this.state.handCards.concat(this.props.playerHand)} 
+                    <CardFan yourTurn={this.isYourTurn()} cards={this.state.handCards.concat(this.props.playerHand)} 
                              handleCardClick={this.handleFanCardClick}/>
-                    <WizOtherPlayers players={otherPlayers} />
+                    <WizOtherPlayers players={this.props.players} 
+                                     playerHands={this.props.playerHandSizes} />
                 </CardBoard>
                 <ScoreBoard>
                     <WizPlayerList players={this.props.players} 
-                                   playerBets={this.props.playerBets} />
+                                   playerBets={this.props.playerBets} 
+                                   nextPlayer={this.props.nextPlayer} />
                 </ScoreBoard>
             </React.Fragment>
         )
+    }
+    isYourTurn() {
+        return getPlayerId() === this.props.nextPlayer
     }
 
     mockOtherPlayers() {
