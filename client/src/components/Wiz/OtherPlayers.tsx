@@ -22,7 +22,7 @@ export default class WizOtherPlayers extends React.PureComponent<IWizOtherPlayer
                 }
             })
             
-            const cards = otherPlayerHands.map((player, index) => {
+            cards = otherPlayerHands.map((player, index) => {
                 return (
                         <WizOtherPlayer key={player.name} 
                                         name={player.name} 
