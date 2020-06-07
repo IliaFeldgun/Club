@@ -35,7 +35,7 @@ export default class Card extends React.PureComponent<ICardProps,ICardState>{
         const classes = `white player-card ${red}`
         
         return (
-            <span className={classes} style={rotate} onClick={this.handleClick}>{suit}<br/>{rank}</span>
+            <p className={classes} style={rotate} onClick={this.handleClick}>{suit}<br/>{rank}</p>
         )
     }
     isRed() : boolean {
