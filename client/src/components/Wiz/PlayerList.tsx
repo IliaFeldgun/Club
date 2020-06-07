@@ -1,6 +1,7 @@
 import React from 'react'
+import PlayerListItem from './PlayerListItem'
 interface IWizPlayerListProps {
-    players: Array<{id: string, name: string, score: number}>
+    players: Array<{id: string, name: string, score: number, takes: number}>
     playerBets: { [playerId: string]: number }
     nextPlayer: string
 }
@@ -10,25 +11,24 @@ export default class WizPlayerList extends React.PureComponent<IWizPlayerListPro
         
         if (this.props.players) {
             players = this.props.players.map((player) => {
-                const playerBet = this.props.playerBets[player.id]
-                let betText = "Bet: "
                 let classes = ""
-                if (playerBet === undefined) {
-                    betText += "None"
-                }
-                else {
-                    betText += playerBet
-                }
                 if (player.id === this.props.nextPlayer) {
                     classes = "highlight"
                 }
-                return <li className={classes} key={player.id}>{player.name}: {player.score} {betText}</li>
+                return <PlayerListItem 
+                    className={classes}
+                    key={player.id} 
+                    name={player.name} 
+                    score={player.score}
+                    bet={this.props.playerBets[player.id]}
+                    takes={player.takes} />
             })
         }
         return (
-            <ol>
+            <div className="player-list">
+                Players:
                 {players}
-            </ol>
+            </div>
 
         )
     }
