@@ -142,7 +142,7 @@ export default class WizMaster {
 
         const areCardsDealt  = await WizMaster.dealCards(newRound)
 
-        if (newRound && areCardsDealt) {
+        if (newRound && areCardsDealt && game) {
             game.currentRoundId = newRound
             return true
         }
@@ -200,7 +200,10 @@ export default class WizMaster {
             // TODO: refactor
 
             const game = await WizStore.getWizGame(gameId)
-            const round = await WizStore.getWizRound(game.currentRoundId)
+            let round: IWizRound
+            if (game) {
+                round = await WizStore.getWizRound(game.currentRoundId)
+            }
 
             if (game && round) {
                 const players = await LobbyMaster.getRoomPlayers(game.roomId)
