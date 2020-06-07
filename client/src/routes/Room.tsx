@@ -8,8 +8,8 @@ import JoinButton from '../components/Room/JoinButton'
 import CreateWiz from '../components/Wiz/CreateWiz'
 import PlayButton from '../components/Room/PlayButton'
 import ShareButton from '../components/Room/ShareButton'
-import ReactModal from 'react-modal'
 import LoginModal from '../components/Login/LoginModal'
+
 interface IRouteParams {
     id: string
 }
