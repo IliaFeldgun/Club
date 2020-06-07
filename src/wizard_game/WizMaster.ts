@@ -73,7 +73,13 @@ export default class WizMaster {
         round.playerHands[playerId] = cardsLeft
         Stack.push(round.tableStack, cardPlayed)
         WizMaster.nextPlayer(round.playerOrder)
-        WizMaster.assertWinner(round)
+
+        const takeWinner = WizMaster.assertWinner(round)
+
+        if (takeWinner) {
+            round.playerOrder = 
+                WizBuilder.generatePlayerOrder(takeWinner, round.playerOrder)
+        }
 
         if (WizInfo.areAllHandsEmpty(round)) {
             const game = await WizStore.getWizGame(gameId)
