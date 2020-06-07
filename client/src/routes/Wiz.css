@@ -71,6 +71,7 @@ body {
     opacity: 0;
     transition: opacity 0.3s;
     visibility: hidden;
+    user-select: none;
 }
 /* Tooltip arrow */
 .tooltip-text::after {
