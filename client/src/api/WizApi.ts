@@ -26,7 +26,7 @@ export class WizApi {
         }
         return (await res.json()).instruction
     }
-    static async getGamePlayers(gameId: string): Promise<{players: {id: string, name: string}[]}> {
+    static async getGamePlayers(gameId: string): Promise<{id: string, name: string, score: number}[]> {
         const options: RequestInit = {
             method: "GET",
             cache: "no-cache",
@@ -56,7 +56,8 @@ export class WizApi {
 
         return (await res.json()).nextPlayer
     }
-    static async getPlayerHandSizes(gameId: string) {
+    static async getPlayerHandSizes(gameId: string): 
+    Promise<{ [playerId: string]: number }> {
         const options: RequestInit = {
             method: "GET",
             cache: "no-cache",

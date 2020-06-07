@@ -77,7 +77,7 @@ export default class WizMaster {
         const takeWinner = WizMaster.assertWinner(round)
 
         if (takeWinner) {
-            round.playerOrder = 
+            round.playerOrder =
                 WizBuilder.generatePlayerOrder(takeWinner, round.playerOrder)
         }
 
@@ -196,7 +196,7 @@ export default class WizMaster {
         }
     }
     static async getWizPlayersByGame(gameId: IWizGame["id"]):
-        Promise<{id: IPlayer["id"], name: IPlayer["name"]}[]> {
+        Promise<{id: IPlayer["id"], name: IPlayer["name"], score: number}[]> {
             // TODO: refactor
 
             const game = await WizStore.getWizGame(gameId)
