@@ -89,8 +89,11 @@ router.get('/:gameId/nextPlayer', async (req, res) => {
     const playerId = req.playerId
     const gameId = req.params.gameId
     if (playerId && WizMaster.isPlayerInGame(playerId, gameId)) {
-        const nextPlayer = (await WizMaster.getGamePlayerIds(gameId))[0]
-        res.send({nextPlayer})
+        const round = await WizMaster.getGameRound(gameId)
+        if (round) {
+            const nextPlayer = round.playerOrder[0]
+            res.send({nextPlayer})
+        }
     }
     else {
         res.status(403).send("Player needs be set")
