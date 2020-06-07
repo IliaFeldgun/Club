@@ -109,15 +109,17 @@ body {
     transform-origin: left bottom;
     font-size: 2.5vmax;
     font-family: sans-serif;
+    line-height: 2.5vmax;
     border-style: double;
     border-width: thin;
     border-radius: 5px;
     padding-left: 0.5vmax;
-    user-select: none; 
+    user-select: none;
+    box-shadow: 5px 10px darkgreen;
+}
+.vertical-text {
     writing-mode: vertical-lr;
     text-orientation: upright;
-    box-shadow: 5px 10px darkgreen;
-
 }
 .player-fan {
     position: absolute;
@@ -149,6 +151,7 @@ body {
     font-family: sans-serif;
     border-style: ridge;
     border-radius: 5px;
+    border-width: thin;
     padding-left: 0.5vmax;
     user-select: none;
     box-shadow: 0.25vmax 0.5vmax darkgreen;
@@ -165,10 +168,12 @@ body {
 }
 .other-fan-3 {
     position: absolute;
+    top: 2%;
     left: 10%;
 }
 .other-fan-4 {
     position: absolute;
+    top: 2%;
     right:10%;
 }
 .other-fan-5 {
@@ -214,6 +219,7 @@ body {
 .stack .player-card {
     position: relative;
     margin-right: -13vmax;
+    box-shadow: 1px 2px darkgreen;
 }
 .stack .placeholder-card{
     box-shadow: none;
