@@ -3,7 +3,7 @@ import './Wiz.css';
 import WizGame from "../components/Wiz/WizGame";
 import { match, RouteComponentProps } from "react-router";
 import { WizApi } from "../api/WizApi";
-import ICard, { Suit } from "../interfaces/Card";
+import ICard, { Suit, Rank } from "../interfaces/Card";
 import { PossibleMoves } from "../interfaces/PossibleMoves";
 
 interface IRouteParams {
@@ -49,13 +49,15 @@ export default class Wiz extends React.PureComponent<IWizProps,IWizState> {
         this.fetchDataToState()
     }
     handleCardSend(card: ICard) {
-        WizApi.sendCard(this.props.match.params.id, card).then((isCardSent) => {
-            if (!isCardSent) {
-                alert("NOPE")
-                window.location.reload()
-            }
-            this.fetchDataToState()
-        })
+        // if (this.canPlayCard(card)) {
+            WizApi.sendCard(this.props.match.params.id, card).then((isCardSent) => {
+                if (!isCardSent) {
+                    alert("NOPE")
+                    window.location.reload()
+                }
+                this.fetchDataToState()
+            })
+        // }
     }
     handleBet(bet: number) {
         WizApi.sendBet(this.props.match.params.id, bet).then((isBetSent) => {
@@ -117,5 +119,13 @@ export default class Wiz extends React.PureComponent<IWizProps,IWizState> {
                 tableStack,
                 strongSuit})
         })
+    }
+    canPlayCard(card: ICard) {
+        const requiredSuit = this.state.tableStack[0].suit
+        const isCorrectSuit = requiredSuit === card.suit
+        const hasCorrectSuit = this.state.playerHand.some(card => card.suit === requiredSuit)
+        const isJoker = card.rank === Rank.JOKER
+
+        return isJoker || isCorrectSuit || !hasCorrectSuit
     }
 }
