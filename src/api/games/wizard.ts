@@ -46,7 +46,7 @@ router.post('/:roomId', async ( req, res ) => {
     if (room) {
         if (room.leader === playerId) {
             const gameId = await WizBuilder.newGameState(room.id, room.players)
-            const isRoomSet = await LobbyMaster.setRoomGame(room.id, "wiz", gameId)
+            const isRoomSet = await LobbyMaster.setRoomGame(room.id, "wizard", gameId)
             const roundId = await WizBuilder.newRoundState(gameId,
                                                            1,
                                                            room.players,
