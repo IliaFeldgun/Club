@@ -26,7 +26,12 @@ export class WizApi {
         }
         return (await res.json()).instruction
     }
-    static async getGamePlayers(gameId: string): Promise<{id: string, name: string, score: number}[]> {
+    static async getGamePlayers(gameId: string): Promise<{
+        id: string,
+        name: string,
+        score: number,
+        takes: number
+    }[]> {
         const options: RequestInit = {
             method: "GET",
             cache: "no-cache",

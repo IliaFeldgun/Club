@@ -14,7 +14,7 @@ import StrongSuit from "./StrongSuit";
 
 interface IWizGameProps {
     instructions: PossibleMoves
-    players: Array<{id: string, name: string, score: number}>
+    players: Array<{id: string, name: string, score: number, takes: number}>
     nextPlayer: string
     strongSuit?: Suit
     playerHand: ICard[]

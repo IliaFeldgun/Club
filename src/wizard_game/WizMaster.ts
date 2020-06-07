@@ -196,18 +196,21 @@ export default class WizMaster {
         }
     }
     static async getWizPlayersByGame(gameId: IWizGame["id"]):
-        Promise<{id: IPlayer["id"], name: IPlayer["name"], score: number}[]> {
+        Promise<{id: IPlayer["id"], name: IPlayer["name"], score: number, takes: number}[]> {
             // TODO: refactor
 
             const game = await WizStore.getWizGame(gameId)
-            if (game) {
+            const round = await WizStore.getWizRound(game.currentRoundId)
+
+            if (game && round) {
                 const players = await LobbyMaster.getRoomPlayers(game.roomId)
                 if (players) {
                     const wizPlayers = (players.map((player) => {
                         return {
                             id: player.id,
                             name: player.name,
-                            score: game.playerScores[player.id].total
+                            score: game.playerScores[player.id].total,
+                            takes: round.playerResults[player.id].successfulTakes
                         }
                     }))
 

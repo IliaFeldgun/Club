@@ -14,7 +14,7 @@ interface IWizProps extends RouteComponentProps<IRouteParams>{
 }
 interface IWizState {
     instructions: PossibleMoves
-    players: Array<{id: string, name: string, score: number}>
+    players: Array<{id: string, name: string, score: number, takes: number}>
     nextPlayer: string
     playerHandSizes: { [playerId: string]: number }
     playerBets: { [playerId: string]: number }
