@@ -3,6 +3,7 @@ import Card, { ICardProps } from "./Card";
 import ICard from "../../interfaces/Card";
 
 interface ICardFanProps {
+    yourTurn: boolean
     cards: Array<{suit: ICardProps["suit"], rank: ICardProps["rank"]}>
     handleCardClick?: (event: React.MouseEvent, 
                        suit: ICardProps["suit"], 
@@ -18,11 +19,13 @@ export default class CardFan extends React.PureComponent<ICardFanProps,ICardFanS
         this.handleCardClick = this.handleCardClick.bind(this)
     }
     handleCardClick(event: React.MouseEvent, suit: ICardProps["suit"], rank: ICardProps["rank"]) {
-        let cssClasses = ["play-card"]
-        Math.round(Math.random()) ? cssClasses.push("right") : cssClasses.push("left")
-        event.currentTarget.classList.add(cssClasses[0], cssClasses[1])
-        if (this.props.handleCardClick)
-            this.props.handleCardClick(event, suit, rank)
+        if (this.props.yourTurn) {
+            let cssClasses = ["play-card"]
+            Math.round(Math.random()) ? cssClasses.push("right") : cssClasses.push("left")
+            event.currentTarget.classList.add(cssClasses[0], cssClasses[1])
+            if (this.props.handleCardClick)
+                this.props.handleCardClick(event, suit, rank)
+        }
     }
     render() {
         const totalCards = this.props.cards.length
@@ -31,7 +34,7 @@ export default class CardFan extends React.PureComponent<ICardFanProps,ICardFanS
         let currentDegree = firstDegree
         
         let cardsInFan: any = <React.Fragment />
-        if (this.props.cards.length) {
+        if (this.props.cards.length && this.props.cards && this.props.cards[0]) {
             cardsInFan = this.props.cards.map((card: ICard) => {
                 const currentRotate = currentDegree
                 currentDegree+= increment
@@ -41,9 +44,15 @@ export default class CardFan extends React.PureComponent<ICardFanProps,ICardFanS
                             handleClick={this.handleCardClick}/>
             })
         }
-
+        let wrongTurnTooltip = <React.Fragment />
+        if (!this.props.yourTurn) {
+            wrongTurnTooltip =  <span className="tooltip-text">
+                                    Wait for your turn
+                                </span>
+        }
         return (
             <div className="player-fan">
+                {wrongTurnTooltip}
                 {cardsInFan}
             </div>
         )
