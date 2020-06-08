@@ -6,9 +6,13 @@ Developed using mostly the Express.js framework with TypeScript.
 ## Usage
 
 ### Running project
-$ npm run dev
+
+  $ npm run dev
+  
 for running the server with the client including build
-$ npm run start
+
+  $ npm run start
+  
 for running without building
 
 ### Requirements
