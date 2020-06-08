@@ -23,18 +23,18 @@ export default class SetBet extends React.PureComponent<ISetBetProps, ISetBetSta
         this.handleClick = this.handleClick.bind(this)
     }
     handleBetChange(event: React.ChangeEvent<HTMLInputElement>) {
-        this.setState({bet: parseInt(event.target.value)})
+        this.setState(() => ({bet: parseInt(event.target.value)}))
     }
     handleClick(event: React.MouseEvent<HTMLButtonElement>) {
         this.props.handleBet(event, this.state.bet)
         this.handleCloseModal()
     }
     handleOpenModal () {
-        this.setState({ showModal: true });
+        this.setState(() => ({ showModal: true }))
     }
     
     handleCloseModal () {
-        this.setState({ showModal: false });
+        this.setState(() => ({ showModal: false }))
     }
     componentDidMount() {
         this.handleOpenModal()

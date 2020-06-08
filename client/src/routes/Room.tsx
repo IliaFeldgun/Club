@@ -41,17 +41,17 @@ export default class Room extends React.PureComponent<IRoomProps,IRoomState>{
         LobbyApi.getRoomPlayers(this.state.roomId).then((res: Response) => {
             if (res.status === 200) {
                 res.json().then((json) => {
-                    this.setState({players: [...json.playerNames]})
+                    this.setState(() => ({players: [...json.playerNames]}))
                 })
             }
         })
 
         LobbyApi.getRoomLeader(this.state.roomId).then((leader) => {
-            this.setState({leader})
+            this.setState(() => ({leader}))
         })
 
         LobbyApi.getRoomGame(this.state.roomId).then((game) => {
-            this.setState({gameName: game.name, gameId: game.id})
+            this.setState(() => ({gameName: game.name, gameId: game.id}))
         })
     }
     render() {

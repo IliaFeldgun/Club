@@ -17,7 +17,7 @@ export default class Profile extends React.PureComponent<IProfileProps,IProfileS
     }
 
     componentDidMount() {
-        LobbyApi.getPlayerRooms().then((rooms) => this.setState({rooms}))
+        LobbyApi.getPlayerRooms().then((rooms) => this.setState(() => ({rooms})))
     }
     render() {
         return (

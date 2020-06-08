@@ -21,11 +21,11 @@ export default class ShareButton extends React.PureComponent<IShareButtonProps, 
         this.handleOpenModal()
     }
     handleOpenModal () {
-        this.setState({ showModal: true });
+        this.setState(() => ({ showModal: true }));
     }
     
     handleCloseModal () {
-        this.setState({ showModal: false });
+        this.setState(() => ({ showModal: false }));
     }
     handleInputClick(event: React.MouseEvent<HTMLInputElement>) {
         event.currentTarget.select()

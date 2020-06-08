@@ -109,7 +109,7 @@ export default class Wiz extends React.PureComponent<IWizProps,IWizState> {
             tableStack,
             strongSuit
         ]) => {
-            this.setState({
+            this.setState(() => ({
                 instructions, 
                 players, 
                 nextPlayer,
@@ -117,7 +117,7 @@ export default class Wiz extends React.PureComponent<IWizProps,IWizState> {
                 playerBets, 
                 playerHand, 
                 tableStack,
-                strongSuit})
+                strongSuit}))
         })
     }
     canPlayCard(card: ICard) {
