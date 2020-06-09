@@ -25,11 +25,11 @@ export default class LoginModal extends React.PureComponent<ILoginModalProps, IL
         this.handleOpenModal()
     }
     handleOpenModal () {
-        this.setState(() => ({ showModal: true }));
+        this.setState({ showModal: true })
     }
     
     handleCloseModal () {
-        this.setState(() => ({ showModal: false }));
+        this.setState({ showModal: false })
     }
     render() {
         return (
