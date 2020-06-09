@@ -13,7 +13,7 @@ export default class LoginModal extends React.PureComponent<ILoginModalProps, IL
         super(props)
 
         this.state = {
-            showModal: this.props.show
+            showModal: props.show
         }
         
         this.handleOpenModal = this.handleOpenModal.bind(this)
