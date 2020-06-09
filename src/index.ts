@@ -6,12 +6,15 @@ import cookieParser from "cookie-parser"
 import wizard from "./api/games/wizard"
 import player from "./api/player"
 import room from "./api/room"
+import httpLogger from "morgan"
 import {logger} from "./winston"
 import assertPlayer from "./engine/player_assert"
 
 const app = express();
 const port = process.env.PORT; // default port to listen
 
+
+app.use(httpLogger('dev'))
 app.use(express.json());
 app.use(cookieParser(process.env.COOKIE_SECRET))
 app.use(express.urlencoded({extended: true}))
