@@ -60,10 +60,12 @@ export default class Room extends React.PureComponent<IRoomProps,IRoomState>{
             joinButton = <JoinButton roomId={this.props.match.params.id} />
         }
         return (
-            <div className="centered-top">
-                <span className="bold">This is room: </span>
+            <div className="centered-top room">
+                <span className="bold">Room ID: </span>
                 <span>{this.props.match.params.id}</span>
-                <ShareButton targetUrl={document.URL} />
+                <div className="align-right">
+                    <ShareButton targetUrl={document.URL} />
+                </div>
                 <p className="block bold">Players in this room:</p>
                 <PlayerList players={this.state.players} />
                 <RoomGame 
