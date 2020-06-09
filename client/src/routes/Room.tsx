@@ -68,6 +68,7 @@ export default class Room extends React.PureComponent<IRoomProps,IRoomState>{
                 </div>
                 <p className="block bold">Players in this room:</p>
                 <PlayerList players={this.state.players} />
+                {joinButton}
                 <RoomGame 
                     roomLeaderId={this.state.leader}
                     gameId={this.state.gameId} 
