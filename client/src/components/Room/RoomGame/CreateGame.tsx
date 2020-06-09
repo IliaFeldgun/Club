@@ -29,15 +29,13 @@ export default class CreateGame extends React.PureComponent<ICreateGameProps,{}>
         const buttonClass = "form-button"
         return (
             <React.Fragment>
-                <div>
-                    <button 
-                        className={buttonClass} 
-                        type="button" 
-                        onClick={this.handleGameCreation}
-                    >
-                        <span>Create Game</span>
-                    </button>
-                </div>
+                <button 
+                    className={buttonClass} 
+                    type="button" 
+                    onClick={this.handleGameCreation}
+                >
+                    <span>Create Game</span>
+                </button>
             </React.Fragment>
         )
     }
