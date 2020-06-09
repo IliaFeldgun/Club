@@ -34,7 +34,7 @@ export default class ShareButton extends React.PureComponent<IShareButtonProps, 
     render() {
             const buttonClass = "form-button"
         return (
-            <div>
+            <React.Fragment>
                 <button className={buttonClass} type="button" onClick={this.handleClick}>
                     <span>Share room link</span>
                 </button>
@@ -54,7 +54,7 @@ export default class ShareButton extends React.PureComponent<IShareButtonProps, 
                         Close
                     </button>
                 </ReactModal>
-            </div>
+            </React.Fragment>
         )
     }
     
