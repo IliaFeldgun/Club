@@ -15,9 +15,9 @@ export default class LoginForm extends React.PureComponent<ILoginFormProps,ILogi
         this.handleChange = this.handleChange.bind(this)
     }
     handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-        this.setState(() => ({
+        this.setState({
             playerName: event.target.value
-        }))
+        })
     }
     handleClick(event: React.MouseEvent<HTMLButtonElement>) {
         if(this.state.playerName) {
