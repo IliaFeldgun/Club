@@ -9,7 +9,7 @@ export default class extends React.PureComponent<IGameDisplayProps>{
             <React.Fragment>
                 {this.props.gameName && 
                     <div className="room-game-name">
-                        {"Selected game is: "}
+                        {"Game in progress: "}
                         {this.props.gameName}
                     </div> 
                 }
