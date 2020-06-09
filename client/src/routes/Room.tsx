@@ -5,10 +5,9 @@ import PlayerList from '../components/PlayerList'
 import "./Room.css"
 import { getPlayerName, getPlayerId } from '../utils/Cookie'
 import JoinButton from '../components/Room/JoinButton'
-import CreateWiz from '../components/Wiz/CreateWiz'
-import PlayButton from '../components/Room/PlayButton'
 import ShareButton from '../components/Room/ShareButton'
 import LoginModal from '../components/Login/LoginModal'
+import RoomGame from '../components/Room/RoomGame'
 
 interface IRouteParams {
     id: string
@@ -31,7 +30,7 @@ export default class Room extends React.PureComponent<IRoomProps,IRoomState>{
         this.state = {
             players: [],
             leader: "",
-            roomId: this.props.match.params.id,
+            roomId: props.match.params.id,
             gameName: "",
             gameId: "",
             isLoggedIn: getPlayerId() !== ""
@@ -60,27 +59,22 @@ export default class Room extends React.PureComponent<IRoomProps,IRoomState>{
         {
             joinButton = <JoinButton roomId={this.props.match.params.id} />
         }
-        let createWizButton = <React.Fragment/>
-        if (this.state.leader === getPlayerId()) {
-            createWizButton = <CreateWiz roomId={this.props.match.params.id} />
-        }
-        let playButton = <React.Fragment/>
-        if (this.state.gameId && this.state.gameName) {
-            playButton = <PlayButton 
-                gameId={this.state.gameId} 
-                gameName={this.state.gameName} 
-            />
-        }
         return (
-            <div className="centered-top">
-                <span className="bold">This is room: </span>
+            <div className="centered-top room">
+                <span className="bold">Room ID: </span>
                 <span>{this.props.match.params.id}</span>
+                <div className="align-right">
+                    <ShareButton targetUrl={document.URL} />
+                </div>
                 <p className="block bold">Players in this room:</p>
                 <PlayerList players={this.state.players} />
-                {joinButton}
-                {createWizButton}
-                {playButton}
-                <ShareButton targetUrl={document.URL} />
+                <RoomGame 
+                    roomLeaderId={this.state.leader}
+                    gameId={this.state.gameId} 
+                    gameName={this.state.gameName}
+                    roomId={this.state.roomId}
+                    gameNames={["wizard"]}
+                />
                 <LoginModal show={!this.state.isLoggedIn} />
             </div>
         )

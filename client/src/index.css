@@ -37,6 +37,7 @@ footer {
     left:50%;
     text-align: center;
     transform: translate(-50%, -50%);
+    width: fit-content;
 
 }
 .centered {
@@ -46,3 +47,6 @@ footer {
     text-align: center;
     transform: translate(-50%, -50%);
   }
+.align-right {
+    text-align: right;
+}

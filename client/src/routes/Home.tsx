@@ -2,13 +2,15 @@ import React from "react";
 import "./Home.css"
 import Description from "../components/Home/Description";
 import Catalog from "../components/Home/Catalog";
+interface IHomeProps {
 
+}
 interface IHomeState {
     roomId: string
 }
-export default class Home extends React.PureComponent<{},IHomeState> {
-    constructor(){
-        super({})
+export default class Home extends React.PureComponent<IHomeProps,IHomeState> {
+    constructor(props: IHomeProps){
+        super(props)
         this.state = {
             roomId: ""
         }

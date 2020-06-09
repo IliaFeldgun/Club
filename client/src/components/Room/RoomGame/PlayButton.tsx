@@ -1,8 +1,7 @@
 import React from 'react'
 
 interface IPlayButtonProps{
-    gameName: string
-    gameId: string
+    handlePlay: () => void
 }
 export default class PlayButton extends React.PureComponent<IPlayButtonProps,{}>{
     constructor(props: IPlayButtonProps) {
@@ -10,7 +9,7 @@ export default class PlayButton extends React.PureComponent<IPlayButtonProps,{}>
         this.handlePlay = this.handlePlay.bind(this)
     }
     handlePlay(event: React.MouseEvent<HTMLButtonElement>) {
-        window.location.assign(`/${this.props.gameName}/${this.props.gameId}`)
+        this.props.handlePlay()
     }
     render() {
         const buttonClass = "form-button"

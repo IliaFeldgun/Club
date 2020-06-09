@@ -10,8 +10,8 @@ router.post('/', async (req, res) => {
         const playerName = req.body.playerName
         const playerId = await LobbyBuilder.createPlayer(playerName)
         if (playerId) {
-            res.cookie("player_name", playerName, { signed: true })
-            res.cookie("player_id", playerId, { signed: true })
+            res.cookie("player_name", playerName, { signed: true, sameSite: true})
+            res.cookie("player_id", playerId, { signed: true, sameSite: true })
             res.send("Player created, cookie sent")
         }
         else {
