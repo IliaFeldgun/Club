@@ -13,6 +13,7 @@ export default class LoginForm extends React.PureComponent<ILoginFormProps,ILogi
         this.state = {playerName: ""}
         this.handleClick = this.handleClick.bind(this)
         this.handleChange = this.handleChange.bind(this)
+        this.handleKeyUp = this.handleKeyUp.bind(this)
     }
     handleChange(event: React.ChangeEvent<HTMLInputElement>) {
         this.setState({
@@ -20,6 +21,14 @@ export default class LoginForm extends React.PureComponent<ILoginFormProps,ILogi
         })
     }
     handleClick(event: React.MouseEvent<HTMLButtonElement>) {
+        this.sendLogin()
+    }
+    handleKeyUp(event: React.KeyboardEvent<HTMLInputElement>) {
+        if (event.keyCode === 13) { // "RETURN" key
+            this.sendLogin()
+        }
+    }
+    sendLogin() {
         if(this.state.playerName) {
             LobbyApi.newPlayer(this.state.playerName).then((response) => {
                 window.location.reload(false)
@@ -34,8 +43,15 @@ export default class LoginForm extends React.PureComponent<ILoginFormProps,ILogi
             <React.Fragment>
                 <div className={allClass}>
                     <h3>Login with a name of your choice</h3>
-                    <input className={fieldClass} id="playerName" type="text" name="playerName" onChange={this.handleChange} />
-                    <button className={buttonClass} id="loginsend" type="submit" onClick={this.handleClick}>
+                    <input 
+                        className={fieldClass} 
+                        id="playerName" 
+                        type="text" 
+                        name="playerName" 
+                        onChange={this.handleChange} 
+                        onKeyUp={this.handleKeyUp} 
+                    />
+                    <button className={buttonClass} id="loginsend" onClick={this.handleClick}>
                         <span>
                             Login
                         </span>
