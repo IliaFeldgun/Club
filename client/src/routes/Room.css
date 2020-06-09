@@ -44,3 +44,20 @@ li {
 .login-modal .close-button {
     margin-top: 2%;
 }
+.centered-top.room{
+    text-align: left;
+    border-radius: 10px;
+    border-style: groove;
+    border-width: thick;
+    padding: 2vmax;
+    border-color: rgb(0, 102, 153);
+}
+.room-game-select {
+    border-radius: 6px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-left: 6px;
+    padding-right: 6px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
