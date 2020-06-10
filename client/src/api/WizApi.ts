@@ -159,20 +159,20 @@ export class WizApi {
     }
     static async getStrongSuit(gameId: string):
         Promise<Suit> {
-            const options: RequestInit = {
-                method: "GET",
-                cache: "no-cache",
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-            }
-            const res = await fetch(`/api/game/wizard/${gameId}/kozer`, options)
-            if (res.status !== 200) {
-                // TODO: Handle
-            }
-    
-            return (await res.json()).strongSuit
+        const options: RequestInit = {
+            method: "GET",
+            cache: "no-cache",
+            headers: {
+                'Content-Type': 'application/json'
+            },
         }
+        const res = await fetch(`/api/game/wizard/${gameId}/kozer`, options)
+        if (res.status !== 200) {
+            // TODO: Handle
+        }
+
+        return (await res.json()).strongSuit
+    }
     static listenToUpdateEvent() {
         return new EventSource('/api/game/wizard/updates')
     }

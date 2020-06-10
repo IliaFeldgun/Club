@@ -37,21 +37,17 @@ export default class Room extends React.PureComponent<IRoomProps,IRoomState>{
         }
     }
     componentDidMount() {
-        LobbyApi.getRoomPlayers(this.state.roomId).then((res: Response) => {
-            if (res.status === 200) {
-                res.json().then((json) => {
-                    this.setState(() => ({players: [...json.playerNames]}))
-                })
-            }
-        })
+        LobbyApi.listenToUpdateEvent().onmessage = (event) => {
+            this.fetchDataToState()
+        }
+        this.fetchDataToState()
+        // LobbyApi.getRoomLeader(this.state.roomId).then((leader) => {
+        //     this.setState(() => ({leader}))
+        // })
 
-        LobbyApi.getRoomLeader(this.state.roomId).then((leader) => {
-            this.setState(() => ({leader}))
-        })
-
-        LobbyApi.getRoomGame(this.state.roomId).then((game) => {
-            this.setState(() => ({gameName: game.name, gameId: game.id}))
-        })
+        // LobbyApi.getRoomGame(this.state.roomId).then((game) => {
+        //     this.setState(() => ({gameName: game.name, gameId: game.id}))
+        // })
     }
     render() {
         let joinButton = <React.Fragment/>
@@ -79,5 +75,24 @@ export default class Room extends React.PureComponent<IRoomProps,IRoomState>{
                 <LoginModal show={!this.state.isLoggedIn} />
             </div>
         )
+    }
+
+    fetchDataToState() {
+        LobbyApi.getRoom(this.state.roomId).then((room) => {
+            if (room)
+                this.setState(() => ({
+                    leader: room.leader,
+                    gameName: room.gameName,
+                    gameId: room.gameId
+                }))
+        })
+        LobbyApi.getRoomPlayers(this.state.roomId).then((res: Response) => {
+            if (res.status === 200) {
+                res.json().then((json) => {
+                    this.setState(() => ({players: [...json.playerNames]}))
+                })
+            }
+        })
+
     }
 }
