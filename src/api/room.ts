@@ -1,10 +1,40 @@
-import express from "express"
+import express, { Response } from "express"
 import IRoom from "../engine/lobby/interfaces/Room";
 import LobbyBuilder from "../engine/lobby/LobbyBuilder";
 import LobbyMaster from "../engine/lobby/LobbyMaster";
 import LobbyStore from "../engine/lobby/LobbyStore";
+import IPlayer from "@engine/lobby/interfaces/Player";
 
 const router = express.Router()
+// TODO: Move away to another api route and ".use" it
+const SSE_RESPONSE_HEADER = {
+    'Connection': 'keep-alive',
+    'Content-Type': 'text/event-stream',
+    'Cache-Control': 'no-cache',
+    'X-Accel-Buffering': 'no',
+  };
+
+// TODO: Move away to another api route and ".use" it
+router.get('/updates', async (req, res) => {
+    req.socket.setTimeout(0)
+    req.socket.setNoDelay(true)
+    req.socket.setKeepAlive(true)
+    res.writeHead(200, SSE_RESPONSE_HEADER)
+
+    res.write(`data: ${JSON.stringify("OK")}\n\n`)
+    // TODO: Refactor it to session ID
+    const clientId = req.playerId
+    const newClient = {
+        id: clientId,
+        res
+    }
+    clients.push(newClient);
+
+    req.on('close', () => {
+        // TODO: Possibly log this
+        clients = clients.filter(client => client.id !== clientId)
+    })
+})
 
 router.post('/', async (req, res) => {
     const playerId = req.playerId
@@ -78,6 +108,9 @@ router.post('/:roomId/join', async ( req, res ) => {
     if (playerId) {
 
         if (roomId && await LobbyMaster.addPlayerToRoom(playerId, roomId)) {
+            const playerIds = await LobbyMaster.getRoomPlayerIds(roomId)
+            sendUpdateState(playerIds)
+
             res.send({roomId})
         }
         else {
@@ -97,6 +130,8 @@ router.delete('/:roomId/player', async ( req, res ) => {
         const roomId = req.params.roomId
 
         if (roomId && await LobbyMaster.removePlayerFromRoom(playerId, roomId)) {
+            const playerIds = await LobbyMaster.getRoomPlayerIds(roomId)
+            sendUpdateState(playerIds)
             res.send("OK")
         }
         else {
@@ -118,6 +153,8 @@ router.post('/:roomId/game/:gameName', async ( req, res ) => {
     if (room) {
         if (room.leader === playerId) {
             await LobbyMaster.setRoomGameType(roomId, gameName)
+            const playerIds = room.players
+            sendUpdateState(playerIds)
             res.send({})
         }
         else {
@@ -150,5 +187,19 @@ router.put('/leader', ( req, res ) => {
     res.send( "Leader changed" );
 } );
 
+function sendUpdateState(playerIds: IPlayer["id"][]) {
+    clients.forEach(client => {
+        if (playerIds.indexOf(client.id) !== -1) {
+            client.res.write(`data: ${JSON.stringify({update: true})}\n\n`)
+            // Without this response isn't sent
+            client.res.writeProcessing()
+        }
+    })
+}
+let clients: {
+    // TODO: Convert to sessionId
+    id: string
+    res: Response
+}[] = []
 
 export default router

@@ -105,4 +105,7 @@ export default class LobbyApi {
 
         return (await res.json()).room
     }
+    static listenToUpdateEvent() {
+        return new EventSource('/api/room/updates')
+    }
 }
