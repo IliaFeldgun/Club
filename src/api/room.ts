@@ -33,8 +33,7 @@ router.get('/:roomId', async (req, res) => {
     if (playerId) {
         const room: IRoom = await LobbyStore.getRoom(roomId)
         if (room) {
-            if (room.players.indexOf(playerId) !== -1)
-                res.send(room);
+            res.send({room});
         }
         else {
             res.status(500)
@@ -42,7 +41,7 @@ router.get('/:roomId', async (req, res) => {
         }
     }
 })
-router.get('/:roomId/players', async (req,res) => {
+router.get('/:roomId/playernames', async (req,res) => {
     const roomId = req.params.roomId
     const playerId = req.playerId
 
@@ -57,21 +56,21 @@ router.get('/:roomId/players', async (req,res) => {
         }
     }
 })
-router.get('/:roomId/leader', async (req,res) => {
-    const roomId = req.params.roomId
-    const playerId = req.playerId
+// router.get('/:roomId/leader', async (req,res) => {
+//     const roomId = req.params.roomId
+//     const playerId = req.playerId
 
-    if (playerId) {
-        const leader = await LobbyMaster.getRoomLeader(roomId)
-        if (leader) {
-            res.send({leader})
-        }
-        else {
-            res.status(500)
-            res.send("FAIL")
-        }
-    }
-})
+//     if (playerId) {
+//         const leader = await LobbyMaster.getRoomLeader(roomId)
+//         if (leader) {
+//             res.send({leader})
+//         }
+//         else {
+//             res.status(500)
+//             res.send("FAIL")
+//         }
+//     }
+// })
 router.post('/:roomId/join', async ( req, res ) => {
     const playerId = req.playerId
     const roomId = req.params.roomId
@@ -130,20 +129,20 @@ router.post('/:roomId/game/:gameName', async ( req, res ) => {
     }
 });
 
-router.get('/:roomId/game', async ( req, res ) => {
-    const playerId = req.playerId
-    if (playerId) {
-        const roomId = req.params.roomId
+// router.get('/:roomId/game', async ( req, res ) => {
+//     const playerId = req.playerId
+//     if (playerId) {
+//         const roomId = req.params.roomId
 
-        const game = await LobbyMaster.getRoomGame(roomId)
-        if (game) {
-            res.send({game})
-        }
-    }
-    else {
-        res.status(403).send("FAIL")
-    }
-} );
+//         const game = await LobbyMaster.getRoomGame(roomId)
+//         if (game) {
+//             res.send({game})
+//         }
+//     }
+//     else {
+//         res.status(403).send("FAIL")
+//     }
+// } );
 router.put('/leader', ( req, res ) => {
     // req.player
     // req.room
