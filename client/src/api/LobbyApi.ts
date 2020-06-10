@@ -1,3 +1,6 @@
+import IRoom from "../engine/interfaces/Room";
+import LOBBY_API_MAP from "../engine/ApiMap";
+
 export default class LobbyApi {
     static async newPlayer(playerName: string) {
         const data = new URLSearchParams();
@@ -30,7 +33,7 @@ export default class LobbyApi {
                 'Content-Type': 'application/json'
             },
         }
-        return fetch(`/api/room/${roomId}/players`, options)
+        return fetch(`/api/room/${roomId}/playernames`, options)
     }
 
     static async joinRoom(roomId: string) {
@@ -90,6 +93,16 @@ export default class LobbyApi {
         }
 
         return (await res.json()).game
-        
+    }
+    static async getRoom(roomId: string): Promise<IRoom> {
+        const options = LOBBY_API_MAP.ROOM.GET_ROOM.options
+        const url = LOBBY_API_MAP.ROOM.GET_ROOM.url(roomId)
+
+        const res = await fetch(url, options)
+        if (res.status !== 200) {
+            // TODO: Handle
+        }
+
+        return (await res.json()).room
     }
 }
