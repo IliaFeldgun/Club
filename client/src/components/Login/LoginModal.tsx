@@ -2,6 +2,7 @@ import React from 'react'
 import ReactModal from 'react-modal'
 import LoginForm from './LoginForm'
 
+ReactModal.setAppElement('#root');
 interface ILoginModalProps {
     show: boolean
 }
