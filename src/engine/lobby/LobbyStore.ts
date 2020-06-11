@@ -19,6 +19,17 @@ export default class LobbyStore {
     static async setRoom(roomId: IRoom["id"], room: IRoom): Promise<boolean> {
         return Database.replace(collections.ROOM_COLLECTION, roomId, room)
     }
+    static async setRoomGame(
+        roomId: IRoom["id"], 
+        gameId: IRoom["gameId"],
+        gameName: IRoom["gameName"]): Promise<boolean> {
+            return Database.update(
+                collections.ROOM_COLLECTION,
+                roomId,
+                "gameId",
+                gameId
+            )
+        }
     // static async getRoom(roomId: IRoom["id"]): Promise<IRoom> {
     //     try {
     //         const room: IRoom = JSON.parse(await store.getAsync()(roomId))
