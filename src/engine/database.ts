@@ -67,11 +67,11 @@ export default class Database {
                 return false
             }
     }
-    static async pushToArray(collectionName: string, idToUpdate: string, arrayName: string, value: string):
+    static async pushToArray(collectionName: string, idToUpdate: string, arrayName: string, values: string[]):
         Promise<boolean> {
             const collection = await Database.getCollectionByName(collectionName)
             const toPush: any = {}
-            toPush[arrayName] = value
+            toPush[arrayName] = {$each: values}
             const result  = await collection.updateOne({idToUpdate}, {$push: toPush})
             if (result.modifiedCount === 1) {
                 return true
