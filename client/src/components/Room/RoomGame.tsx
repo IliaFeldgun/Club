@@ -49,23 +49,22 @@ export default class RoomGame extends React.PureComponent<IRoomGameProps, IRoomG
                     </div>
                 </React.Fragment>
         }
-        else if (this.props.gameNames && this.props.gameNames.length) {
+        else if (this.props.gameNames && 
+                 this.props.gameNames.length &&
+                 this.props.roomLeaderId === getPlayerId()) {
             toRender = 
                 <React.Fragment>
                     <GameDropDown 
                         handleSelection={this.handleGameSelect} 
                         gameNames={this.props.gameNames} 
                     />
-                    {this.props.roomLeaderId === getPlayerId() &&
-                        <div className="align-right">
-                            <CreateGame 
-                            roomId={this.props.roomId} 
-                            gameName={this.state.selectedGame} 
-                            />
-                        </div>
-                    }
+                    <div className="align-right">
+                        <CreateGame 
+                        roomId={this.props.roomId} 
+                        gameName={this.state.selectedGame} 
+                        />
+                    </div>
                 </React.Fragment>
-                
         }
         return (
             <div className="room-game">

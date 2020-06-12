@@ -37,10 +37,10 @@ export default class Card extends React.PureComponent<ICardProps,ICardState>{
         }
         
         const classes = `white player-card ${red} ${joker}`
-        
+    const cardContent = <React.Fragment>{suit}{!isJoker && <br/>}{rank}</React.Fragment>
         return (
             <p className={classes} style={rotate} onClick={this.handleClick}>
-                {suit}<br/>{rank}
+                {cardContent}
             </p>
         )
     }

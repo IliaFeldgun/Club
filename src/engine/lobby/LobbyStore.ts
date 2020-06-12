@@ -1,78 +1,95 @@
 import store from "../key_value_state_store"
 import IPlayer from "./interfaces/Player"
 import IRoom from "./interfaces/Room"
+import Database from "../database"
+import collections from "../db_collections_map"
 
 export default class LobbyStore {
-
-    static async getRoom(roomId: IRoom["id"]): Promise<IRoom> {
-        try {
-            const room: IRoom = JSON.parse(await store.getAsync()(roomId))
-            return room
-        }
-        catch(error) {
-            // TODO: Log it
-            return undefined
-        }
-    }
-    static async setRoom(roomId: IRoom["id"], room: IRoom): Promise<boolean> {
-        try {
-            const storeResponse = await store.setAsync()(roomId, JSON.stringify(room))
-            return true
-        }
-        catch(error) {
-            // TODO: Log it
-            return false
-        }
-    }
     static async getPlayer(playerId: IPlayer["id"]): Promise<IPlayer> {
-        try {
-            const player: IPlayer = JSON.parse(await store.getAsync()(playerId))
-            return player
+        const collection = collections.PLAYER_COLLECTION
+        const filter = {
+            id: playerId
         }
-        catch(error) {
-            // TODO: Log it
-            return undefined
-        }
+        return Database.get(collection, filter)
     }
-    static async setPlayer(playerId: IPlayer["id"], player: IPlayer): Promise<boolean> {
-        try {
-            const storeResponse = await store.setAsync()(playerId, JSON.stringify(player))
-            return true
+    static async setPlayer(player: IPlayer):
+        Promise<boolean> {
+        const collection = collections.PLAYER_COLLECTION
+        const filter = {
+            id: player.id
         }
-        catch(error) {
-            // TODO: Log it
-            return false
-        }
+        return Database.upsert(collection, filter, player)
     }
-    static async deleteRoom(roomId: IRoom["id"]): Promise<boolean> {
-        try {
-            const storeResponse = await store.deleteAsync()(roomId)
-            // TODO: Maybe remove room from all players
-            return true
+    static async getRoom(roomId: IRoom["id"]): Promise<IRoom> {
+        const collection = collections.ROOM_COLLECTION
+        const filter = {
+            id: roomId
         }
-        catch(error) {
-            // TODO: Log it
-            return false
+        return Database.get(collection, filter)
+    }
+    static async setRoom(room: IRoom): Promise<boolean> {
+        const collection = collections.ROOM_COLLECTION
+        const filter = {
+            id: room.id
         }
+        return Database.upsert(collection, filter, room)
+    }
+    static async setRoomGame(
+        roomId: IRoom["id"],
+        gameId: IRoom["gameId"],
+        gameName: IRoom["gameName"]): Promise<boolean> {
+            const collection = collections.ROOM_COLLECTION
+            const updateValue = {
+                gameId, gameName
+            }
+            return Database.update(collection, roomId, updateValue)
+    }
+    static async setRoomLeader(roomId: IRoom["id"], playerId: IPlayer["id"]):
+        Promise<boolean> {
+            const collection = collections.ROOM_COLLECTION
+            const updateValue = {
+                leader: playerId
+            }
+            return Database.update(collection, roomId, updateValue)
+        }
+    /// TODO: These two need to be a single transaction
+    static async setRoomPlayers(roomId: IRoom["id"], playerIds: IPlayer["id"][]):
+        Promise<boolean> {
+        const collection = collections.ROOM_COLLECTION
+        return Database.pushToArray(collection, roomId, "players", playerIds)
+    }
+    static async setPlayerRooms(playerId: IPlayer["id"], roomIds: IRoom["id"][]):
+        Promise<boolean> {
+        const collection = collections.PLAYER_COLLECTION
+        return Database.pushToArray(collection, playerId, "rooms", roomIds)
+    }
+    static async removeRoomPlayer(roomId: IRoom["id"], playerId: IPlayer["id"]):
+        Promise<boolean> {
+        const collection = collections.ROOM_COLLECTION
+        return Database.pullFromArray(collection, roomId, "players", playerId)
+    }
+    static async removePlayerRoom(playerId: IPlayer["id"], roomId: IRoom["id"]):
+        Promise<boolean> {
+        const collection = collections.PLAYER_COLLECTION
+        return Database.pullFromArray(collection, playerId, "rooms", roomId)
+
     }
     static async deletePlayer(playerId: IPlayer["id"]): Promise<boolean> {
-        try {
-            const storeResponse = await store.deleteAsync()(playerId)
-            // TODO: Maybe remove player from all rooms and close lead rooms
-            return true
+        const collection = collections.PLAYER_COLLECTION
+        const filter = {
+            id: playerId
         }
-        catch(error) {
-            // TODO: Log it
-            return false
+        return Database.delete(collection, filter)
+    }
+    static async deleteRoom(roomId: IRoom["id"]): Promise<boolean> {
+        const collection = collections.ROOM_COLLECTION
+        const filter = {
+            id: roomId
         }
+        return Database.delete(collection, filter)
     }
-    static async setPlayerAndRoom(player: IPlayer, room: IRoom): Promise<boolean> {
-        return store.multiple()
-        .SET(player.id, JSON.stringify(player))
-        .SET(room.id, JSON.stringify(room))
-        .EXEC()
-    }
-    static lock(resourceId: string[]) {
-        return store.lock(resourceId)
-    }
+
+    // static async setPlayerAndRoom(player: IPlayer, room: IRoom): Promise<boolean> {
+
+    // }
 }
