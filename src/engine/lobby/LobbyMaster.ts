@@ -8,54 +8,29 @@ export default class LobbyMaster {
         const MAX_PLAYERS = 10
         const room: IRoom = await LobbyStore.getRoom(roomId)
 
-        if (LobbyInfo.isGameInProgress(room)) {
+        if (LobbyInfo.isGameInProgress(room) || room.players.length >= MAX_PLAYERS) {
             return false
         }
-
-        const player: IPlayer = await LobbyStore.getPlayer(playerId)
-        const isRoomInPlayer = player.rooms.indexOf(roomId) !== -1
-        const isPlayerInRoom = room.players.indexOf(playerId) !== -1
-
-        if (room && player && room.players.length < MAX_PLAYERS) {
-            if (!isRoomInPlayer)
-                player.rooms = player.rooms.concat(roomId)
-            if (!isPlayerInRoom)
-                room.players = room.players.concat(playerId)
-
-            // TODO: Needs to be a single transaction
-            const roomDone = !isPlayerInRoom ?
-                await LobbyStore.setRoom(room.id, room) : true
-            const playerDone = !isRoomInPlayer ?
-                await LobbyStore.setPlayer(player.id, player) : true
-
-            return roomDone && playerDone
-        }
-        else {
-            return false
-        }
+        const playerDone = LobbyStore.setRoomPlayers(roomId, [playerId])
+        const roomDone = LobbyStore.setPlayerRooms(playerId, [roomId])
+        
+        return await roomDone && await playerDone
     }
-    static async removePlayerFromRoom(playerId: IPlayer["id"], roomId: IRoom["id"]): Promise<boolean> {
+    static async removePlayerFromRoom(
+        playerId: IPlayer["id"], 
+        roomId: IRoom["id"]
+    ): Promise<boolean> {
+    
         const room: IRoom = await LobbyStore.getRoom(roomId)
 
         if (LobbyInfo.isGameInProgress(room)) {
             return false
         }
 
-        const player: IPlayer = await LobbyStore.getPlayer(playerId)
+        const playerDone = LobbyStore.removePlayerRoom(playerId, roomId)
+        const roomDone = LobbyStore.removeRoomPlayer(roomId, playerId)
 
-        if (player && room) {
-            player.rooms = player.rooms.filter((r) => r !== roomId)
-            room.players = room.players.filter((p) => p !== playerId)
-
-            // TODO: Needs to be a single transaction
-            const roomDone = await LobbyStore.setRoom(room.id, room)
-            const playerDone = await LobbyStore.setPlayer(player.id, player)
-
-            return roomDone && playerDone
-        }
-        else {
-            return false
-        }
+        return await roomDone && await playerDone
     }
     static async isPlayerInRoom(playerId: IPlayer["id"], roomId: IRoom["id"]) :
         Promise<boolean> {
@@ -72,6 +47,15 @@ export default class LobbyMaster {
         const room: IRoom = await LobbyStore.getRoom(roomId)
         if (room)
             return room.players
+        else {
+            return []
+        }
+    }
+    static async getPlayerRoomIds(playerId: IPlayer["id"]): Promise<IRoom["id"][]> {
+        const player: IPlayer = await LobbyStore.getPlayer(playerId)
+        if (player) {
+            return player.rooms
+        }
         else {
             return []
         }
@@ -103,25 +87,12 @@ export default class LobbyMaster {
             return ""
         }
     }
-    static async setRoomLeader(playerId: IPlayer["id"], roomId: IRoom["id"]): Promise<boolean> {
-        const room: IRoom = await LobbyStore.getRoom(roomId)
-        if (room) {
-            room.leader = playerId
-            const roomDone = await LobbyStore.setRoom(roomId, room)
-            return roomDone
-        }
-        else {
-            return false
-        }
-    }
-    static async getPlayerRoomIds(playerId: IPlayer["id"]): Promise<IRoom["id"][]> {
-        const player: IPlayer = await LobbyStore.getPlayer(playerId)
-        if (player) {
-            return player.rooms
-        }
-        else {
-            return []
-        }
+    static async setRoomLeader(
+        playerId: IPlayer["id"], 
+        roomId: IRoom["id"]
+    ): Promise<boolean> {
+        
+        return LobbyStore.setRoomLeader(roomId, playerId)
     }
     static async getRoomGame(roomId: IRoom["id"]): Promise<{
         id: IRoom["gameId"],
@@ -135,39 +106,24 @@ export default class LobbyMaster {
             return undefined
         }
     }
-    static async getRoomGameType(roomId: IRoom["id"]): Promise<IRoom["gameName"]> {
-        const room: IRoom = await LobbyStore.getRoom(roomId)
-        if (room){
-            return room.gameName
-        }
-        else {
-            return ""
-        }
+    static async setRoomGame(
+        roomId: IRoom["id"],
+        gameName: IRoom["gameName"],
+        gameId: IRoom["gameId"]
+    ): Promise<boolean> {
+        
+        return LobbyStore.setRoomGame(roomId, gameId, gameName)
     }
-    static async setRoomGameType(roomId: IRoom["id"],
-                                 game: IRoom["gameName"]): Promise<boolean> {
-        const room: IRoom = await LobbyStore.getRoom(roomId)
-        if (room) {
-            room.gameName = game
-            const roomDone = await LobbyStore.setRoom(roomId, room)
-            return roomDone
-        }
-        else {
-            return false
-        }
-    }
-    static async setRoomGame(roomId: IRoom["id"],
-                             game: IRoom["gameName"],
-                             gameId: string): Promise<boolean> {
-        const room: IRoom = await LobbyStore.getRoom(roomId)
-        if (room) {
-            room.gameName = game
-            room.gameId = gameId
-            const roomDone = await LobbyStore.setRoom(roomId, room)
-            return roomDone
-        }
-        else {
-            return false
-        }
-    }
+    // static async getRoomGameType(roomId: IRoom["id"]): Promise<IRoom["gameName"]> {
+    //     const room: IRoom = await LobbyStore.getRoom(roomId)
+    //     if (room){
+    //         return room.gameName
+    //     }
+    //     else {
+    //         return ""
+    //     }
+    // }
+    // static async setRoomGameType(roomId: IRoom["id"],
+    //                              game: IRoom["gameName"]): Promise<boolean> {
+    // }
 }
