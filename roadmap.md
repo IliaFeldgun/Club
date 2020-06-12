@@ -1,7 +1,5 @@
 # Club Roadmap
 
-### Branch from 0.1
-
 ### Redis cleanup
 Game state destruction needs to be implemented. Use Key Value State Store to clean up objects that are no longer needed
 
