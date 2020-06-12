@@ -10,9 +10,9 @@ export default class MongoDBClient {
 
     public static async getClient() {
         if (!this.client) {
-            this.connectClient().then(() => {
-                return this.client
-            })
+            await this.connectClient()
+            
+            return this.client
         }
         else {
             return this.client
