@@ -54,7 +54,7 @@ export default class Database {
     static async replace(collectionName: string, idToReplace: string, object: any):
         Promise<boolean> {
         const collection = await Database.getCollectionByName(collectionName)
-        const result = await collection.replaceOne({idToReplace}, object)
+        const result = await collection.replaceOne({id: idToReplace}, object)
         if (result.modifiedCount === 1) {
             return true
         }
@@ -66,7 +66,7 @@ export default class Database {
     static async update(collectionName: string, idToUpdate: string, object: any):
         Promise<boolean> {
             const collection = await Database.getCollectionByName(collectionName)
-            const result = await collection.updateOne({idToUpdate}, {$set: object})
+            const result = await collection.updateOne({id: idToUpdate}, {$set: object})
             if (result.modifiedCount === 1) {
                 return true
             }
@@ -89,7 +89,7 @@ export default class Database {
             const collection = await Database.getCollectionByName(collectionName)
             const toPush: any = {}
             toPush[arrayName] = {$each: values}
-            const result  = await collection.updateOne({idToUpdate}, {$push: toPush})
+            const result  = await collection.updateOne({id: idToUpdate}, {$push: toPush})
             if (result.modifiedCount === 1) {
                 return true
             }
@@ -102,7 +102,7 @@ export default class Database {
             const collection = await Database.getCollectionByName(collectionName)
             const toPull: any = {}
             toPull[arrayName] = value
-            const result = await collection.updateOne({idToUpdate}, {$pull: {toPull}})
+            const result = await collection.updateOne({id: idToUpdate}, {$pull: {toPull}})
             if (result.modifiedCount === 1) {
                 return true
             }
