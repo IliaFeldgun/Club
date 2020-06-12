@@ -13,14 +13,14 @@ export default class LobbyMaster {
         }
         const playerDone = LobbyStore.setRoomPlayers(roomId, [playerId])
         const roomDone = LobbyStore.setPlayerRooms(playerId, [roomId])
-        
+
         return await roomDone && await playerDone
     }
     static async removePlayerFromRoom(
-        playerId: IPlayer["id"], 
+        playerId: IPlayer["id"],
         roomId: IRoom["id"]
     ): Promise<boolean> {
-    
+
         const room: IRoom = await LobbyStore.getRoom(roomId)
 
         if (LobbyInfo.isGameInProgress(room)) {
@@ -88,10 +88,10 @@ export default class LobbyMaster {
         }
     }
     static async setRoomLeader(
-        playerId: IPlayer["id"], 
+        playerId: IPlayer["id"],
         roomId: IRoom["id"]
     ): Promise<boolean> {
-        
+
         return LobbyStore.setRoomLeader(roomId, playerId)
     }
     static async getRoomGame(roomId: IRoom["id"]): Promise<{
@@ -111,7 +111,7 @@ export default class LobbyMaster {
         gameName: IRoom["gameName"],
         gameId: IRoom["gameId"]
     ): Promise<boolean> {
-        
+
         return LobbyStore.setRoomGame(roomId, gameId, gameName)
     }
     // static async getRoomGameType(roomId: IRoom["id"]): Promise<IRoom["gameName"]> {

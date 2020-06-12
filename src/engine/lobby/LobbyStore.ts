@@ -35,7 +35,7 @@ export default class LobbyStore {
         return Database.upsert(collection, filter, room)
     }
     static async setRoomGame(
-        roomId: IRoom["id"], 
+        roomId: IRoom["id"],
         gameId: IRoom["gameId"],
         gameName: IRoom["gameName"]): Promise<boolean> {
             const collection = collections.ROOM_COLLECTION
