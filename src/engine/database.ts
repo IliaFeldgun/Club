@@ -42,7 +42,7 @@ export default class Database {
     }
     static async upsert(collectionName: string, filter: any, object: any): Promise<boolean> {
         const collection = await Database.getCollectionByName(collectionName)
-        const result = await collection.updateOne(filter, object, {upsert: true})
+        const result = await collection.updateOne(filter, {$set: object}, {upsert: true})
         if (result.upsertedCount === 1) {
             return true
         }
@@ -66,7 +66,7 @@ export default class Database {
     static async update(collectionName: string, idToUpdate: string, object: any):
         Promise<boolean> {
             const collection = await Database.getCollectionByName(collectionName)
-            const result = await collection.updateOne({idToUpdate}, object)
+            const result = await collection.updateOne({idToUpdate}, {$set: object})
             if (result.modifiedCount === 1) {
                 return true
             }
