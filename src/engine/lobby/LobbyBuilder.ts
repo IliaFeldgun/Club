@@ -11,7 +11,7 @@ export default class LobbyBuilder {
 
         const player : IPlayer = new Player(playerId, playerName)
 
-        if (await LobbyStore.setPlayer(playerId, player))
+        if (await LobbyStore.setPlayer(player))
             return playerId
 
     }
@@ -20,7 +20,7 @@ export default class LobbyBuilder {
 
         const room: IRoom = new Room(roomId, playerId)
 
-        if (await LobbyStore.setRoom(roomId, room))
+        if (await LobbyStore.setRoom(room))
             return roomId
     }
 }
