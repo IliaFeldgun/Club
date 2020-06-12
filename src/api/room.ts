@@ -143,28 +143,28 @@ router.delete('/:roomId/player', async ( req, res ) => {
         res.send("Room can't be joined, you need to set a player")
     }
 } );
-router.post('/:roomId/game/:gameName', async ( req, res ) => {
-    // TODO: possibly not a useful route
-    const playerId = req.playerId
-    const roomId = req.params.roomId
-    const gameName = req.params.gameName
+// router.post('/:roomId/game/:gameName', async ( req, res ) => {
+//     // TODO: possibly not a useful route
+//     const playerId = req.playerId
+//     const roomId = req.params.roomId
+//     const gameName = req.params.gameName
 
-    const room : IRoom = await LobbyStore.getRoom(roomId)
-    if (room) {
-        if (room.leader === playerId) {
-            await LobbyMaster.setRoomGameType(roomId, gameName)
-            const playerIds = room.players
-            sendUpdateState(playerIds)
-            res.send({})
-        }
-        else {
-            res.send("You are not room leader")
-        }
-    }
-    else {
-        res.status(500).send("FAIL")
-    }
-});
+//     const room : IRoom = await LobbyStore.getRoom(roomId)
+//     if (room) {
+//         if (room.leader === playerId) {
+//             await LobbyMaster.setRoomGameType(roomId, gameName)
+//             const playerIds = room.players
+//             sendUpdateState(playerIds)
+//             res.send({})
+//         }
+//         else {
+//             res.send("You are not room leader")
+//         }
+//     }
+//     else {
+//         res.status(500).send("FAIL")
+//     }
+// });
 
 // router.get('/:roomId/game', async ( req, res ) => {
 //     const playerId = req.playerId
