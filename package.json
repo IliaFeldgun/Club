@@ -1,6 +1,6 @@
 {
   "name": "club",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A regular card game based on some rules of Wizard",
   "main": "dist/index.js",
   "scripts": {
