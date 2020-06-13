@@ -1,11 +1,14 @@
 import React from 'react'
 import LobbyApi from '../api/LobbyApi'
+interface IRoomCreateProps {
+
+}
 interface IRoomCreateState {
     roomId: string
 }
-export default class Rooms extends React.PureComponent<{},IRoomCreateState> {
-    constructor({}) {
-        super({})
+export default class Rooms extends React.PureComponent<IRoomCreateProps,IRoomCreateState> {
+    constructor(props: IRoomCreateProps) {
+        super(props)
 
         this.state = {roomId: ""}
         this.handleRoomCreation = this.handleRoomCreation.bind(this)
