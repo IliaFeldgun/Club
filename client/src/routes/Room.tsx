@@ -56,7 +56,7 @@ export default class Room extends React.PureComponent<IRoomProps,IRoomState>{
             joinButton = <JoinButton roomId={this.props.match.params.id} />
         }
         return (
-            <div className="centered-top room">
+            <div className="centered-relative room">
                 <span className="bold">Room ID: </span>
                 <span>{this.props.match.params.id}</span>
                 <div className="align-right">
