@@ -38,10 +38,12 @@ export default class WizGameRules {
         else return null
     }
 
-    static checkPlayValidity(playerCard: ICard,
-                                    playerCards: ICard[],
-                                    topCard?: ICard,
-                                    suitRequired?: Suit): boolean {
+    static checkPlayValidity(
+        playerCard: ICard,
+        playerCards: ICard[],
+        topCard?: ICard,
+        suitRequired?: Suit): boolean {
+
         return (!topCard ||
                 !suitRequired ||
                 playerCard.rank === Rank.JOKER ||
