@@ -55,16 +55,18 @@ export default class WizGameRules {
 
     static getWinningCard(cards: ICard[], strongSuit: Suit): ICard {
         const suitRequired = WizGameRules.getRequiredSuit(cards)
-
-        let relevantCards = cards.filter(card =>
-            card.suit === suitRequired || card.rank === Rank.JOKER)
+        let relevantCards = cards.slice()
 
         if (relevantCards.some(card => card.suit === strongSuit)) {
             relevantCards = relevantCards.filter(card =>
                 card.suit === strongSuit || card.rank === Rank.JOKER)
-        }
+        } 
+        else {
+            relevantCards = relevantCards.filter(card =>
+                card.suit === suitRequired || card.rank === Rank.JOKER)
 
-        return relevantCards.slice().sort((cardA, cardB) =>
+         }
+        return relevantCards.sort((cardA, cardB) =>
             cardA.rank - cardB.rank).pop()
     }
 
