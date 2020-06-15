@@ -105,11 +105,8 @@ export default class WizMaster {
     }
     private static assertWinner(round: IWizRound): IPlayer["id"] {
         if (round && WizInfo.didAllPlayTurn(round)) {
-            const requiredSuit =
-                WizGameRules.getRequiredSuit(round.tableStack.cards)
-
             const winningCard =
-                WizGameRules.getWinningCard(round.tableStack.cards, requiredSuit, round.strongSuit)
+                WizGameRules.getWinningCard(round.tableStack.cards, round.strongSuit)
 
             const winningPlayer = WizInfo.getPlayerByCard(round, winningCard)
             WizMaster.addTakeToPlayerResult(round, winningPlayer)
