@@ -41,17 +41,21 @@ export default class WizGameRules {
     static checkPlayValidity(
         playerCard: ICard,
         playerCards: ICard[],
-        topCard?: ICard,
-        suitRequired?: Suit): boolean {
+        stackCards: ICard[]): boolean {
 
-        return (!topCard ||
+        const suitRequired = WizGameRules.getRequiredSuit(stackCards)
+        const isThereTopCard = stackCards.length > 0
+
+        return (!isThereTopCard ||
                 !suitRequired ||
                 playerCard.rank === Rank.JOKER ||
                 playerCard.suit === suitRequired ||
                 !playerCards.some(card => card.suit === suitRequired))
     }
 
-    static getWinningCard(cards: ICard[], suitRequired: Suit, strongSuit: Suit): ICard {
+    static getWinningCard(cards: ICard[], strongSuit: Suit): ICard {
+        const suitRequired = WizGameRules.getRequiredSuit(cards)
+
         let relevantCards = cards.filter(card =>
             card.suit === suitRequired || card.rank === Rank.JOKER)
 
@@ -64,7 +68,7 @@ export default class WizGameRules {
             cardA.rank - cardB.rank).pop()
     }
 
-    static getStrongSuit(cards: ICard[]): Suit {
-        return cards[0].suit
+    static getStrongSuit(deck: ICard[]): Suit {
+        return deck[0].suit
     }
 }
