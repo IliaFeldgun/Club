@@ -52,10 +52,11 @@ export default class WizInfo {
         )
 
         const playerCards = round.playerHands[playerId]
-        const topCard = Stack.top(round.tableStack)
-        const requiredSuit = WizGameRules.getRequiredSuit(round.tableStack.cards)
-        const isMoveValid = WizGameRules.checkPlayValidity(cardPlayed,
-            playerCards, topCard, requiredSuit)
+        const isMoveValid = WizGameRules.checkPlayValidity(
+            cardPlayed,
+            playerCards, 
+            round.tableStack.cards
+        )
 
         return shouldPlayCard && isCurrentPlayer && isCardInHand && isMoveValid
     }

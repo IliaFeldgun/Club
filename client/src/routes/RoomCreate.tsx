@@ -1,13 +1,22 @@
 import React from 'react'
 import LobbyApi from '../api/LobbyApi'
+import LoginModal from '../components/Login/LoginModal'
+import { getPlayerId } from '../utils/Cookie'
+interface IRoomCreateProps {
+
+}
 interface IRoomCreateState {
     roomId: string
+    isLoggedIn: boolean
 }
-export default class Rooms extends React.PureComponent<{},IRoomCreateState> {
-    constructor({}) {
-        super({})
+export default class Rooms extends React.PureComponent<IRoomCreateProps,IRoomCreateState> {
+    constructor(props: IRoomCreateProps) {
+        super(props)
 
-        this.state = {roomId: ""}
+        this.state = {
+            roomId: "",
+            isLoggedIn: getPlayerId() !== ""
+        }
         this.handleRoomCreation = this.handleRoomCreation.bind(this)
     }
     handleRoomCreation(event: React.MouseEvent<HTMLButtonElement>) {
@@ -33,6 +42,7 @@ export default class Rooms extends React.PureComponent<{},IRoomCreateState> {
                         <span>New Room</span>
                     </button>
                 </div>
+                <LoginModal show={!this.state.isLoggedIn} />
             </React.Fragment>
         )
     }

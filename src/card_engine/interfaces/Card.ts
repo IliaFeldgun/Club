@@ -3,9 +3,9 @@ import { AceHighRank as Rank} from "../enums/Rank"
 export default interface ICard {
     suit: Suit
     rank: Rank
-    face: boolean
-    flip: () => void
-    getColor: () => Color
+    // face: boolean
+    // flip: () => void
+    // getColor: () => Color
 }
 
 

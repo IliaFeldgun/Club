@@ -1,13 +1,17 @@
-import React from "react";
+import React from "react"
+import CookieConsent from 'react-cookie-consent'
 
 export default class Footer extends React.PureComponent{
     render() {
         return (
-            // <footer className="bottom fixed horizontal-centered wide">
-            //     <p>No rights reserved. We're collecting all your data!</p>
-            //     {this.props.children}
-            // </footer>
-            <React.Fragment/>
+            <footer>
+                <CookieConsent 
+                    location="bottom" 
+                    sameSite="strict"
+                >
+                    This site depends on using cookies to provide you the experience.
+                </CookieConsent>
+            </footer>
         )
     }
 }

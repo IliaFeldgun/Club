@@ -44,7 +44,7 @@ li {
 .login-modal .close-button {
     margin-top: 2%;
 }
-.centered-top.room{
+.centered-relative.room{
     text-align: left;
     border-radius: 10px;
     border-style: groove;

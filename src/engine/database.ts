@@ -43,7 +43,7 @@ export default class Database {
     static async upsert(collectionName: string, filter: any, object: any): Promise<boolean> {
         const collection = await Database.getCollectionByName(collectionName)
         const result = await collection.updateOne(filter, {$set: object}, {upsert: true})
-        if (result.upsertedCount === 1) {
+        if (result.result.ok === 1) {
             return true
         }
         else {
@@ -65,14 +65,14 @@ export default class Database {
     }
     static async update(collectionName: string, idToUpdate: string, object: any):
         Promise<boolean> {
-            const collection = await Database.getCollectionByName(collectionName)
-            const result = await collection.updateOne({id: idToUpdate}, {$set: object})
-            if (result.modifiedCount === 1) {
-                return true
-            }
-            else {
-                return false
-            }
+        const collection = await Database.getCollectionByName(collectionName)
+        const result = await collection.updateOne({id: idToUpdate}, {$set: object})
+        if (result.modifiedCount === 1) {
+            return true
+        }
+        else {
+            return false
+        }
     }
     static async delete(collectionName: string, filter: any): Promise<boolean> {
         const collection = await Database.getCollectionByName(collectionName)
@@ -86,29 +86,32 @@ export default class Database {
     }
     static async pushToArray(collectionName: string, idToUpdate: string, arrayName: string, values: string[]):
         Promise<boolean> {
-            const collection = await Database.getCollectionByName(collectionName)
-            const toPush: any = {}
-            toPush[arrayName] = {$each: values}
-            const result  = await collection.updateOne({id: idToUpdate}, {$push: toPush})
-            if (result.modifiedCount === 1) {
-                return true
-            }
-            else {
-                return false
-            }
-    }
-    static async pullFromArray(collectionName: string, idToUpdate: string, arrayName: string, value: string):
-        Promise<boolean> {
-            const collection = await Database.getCollectionByName(collectionName)
-            const toPull: any = {}
-            toPull[arrayName] = value
-            const result = await collection.updateOne({id: idToUpdate}, {$pull: {toPull}})
-            if (result.modifiedCount === 1) {
-                return true
-            }
-            else {
-                return false
-            }
-
+        const collection = await Database.getCollectionByName(collectionName)
+        const toPush: any = {}
+        toPush[arrayName] = {$each: values}
+        const result  = await collection.updateOne({id: idToUpdate}, {$push: toPush})
+        if (result.modifiedCount === 1) {
+            return true
         }
+        else {
+            return false
+        }
+    }
+    static async pullFromArray(
+        collectionName: string, 
+        idToUpdate: string, 
+        arrayName: string, 
+        value: string
+        ): Promise<boolean> {
+        const collection = await Database.getCollectionByName(collectionName)
+        const toPull: any = {}
+        toPull[arrayName] = value
+        const result = await collection.updateOne({id: idToUpdate}, {$pull: {toPull}})
+        if (result.modifiedCount === 1) {
+            return true
+        }
+        else {
+            return false
+        }
+    }
 }
