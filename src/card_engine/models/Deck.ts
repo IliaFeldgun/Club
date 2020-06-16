@@ -17,13 +17,13 @@ export default class Deck extends Stack implements IDeck {
 
             for (let suit = Suit.HEART; suit <= Suit.SPADE; suit++) {
                 for (let rank = Rank.TWO; rank <= Rank.ACE; rank++){
-                    Stack.push(stack,new Card(suit, rank, false))
+                    Stack.push(stack,new Card(suit, rank))
                 }
             }
 
             if (jokers) {
-                Stack.push(stack, new Card(Suit.HEART, Rank.JOKER, false))
-                Stack.push(stack, new Card(Suit.SPADE, Rank.JOKER, false))
+                Stack.push(stack, new Card(Suit.HEART, Rank.JOKER))
+                Stack.push(stack, new Card(Suit.SPADE, Rank.JOKER))
             }
         }
 
