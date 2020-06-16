@@ -54,7 +54,7 @@ export default class WizInfo {
         const playerCards = round.playerHands[playerId]
         const isMoveValid = WizGameRules.checkPlayValidity(
             cardPlayed,
-            playerCards, 
+            playerCards,
             round.tableStack.cards
         )
 

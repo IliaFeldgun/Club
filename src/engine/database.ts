@@ -98,9 +98,9 @@ export default class Database {
         }
     }
     static async pullFromArray(
-        collectionName: string, 
-        idToUpdate: string, 
-        arrayName: string, 
+        collectionName: string,
+        idToUpdate: string,
+        arrayName: string,
         value: string
         ): Promise<boolean> {
         const collection = await Database.getCollectionByName(collectionName)

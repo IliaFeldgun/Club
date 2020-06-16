@@ -60,7 +60,7 @@ export default class WizGameRules {
         if (relevantCards.some(card => card.suit === strongSuit)) {
             relevantCards = relevantCards.filter(card =>
                 card.suit === strongSuit || card.rank === Rank.JOKER)
-        } 
+        }
         else {
             relevantCards = relevantCards.filter(card =>
                 card.suit === suitRequired || card.rank === Rank.JOKER)
