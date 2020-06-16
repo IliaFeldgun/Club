@@ -9,11 +9,13 @@ export default class LobbyBuilder {
     static async createPlayer(playerName: string): Promise<IPlayer["id"]>{
         const playerId = generateId(playerName, process.env.UUID_PLAYER_NAMESPACE)
 
-        const player : IPlayer = new Player(playerId, playerName)
-
-        if (await LobbyStore.setPlayer(player))
+        if (await LobbyStore.getPlayer(playerId))
             return playerId
-
+        else {
+            const player : IPlayer = new Player(playerId, playerName)
+            if (await LobbyStore.setPlayer(player))
+                return playerId
+        }
     }
     static async createRoom(playerId: IPlayer["id"]): Promise<IRoom["id"]> {
         const roomId = generateId(playerId, process.env.UUID_ROOM_NAMESPACE)
