@@ -1,4 +1,4 @@
-import store from "../engine/key_value_state_store"
+import store from "../engine/data_stores/key_value_state_store"
 import IWizGame from "./interfaces/WizGame"
 import IWizRound from "./interfaces/WizRound"
 

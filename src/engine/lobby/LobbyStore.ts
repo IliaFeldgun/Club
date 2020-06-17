@@ -1,8 +1,7 @@
-import store from "../key_value_state_store"
 import IPlayer from "./interfaces/Player"
 import IRoom from "./interfaces/Room"
-import Database from "../database"
-import collections from "../db_collections_map"
+import Database from "../data_stores/database"
+import collections from "../data_stores/db_collections_map"
 
 export default class LobbyStore {
     static async getPlayer(playerId: IPlayer["id"]): Promise<IPlayer> {
