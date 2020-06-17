@@ -40,9 +40,11 @@ export function sendUpdateState(playerIds: IPlayer["id"][], data?: any) {
     clients.forEach(client => {
         if (playerIds.indexOf(client.id) !== -1) {
             client.res.write(`data: ${JSON.stringify(data)}\n\n`)
-            
-            // Without this response isn't sent, Possibly a bug
-            client.res.writeProcessing()
+
+            // TODO: notice any following problems and delete this whole nonsense
+            // Without this response wasn't sent, Possibly a bug
+            // Bug possibly fixed
+            // client.res.writeProcessing()
         }
     })
 }
