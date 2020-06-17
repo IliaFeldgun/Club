@@ -1,15 +1,13 @@
-import express, { Response } from "express"
+import express from "express"
 import IRoom from "../../engine/lobby/interfaces/Room"
 import WizBuilder from "../../wizard_game/WizBuilder"
 import WizMaster from "../../wizard_game/WizMaster"
 import LobbyMaster from "../../engine/lobby/LobbyMaster"
 import LobbyStore from "../../engine/lobby/LobbyStore"
-import IPlayer from "../../engine/lobby/interfaces/Player"
 import {registerToUpdates, sendUpdateState} from "../../engine/request_handlers/server-sent-events"
 
 const router = express.Router()
 router.get('/updates', registerToUpdates)
-})
 
 router.post('/:roomId', async ( req, res ) => {
     const playerId = req.playerId
