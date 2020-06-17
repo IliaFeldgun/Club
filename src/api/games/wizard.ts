@@ -1,42 +1,13 @@
-import express, { Response } from "express"
+import express from "express"
 import IRoom from "../../engine/lobby/interfaces/Room"
 import WizBuilder from "../../wizard_game/WizBuilder"
 import WizMaster from "../../wizard_game/WizMaster"
 import LobbyMaster from "../../engine/lobby/LobbyMaster"
 import LobbyStore from "../../engine/lobby/LobbyStore"
-import IPlayer from "../../engine/lobby/interfaces/Player"
+import {registerToUpdates, sendUpdateState} from "../../engine/request_handlers/server-sent-events"
 
 const router = express.Router()
-
-// TODO: Move away to another api route and ".use" it
-const SSE_RESPONSE_HEADER = {
-  'Connection': 'keep-alive',
-  'Content-Type': 'text/event-stream',
-  'Cache-Control': 'no-cache',
-  'X-Accel-Buffering': 'no',
-};
-
-// TODO: Move away to another api route and ".use" it
-router.get('/updates', async (req, res) => {
-    req.socket.setTimeout(0)
-    req.socket.setNoDelay(true)
-    req.socket.setKeepAlive(true)
-    res.writeHead(200, SSE_RESPONSE_HEADER)
-
-    res.write(`data: ${JSON.stringify("OK")}\n\n`)
-    // TODO: Refactor it to session ID
-    const clientId = req.playerId
-    const newClient = {
-        id: clientId,
-        res
-    }
-    clients.push(newClient);
-
-    req.on('close', () => {
-        // TODO: Possibly log this
-        clients = clients.filter(client => client.id !== clientId)
-    })
-})
+router.get('/updates', registerToUpdates)
 
 router.post('/:roomId', async ( req, res ) => {
     const playerId = req.playerId
@@ -205,18 +176,4 @@ router.post('/:gameId/play', async ( req, res ) => {
     }
 })
 
-function sendUpdateState(playerIds: IPlayer["id"][]) {
-    clients.forEach(client => {
-        if (playerIds.indexOf(client.id) !== -1) {
-            client.res.write(`data: ${JSON.stringify({update: true})}\n\n`)
-            // Without this response isn't sent
-            client.res.writeProcessing()
-        }
-    })
-}
-let clients: {
-    // TODO: Convert to sessionId
-    id: string
-    res: Response
-}[] = []
 export default router

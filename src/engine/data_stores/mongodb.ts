@@ -10,21 +10,26 @@ export default class MongoDBClient {
 
     public static async getClient() {
         if (!this.client) {
-            await this.connectClient()
-
-            return this.client
+            if (await this.connectClient()) {
+                return this.client
+            }
+            else {
+                return undefined
+            }
         }
         else {
             return this.client
         }
     }
-    private static async connectClient() {
+    private static async connectClient(): Promise<boolean> {
         const client = new MongoClient(mongoConnString, mongoOptions)
         try {
             this.client = await client.connect()
+            return true
         }
         catch (ex) {
             client.close()
+            return false
             // TODO: handle and log
         }
     }

@@ -8,7 +8,7 @@ import player from "./api/player"
 import room from "./api/room"
 import httpLogger from "morgan"
 import {logger} from "./winston"
-import assertPlayer from "./engine/player_assert"
+import assertPlayer from "./engine/request_handlers/player_assert"
 
 const app = express();
 const port = process.env.PORT; // default port to listen
