@@ -58,6 +58,17 @@ const LOBBY_API_MAP = {
             url: () => {
                 return `/api/player/rooms`
             }
+        },
+        CREATE_PLAYER: {
+            options: POST_OPTIONS,
+            url: () => {
+                return `/api/player`
+            },
+            data: (playerName: string) => {
+                const data = new URLSearchParams();
+                data.append("playerName", playerName)
+                return data
+            }
         }
     }
 }
