@@ -1,5 +1,5 @@
 import IRoom from "../engine/interfaces/Room";
-import LOBBY_API_MAP from "../engine/ApiMap";
+import LOBBY_API_MAP from "../engine/LobbyApiMap";
 
 export default class LobbyApi {
     static async newPlayer(playerName: string) {
