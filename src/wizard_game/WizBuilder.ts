@@ -11,6 +11,9 @@ import { generateId } from "../engine/id_generator"
 import WizStore from "./WizStore"
 import WizPlayerRoundResult from "./models/WizPlayerRoundResult"
 import { PossibleMoves } from "./enums/PossibleMoves"
+import { AnnouncementType } from "./enums/AnnouncementType"
+import IWizAnnouncement from "./interfaces/WizAnnouncement"
+import WizAnnouncement from "./models/Announcement"
 
 export default class WizBuilder {
 
@@ -51,7 +54,13 @@ export default class WizBuilder {
             return round.id
 
     }
-
+    static newAnnouncement(
+        type: AnnouncementType, 
+        version: number, 
+        player: IPlayer["id"],
+        clientMessage?: string): IWizAnnouncement {
+            return new WizAnnouncement(version, type, player, clientMessage)
+    }
     static generatePlayerOrder(firstPlayer: IPlayer["id"],
                                players: IPlayer["id"][]): IPlayer["id"][]
     {

@@ -5,6 +5,7 @@ import WizMaster from "../../wizard_game/WizMaster"
 import LobbyMaster from "../../engine/lobby/LobbyMaster"
 import LobbyStore from "../../engine/lobby/LobbyStore"
 import {registerToUpdates, sendUpdateState} from "../../engine/request_handlers/server-sent-events"
+import { AnnouncementType } from "../../wizard_game/enums/AnnouncementType"
 
 const router = express.Router()
 router.get('/updates', registerToUpdates)
@@ -145,7 +146,10 @@ router.post('/:gameId/bet/:bet', async (req, res) => {
         const isBetPlayed = await WizMaster.playBet(gameId, +bet, playerId)
         if (isBetPlayed) {
             const playerIds = await WizMaster.getGamePlayerIds(gameId)
-            sendUpdateState(playerIds)
+
+            // TODO: Refactor versioning
+            const announcement = WizBuilder.newAnnouncement(AnnouncementType.BET, 1, playerId)
+            sendUpdateState(playerIds, announcement)
             res.send({isBetPlayed})
         }
         else {
@@ -164,7 +168,10 @@ router.post('/:gameId/play', async ( req, res ) => {
         const isCardPlayed = await WizMaster.tryPlayCard(gameId, card, playerId)
         if (isCardPlayed){
             const playerIds = await WizMaster.getGamePlayerIds(gameId)
-            sendUpdateState(playerIds)
+            
+            // TODO: Refactor versioning
+            const announcement = WizBuilder.newAnnouncement(AnnouncementType.PLAY, 1, playerId)
+            sendUpdateState(playerIds, announcement)
             res.send({isCardPlayed})
         }
         else {
