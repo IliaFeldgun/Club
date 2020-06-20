@@ -43,7 +43,9 @@ export default class Wiz extends React.PureComponent<IWizProps,IWizState> {
         // WizApi.listenToUpdateEvent().addEventListener("message", (event) => {
             // this.fetchDataToState()
         // })
-        WizApi.listenToUpdateEvent().onmessage = (event) => {
+        const eventSource = WizApi.listenToUpdateEvent()
+        eventSource.onmessage = (event) => {
+            console.log(event.data)
             this.fetchDataToState()
         }
         this.fetchDataToState()

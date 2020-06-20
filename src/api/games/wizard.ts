@@ -149,7 +149,7 @@ router.post('/:gameId/bet/:bet', async (req, res) => {
 
             // TODO: Refactor versioning
             const announcement = WizBuilder.newAnnouncement(AnnouncementType.BET, 1, playerId)
-            sendUpdateState(playerIds)
+            sendUpdateState(playerIds, announcement)
             res.send({isBetPlayed})
         }
         else {
@@ -168,10 +168,10 @@ router.post('/:gameId/play', async ( req, res ) => {
         const isCardPlayed = await WizMaster.tryPlayCard(gameId, card, playerId)
         if (isCardPlayed){
             const playerIds = await WizMaster.getGamePlayerIds(gameId)
-            
+
             // TODO: Refactor versioning
             const announcement = WizBuilder.newAnnouncement(AnnouncementType.PLAY, 1, playerId)
-            sendUpdateState(playerIds)
+            sendUpdateState(playerIds, announcement)
             res.send({isCardPlayed})
         }
         else {
