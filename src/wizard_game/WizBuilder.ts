@@ -13,7 +13,7 @@ import WizPlayerRoundResult from "./models/WizPlayerRoundResult"
 import { PossibleMoves } from "./enums/PossibleMoves"
 import { AnnouncementType } from "./enums/AnnouncementType"
 import IWizAnnouncement from "./interfaces/WizAnnouncement"
-import WizAnnouncement from "./models/Announcement"
+import WizAnnouncement from "./models/WizAnnouncement"
 
 export default class WizBuilder {
 
