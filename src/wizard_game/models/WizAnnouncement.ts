@@ -9,9 +9,9 @@ export default class WizAnnouncement implements IWizAnnouncement {
     clientMessage?: string
 
     constructor(
-        version: number, 
-        type: AnnouncementType, 
-        player: IPlayer["id"], 
+        version: number,
+        type: AnnouncementType,
+        player: IPlayer["id"],
         clientMessage?: string) {
         this.version = version
         this.type = type

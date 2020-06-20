@@ -55,8 +55,8 @@ export default class WizBuilder {
 
     }
     static newAnnouncement(
-        type: AnnouncementType, 
-        version: number, 
+        type: AnnouncementType,
+        version: number,
         player: IPlayer["id"],
         clientMessage?: string): IWizAnnouncement {
             return new WizAnnouncement(version, type, player, clientMessage)
