@@ -1,4 +1,4 @@
-import ICard, { Suit } from "../interfaces/Card"
+import ICard, { Suit } from "../../interfaces/Card"
 import { PossibleMoves } from "../interfaces/PossibleMoves"
 
 export class WizApi {

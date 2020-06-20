@@ -1,9 +1,9 @@
 import React from "react";
 import './Wiz.css';
-import WizGame from "../components/Wiz/WizGame";
+import WizGame from "../components/WizGame";
 import { match, RouteComponentProps } from "react-router";
 import { WizApi } from "../api/WizApi";
-import ICard, { Suit, Rank } from "../interfaces/Card";
+import ICard, { Suit, Rank } from "../../interfaces/Card";
 import { PossibleMoves } from "../interfaces/PossibleMoves";
 
 interface IRouteParams {

@@ -8,7 +8,7 @@ import ICard, { Suit } from "../../interfaces/Card";
 import WizPlayerList from "./PlayerList";
 import WizOtherPlayers from "./OtherPlayers";
 import { getPlayerId } from "../../utils/Cookie";
-import { PossibleMoves } from "../../interfaces/PossibleMoves";
+import { PossibleMoves } from "../interfaces/PossibleMoves";
 import SetBet from "./SetBet";
 import StrongSuit from "./StrongSuit";
 
