@@ -12,6 +12,10 @@ const POST_OPTIONS: RequestInit = {
         'Content-Type': 'application/json'
     }
 }
+const POST_FORM_OPTIONS: RequestInit = {
+    method: "POST",
+    cache: "no-cache",
+}
 
 const LOBBY_API_MAP = {
     ROOM: {
@@ -60,7 +64,7 @@ const LOBBY_API_MAP = {
             }
         },
         CREATE_PLAYER: {
-            options: POST_OPTIONS,
+            options: POST_FORM_OPTIONS,
             url: () => {
                 return `/api/player`
             },
