@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import IPlayer from "@engine/lobby/interfaces/Player";
+import IPlayer from "../lobby/interfaces/Player";
 
 const SSE_RESPONSE_HEADER = {
     'Connection': 'keep-alive',
@@ -8,7 +8,11 @@ const SSE_RESPONSE_HEADER = {
     'X-Accel-Buffering': 'no',
   };
 
-export async function registerToUpdates(req: Request, res: Response) {
+export async function registerToUpdates(
+    req: Request,
+    res: Response,
+    unsubscribe?: () => void
+) {
     req.socket.setTimeout(0)
     req.socket.setNoDelay(true)
     req.socket.setKeepAlive(true)
@@ -26,6 +30,7 @@ export async function registerToUpdates(req: Request, res: Response) {
 
     req.on('close', () => {
         // TODO: Possibly log this
+        unsubscribe()
         clients = clients.filter(client => client.id !== clientId)
     })
 }
@@ -44,6 +49,7 @@ export function sendUpdateState(playerIds: IPlayer["id"][], data?: any) {
             // TODO: notice any following problems and delete this whole nonsense
             // Without this response wasn't sent, Possibly a bug
             // Bug possibly fixed
+            // Seems to not work on :3000, because of React-Scripts proxying
             // client.res.writeProcessing()
         }
     })
