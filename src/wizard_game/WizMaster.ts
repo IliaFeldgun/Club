@@ -24,10 +24,10 @@ export default class WizMaster {
         playerId: IPlayer["id"]
     ): Promise<boolean> {
         const round = await WizMaster.getGameRound(gameId)
-        
+
         if (round && WizInfo.canPlayBet(round, bet, playerId)) {
             WizMutator.playBet(round, bet, playerId)
-            return true
+            return await WizMaster.setGameRound(gameId, round)
         }
         else {
             return false
@@ -42,7 +42,7 @@ export default class WizMaster {
         const round = game.currentRound
         if (game && WizInfo.canPlayCard(round, cardPlayed, playerId)) {
             WizMutator.playCard(game, cardPlayed, playerId)
-            return true
+            return await WizStore.setWizGame(game.id, game)
         }
         else
             return false
@@ -54,7 +54,7 @@ export default class WizMaster {
             const game = await WizStore.getWizGame(gameId)
 
             if (game) {
-                let round = game.currentRound
+                const round = game.currentRound
                 const players = await LobbyMaster.getRoomPlayers(game.roomId)
                 if (players) {
                     const wizPlayers = (players.map((player) => {
