@@ -14,6 +14,7 @@ interface IWizProps extends RouteComponentProps<IRouteParams>{
     match: match<IRouteParams>
 }
 interface IWizState {
+    gameId: string
     instructions: PossibleMoves
     players: IWizPlayer[]
     nextPlayer: string
@@ -26,6 +27,7 @@ export default class Wiz extends React.PureComponent<IWizProps,IWizState> {
         super(props)
 
         this.state = {
+            gameId: props.match.params.id,
             instructions: PossibleMoves.NONE,
             players: [], 
             nextPlayer: "",
@@ -40,7 +42,7 @@ export default class Wiz extends React.PureComponent<IWizProps,IWizState> {
         // WizApi.listenToUpdateEvent().addEventListener("message", (event) => {
             // this.fetchDataToState()
         // })
-        const eventSource = WizApi.listenToUpdateEvent()
+        const eventSource = WizApi.listenToUpdateEvent(this.state.gameId)
         eventSource.onmessage = (event) => {
             console.log(event.data)
             this.fetchDataToState()
@@ -49,7 +51,7 @@ export default class Wiz extends React.PureComponent<IWizProps,IWizState> {
     }
     handleCardSend(card: ICard) {
         // if (this.canPlayCard(card)) {
-            WizApi.sendCard(this.props.match.params.id, card).then((isCardSent) => {
+            WizApi.sendCard(this.state.gameId, card).then((isCardSent) => {
                 if (!isCardSent) {
                     alert("NOPE")
                     window.location.reload()
@@ -59,7 +61,7 @@ export default class Wiz extends React.PureComponent<IWizProps,IWizState> {
         // }
     }
     handleBet(bet: number) {
-        WizApi.sendBet(this.props.match.params.id, bet).then((isBetSent) => {
+        WizApi.sendBet(this.state.gameId, bet).then((isBetSent) => {
             if (isBetSent) {
                 this.fetchDataToState()
             }
@@ -85,7 +87,7 @@ export default class Wiz extends React.PureComponent<IWizProps,IWizState> {
     }
     fetchDataToState() {
         const AllRequests: Promise<any>[] = []
-        const gameId = this.props.match.params.id
+        const gameId = this.state.gameId
         // TODO: Maybe unite API
         AllRequests.push(WizApi.getGameInstructions(gameId))
         AllRequests.push(WizApi.getGamePlayers(gameId))
