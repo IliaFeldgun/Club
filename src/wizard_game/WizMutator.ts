@@ -23,13 +23,13 @@ export default class WizMutator {
             round.nextMove = PossibleMoves.PLAY_CARD
         }
     }
-    
+
     static playCard(
         game: IWizGame,
         cardPlayed: ICard,
         playerId: IPlayer["id"]
     ): void {
-        
+
         const round = game.currentRound
         const cardsLeft = round.playerHands[playerId].filter(card =>
             !Card.equals(cardPlayed, card)
@@ -88,13 +88,13 @@ export default class WizMutator {
         WizMutator.nextPlayer(game.playerOrder)
 
         const newRound = WizBuilder.newRoundState(
-            game.id, 
-            currentRound.roundNumber, 
-            game.playerOrder, 
+            game.id,
+            currentRound.roundNumber + 1,
+            game.playerOrder,
             game.playerOrder[0]
         )
 
-        const areCardsDealt  = WizMutator.dealCards(newRound)
+        const areCardsDealt = WizMutator.dealCards(newRound)
 
         if (newRound && areCardsDealt && game) {
             game.currentRound = newRound
@@ -113,7 +113,7 @@ export default class WizMutator {
                     round.playerResults[playerId].successfulTakes)
             game.playerScores[playerId].total = newScore
         })
-    }    
+    }
     static nextTurn(round: IWizRound) {
         round.turnNumber++
     }
