@@ -55,9 +55,7 @@ export default class WizGame extends React.PureComponent<IWizGameProps,IWizGameS
         //const otherPlayerHands = this.mockOtherPlayers()
         
         let setBet = <React.Fragment />
-        if (this.isYourTurn() && this.props.playerHand && 
-            this.props.instructions === PossibleMoves.PLACE_BET &&
-            this.getPlayer() === undefined) {
+        if (this.shouldBet()) {
             setBet = <SetBet maxBet={this.props.playerHand.length} handleBet={this.handleBet}/>
         }
         let strongSuit = <React.Fragment />
@@ -94,7 +92,14 @@ export default class WizGame extends React.PureComponent<IWizGameProps,IWizGameS
     shouldPlayCard() {
         return this.props.instructions === PossibleMoves.PLAY_CARD
     }
-
+    shouldBet() {
+        const isYourTurn = this.isYourTurn() 
+        const playerHasHand = this.props.playerHand 
+        const isInstructionBet = this.props.instructions === PossibleMoves.PLACE_BET
+        const player = this.getPlayer()
+        const didPlayerNotBet = player && player.bet === undefined
+        return isYourTurn && playerHasHand && isInstructionBet && didPlayerNotBet
+    }
     mockOtherPlayers() {
         const players = [
             {name: "gever", cards: 3},
