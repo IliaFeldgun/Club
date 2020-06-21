@@ -1,8 +1,11 @@
 export enum AnnouncementType {
-    TURN = 1,
-    BET,
-    TAKE,
-    ROUND,
-    WIN,
-    PLAY
+    NONE = 0,
+    DEALING,
+    BETTING,
+    PLACED_BET,
+    PLAYING_CARD,
+    PLAYED_CARD,
+    TOOK_TAKE,
+    WON_ROUND,
+    WON_GAME
 }
