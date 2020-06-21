@@ -27,25 +27,21 @@ export default class WizBuilder {
             game.playerOrder.push(player)
             game.playerScores[player] = new WizScore()
         })
-        game.currentRound = WizBuilder.newRoundState(gameId, 1, players, players[0])
+        game.currentRound = WizBuilder.newRoundState(1, players, players[0])
 
         if (await WizStore.setWizGame(gameId, game))
             return game.id
     }
 
     static newRoundState(
-        gameId: IWizGame["id"],
         roundNumber: number,
         players: IPlayer["id"][],
         firstPlayer: IPlayer["id"]
     ): IWizRound {
-        const roundId = generateId(gameId + roundNumber,
-                                   process.env.UUID_ROUND_NAMESPACE)
-
         const roundDeck = new Deck(true)
         const roundTableStack = new Stack([])
 
-        const round = new WizRound(roundId, gameId, roundNumber, roundDeck, roundTableStack)
+        const round = new WizRound(roundNumber, roundDeck, roundTableStack)
         round.nextMove = PossibleMoves.PLACE_BET
 
         round.playerOrder = WizBuilder.generatePlayerOrder(firstPlayer, players)

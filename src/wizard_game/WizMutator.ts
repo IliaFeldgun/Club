@@ -88,7 +88,6 @@ export default class WizMutator {
         WizMutator.nextPlayer(game.playerOrder)
 
         const newRound = WizBuilder.newRoundState(
-            game.id,
             currentRound.roundNumber + 1,
             game.playerOrder,
             game.playerOrder[0]
