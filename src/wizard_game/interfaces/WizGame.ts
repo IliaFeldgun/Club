@@ -6,8 +6,7 @@ import IPlayer from "../../engine/lobby/interfaces/Player";
 export default interface IWizGame {
     id: string
     roomId: IRoom["id"]
-    currentRound: number
-    currentRoundId: IWizRound["id"]
+    currentRound: IWizRound
     playerOrder: IPlayer["id"][]
     playerScores: { [playerId: string]: IWizScore }
     isDone: boolean

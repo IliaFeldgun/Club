@@ -4,7 +4,7 @@ import WizBuilder from "../../wizard_game/WizBuilder"
 import WizMaster from "../../wizard_game/WizMaster"
 import LobbyMaster from "../../engine/lobby/LobbyMaster"
 import LobbyStore from "../../engine/lobby/LobbyStore"
-import {registerToUpdates, sendUpdateState} from "../../engine/request_handlers/server-sent-events"
+import { registerToUpdates, sendUpdateState } from "../../engine/request_handlers/server-sent-events"
 import { AnnouncementType } from "../../wizard_game/enums/AnnouncementType"
 
 const router = express.Router()
@@ -19,14 +19,9 @@ router.post('/:roomId', async ( req, res ) => {
         if (room.leader === playerId) {
             const gameId = await WizBuilder.newGameState(room.id, room.players)
             const isRoomSet = await LobbyMaster.setRoomGame(room.id, "wizard", gameId)
-            const roundId = await WizBuilder.newRoundState(gameId,
-                                                           1,
-                                                           room.players,
-                                                           room.players[0])
-            const isGameSet = await WizMaster.setGameRound(gameId, roundId)
-            const areCardsDealt  = await WizMaster.dealCards(roundId)
+            const areCardsDealt  = await WizMaster.dealCards(gameId)
 
-            if (gameId && isRoomSet && roundId && isGameSet && areCardsDealt)
+            if (gameId && isRoomSet && areCardsDealt)
             {
                 res.send({gameId})
             }
@@ -130,7 +125,7 @@ router.get('/:gameId/kozer', async (req, res) => {
     const playerId = req.playerId
     if (playerId) {
         const gameId = req.params.gameId
-        const strongSuit = await WizMaster.getStrongSuit(gameId)
+        const strongSuit = await WizMaster.getRoundStrongSuit(gameId)
         res.send({strongSuit})
     }
     else {
@@ -143,12 +138,16 @@ router.post('/:gameId/bet/:bet', async (req, res) => {
     if (playerId) {
         const gameId = req.params.gameId
         const bet = req.params.bet
-        const isBetPlayed = await WizMaster.playBet(gameId, +bet, playerId)
+        const isBetPlayed = await WizMaster.tryPlayBet(gameId, +bet, playerId)
         if (isBetPlayed) {
             const playerIds = await WizMaster.getGamePlayerIds(gameId)
 
             // TODO: Refactor versioning
-            const announcement = WizBuilder.newAnnouncement(AnnouncementType.BET, 1, playerId)
+            const announcement = WizBuilder.newAnnouncement(
+                AnnouncementType.PLACED_BET, 
+                1, 
+                playerId
+            )
             sendUpdateState(playerIds, announcement)
             res.send({isBetPlayed})
         }
@@ -170,7 +169,10 @@ router.post('/:gameId/play', async ( req, res ) => {
             const playerIds = await WizMaster.getGamePlayerIds(gameId)
 
             // TODO: Refactor versioning
-            const announcement = WizBuilder.newAnnouncement(AnnouncementType.PLAY, 1, playerId)
+            const announcement = WizBuilder.newAnnouncement(AnnouncementType.PLAYED_CARD,
+                1,
+                playerId
+            )
             sendUpdateState(playerIds, announcement)
             res.send({isCardPlayed})
         }

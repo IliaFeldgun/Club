@@ -17,23 +17,28 @@ import WizAnnouncement from "./models/WizAnnouncement"
 
 export default class WizBuilder {
 
-    static async newGameState(roomId: IRoom["id"],
-                        players: IPlayer["id"][]) : Promise<IWizGame["id"]>
-    {
+    static async newGameState(
+        roomId: IRoom["id"],
+        players: IPlayer["id"][]
+    ) : Promise<IWizGame["id"]> {
         const gameId = generateId(roomId,process.env.UUID_GAME_NAMESPACE)
         const game = new WizGame(gameId, roomId)
         players.forEach((player) => {
             game.playerOrder.push(player)
             game.playerScores[player] = new WizScore()
         })
+        game.currentRound = WizBuilder.newRoundState(gameId, 1, players, players[0])
+        
         if (await WizStore.setWizGame(gameId, game))
             return game.id
     }
-    static async newRoundState(gameId: IWizGame["id"],
-                               roundNumber: number,
-                               players: IPlayer["id"][],
-                               firstPlayer: IPlayer["id"]): Promise<IWizRound["id"]>
-    {
+
+    static newRoundState(
+        gameId: IWizGame["id"],
+        roundNumber: number,
+        players: IPlayer["id"][],
+        firstPlayer: IPlayer["id"]
+    ): IWizRound {
         const roundId = generateId(gameId + roundNumber,
                                    process.env.UUID_ROUND_NAMESPACE)
 
@@ -50,10 +55,9 @@ export default class WizBuilder {
             round.playerResults[player] = new WizPlayerRoundResult(roundNumber)
         })
 
-        if (await WizStore.setWizRound(round.id, round))
-            return round.id
-
+        return round
     }
+
     static newAnnouncement(
         type: AnnouncementType,
         version: number,
