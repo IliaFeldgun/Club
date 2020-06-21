@@ -5,10 +5,25 @@ import WizMaster from "../../wizard_game/WizMaster"
 import LobbyMaster from "../../engine/lobby/LobbyMaster"
 import LobbyStore from "../../engine/lobby/LobbyStore"
 import { registerToUpdates, sendUpdateState } from "../../engine/request_handlers/server-sent-events"
-import { AnnouncementType } from "../../wizard_game/enums/AnnouncementType"
+import Announcer from "../../engine/announcer/Announcer"
+import WizStore from "../../wizard_game/WizStore"
 
 const router = express.Router()
-router.get('/updates', registerToUpdates)
+router.get('/:gameId/updates', (req, res) => {
+    const gameId = req.params.gameId
+    const playerId = req.playerId
+    registerToUpdates(req, res, () => {
+        Announcer.unsubscribe(gameId, playerId)
+    })
+
+    Announcer.subscribe(gameId, playerId, async () => {
+        // TODO: Refactor
+        const game = await WizStore.getWizGame(gameId)
+        if (game) {
+            sendUpdateState(game.playerOrder, game.currentRound.nextMove)
+        }
+    })
+})
 
 router.post('/:roomId', async ( req, res ) => {
     const playerId = req.playerId
@@ -142,13 +157,6 @@ router.post('/:gameId/bet/:bet', async (req, res) => {
         if (isBetPlayed) {
             const playerIds = await WizMaster.getGamePlayerIds(gameId)
 
-            // TODO: Refactor versioning
-            const announcement = WizBuilder.newAnnouncement(
-                AnnouncementType.PLACED_BET,
-                1,
-                playerId
-            )
-            sendUpdateState(playerIds, announcement)
             res.send({isBetPlayed})
         }
         else {
@@ -168,12 +176,6 @@ router.post('/:gameId/play', async ( req, res ) => {
         if (isCardPlayed){
             const playerIds = await WizMaster.getGamePlayerIds(gameId)
 
-            // TODO: Refactor versioning
-            const announcement = WizBuilder.newAnnouncement(AnnouncementType.PLAYED_CARD,
-                1,
-                playerId
-            )
-            sendUpdateState(playerIds, announcement)
             res.send({isCardPlayed})
         }
         else {
