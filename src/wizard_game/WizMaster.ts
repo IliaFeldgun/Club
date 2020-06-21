@@ -7,6 +7,7 @@ import LobbyMaster from "../engine/lobby/LobbyMaster";
 import WizInfo from "./WizInfo";
 import { PossibleMoves } from "./enums/PossibleMoves";
 import WizMutator from "./WizMutator";
+import IWizPlayer from "./interfaces/WizPlayer";
 
 export default class WizMaster {
     static async getGameInstruction(gameId: IWizGame["id"]): Promise<PossibleMoves> {
@@ -48,7 +49,7 @@ export default class WizMaster {
             return false
     }
     static async getWizPlayersByGame(gameId: IWizGame["id"]):
-        Promise<{id: IPlayer["id"], name: IPlayer["name"], score: number, takes: number}[]> {
+        Promise<IWizPlayer[]> {
             // TODO: refactor
 
             const game = await WizStore.getWizGame(gameId)
@@ -56,13 +57,17 @@ export default class WizMaster {
             if (game) {
                 const round = game.currentRound
                 const players = await LobbyMaster.getRoomPlayers(game.roomId)
+                const playerHandSizes = WizInfo.getPlayerHandSizes(round)
+                const playerBets = WizInfo.getBets(round)
                 if (players) {
                     const wizPlayers = (players.map((player) => {
                         return {
                             id: player.id,
                             name: player.name,
                             score: game.playerScores[player.id].total,
-                            takes: round.playerResults[player.id].successfulTakes
+                            takes: round.playerResults[player.id].successfulTakes,
+                            handSize: playerHandSizes[player.id],
+                            bet: playerBets[player.id]
                         }
                     }))
 
@@ -91,15 +96,15 @@ export default class WizMaster {
         const players = await WizMaster.getGamePlayerIds(gameId)
         return players.indexOf(playerId) !== -1
     }
-    static async getPlayerHandSizes(gameId: IWizGame["id"]):
-        Promise<{ [playerId: string]: number }> {
-        const round = await WizMaster.getGameRound(gameId)
-        if (round) {
-            return WizInfo.getPlayerHandSizes(round)
-        }
-        else
-            return {}
-    }
+    // static async getPlayerHandSizes(gameId: IWizGame["id"]):
+    //     Promise<{ [playerId: string]: number }> {
+    //     const round = await WizMaster.getGameRound(gameId)
+    //     if (round) {
+    //         return WizInfo.getPlayerHandSizes(round)
+    //     }
+    //     else
+    //         return {}
+    // }
     static async getPlayerHand(gameId: IWizGame["id"], playerId: IPlayer["id"]): Promise<ICard[]> {
         const round = await WizMaster.getGameRound(gameId)
         if (round) {
@@ -118,16 +123,16 @@ export default class WizMaster {
             return []
         }
     }
-    static async getGameBets(gameId: IWizGame["id"]):
-        Promise<{ [playerId: string]: number}> {
-        const round = await WizMaster.getGameRound(gameId)
-        if (round) {
-            return WizInfo.getBets(round)
-        }
-        else {
-            return {}
-        }
-    }
+    // static async getGameBets(gameId: IWizGame["id"]):
+    //     Promise<{ [playerId: string]: number}> {
+    //     const round = await WizMaster.getGameRound(gameId)
+    //     if (round) {
+    //         return WizInfo.getBets(round)
+    //     }
+    //     else {
+    //         return {}
+    //     }
+    // }
     static async getGamePlayerIds(gameId: IWizGame["id"]):
         Promise<IPlayer["id"][]> {
             const game = await WizStore.getWizGame(gameId)

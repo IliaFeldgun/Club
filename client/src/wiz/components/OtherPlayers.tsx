@@ -1,10 +1,10 @@
 import React from 'react'
 import WizOtherPlayer from './OtherPlayer'
 import { getPlayerId } from '../../utils/Cookie'
+import IWizPlayer from '../interfaces/WizPlayer'
 
 interface IWizOtherPlayersProps {
-    players: Array<{id: string, name: string, score: number}>
-    playerHands: { [playerId: string]: number }
+    players: IWizPlayer[]
 }
 export default class WizOtherPlayers extends React.PureComponent<IWizOtherPlayersProps,{}> {
     render() {
@@ -18,7 +18,7 @@ export default class WizOtherPlayers extends React.PureComponent<IWizOtherPlayer
             {
                 return {
                     name: player.name, 
-                    cards: this.props.playerHands[player.id]
+                    cards: player.handSize
                 }
             })
             

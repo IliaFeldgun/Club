@@ -1,8 +1,8 @@
 import React from 'react'
 import PlayerListItem from './PlayerListItem'
+import IWizPlayer from '../interfaces/WizPlayer'
 interface IWizPlayerListProps {
-    players: Array<{id: string, name: string, score: number, takes: number}>
-    playerBets: { [playerId: string]: number }
+    players: IWizPlayer[]
     nextPlayer: string
 }
 export default class WizPlayerList extends React.PureComponent<IWizPlayerListProps,{}>{
@@ -20,7 +20,7 @@ export default class WizPlayerList extends React.PureComponent<IWizPlayerListPro
                     key={player.id} 
                     name={player.name} 
                     score={player.score}
-                    bet={this.props.playerBets[player.id]}
+                    bet={player.bet}
                     takes={player.takes} />
             })
         }

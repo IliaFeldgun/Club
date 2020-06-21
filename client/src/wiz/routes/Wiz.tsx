@@ -5,6 +5,7 @@ import { match, RouteComponentProps } from "react-router";
 import { WizApi } from "../api/WizApi";
 import ICard, { Suit, Rank } from "../../interfaces/Card";
 import { PossibleMoves } from "../interfaces/PossibleMoves";
+import IWizPlayer from "../interfaces/WizPlayer";
 
 interface IRouteParams {
     id: string
@@ -14,10 +15,8 @@ interface IWizProps extends RouteComponentProps<IRouteParams>{
 }
 interface IWizState {
     instructions: PossibleMoves
-    players: Array<{id: string, name: string, score: number, takes: number}>
+    players: IWizPlayer[]
     nextPlayer: string
-    playerHandSizes: { [playerId: string]: number }
-    playerBets: { [playerId: string]: number }
     playerHand: ICard[]
     tableStack: ICard[]
     strongSuit?: Suit
@@ -30,8 +29,6 @@ export default class Wiz extends React.PureComponent<IWizProps,IWizState> {
             instructions: PossibleMoves.NONE,
             players: [], 
             nextPlayer: "",
-            playerHandSizes: {},
-            playerBets: {},
             playerHand: [], 
             tableStack: []
         }
@@ -71,8 +68,6 @@ export default class Wiz extends React.PureComponent<IWizProps,IWizState> {
     render() {
         let toRender = <WizGame players={this.state.players} 
                                 nextPlayer={this.state.nextPlayer}
-                                playerHandSizes={this.state.playerHandSizes}
-                                playerBets={this.state.playerBets}
                                 playerHand={this.state.playerHand}
                                 tableStack={this.state.tableStack}
                                 handleFanCardClick={this.handleCardSend}
@@ -95,8 +90,6 @@ export default class Wiz extends React.PureComponent<IWizProps,IWizState> {
         AllRequests.push(WizApi.getGameInstructions(gameId))
         AllRequests.push(WizApi.getGamePlayers(gameId))
         AllRequests.push(WizApi.getNextPlayer(gameId))
-        AllRequests.push(WizApi.getPlayerHandSizes(gameId))
-        AllRequests.push(WizApi.getPlayerBets(gameId))
         AllRequests.push(WizApi.getPlayerHand(gameId))
         AllRequests.push(WizApi.getTableStack(gameId))
         AllRequests.push(WizApi.getStrongSuit(gameId))
@@ -105,8 +98,6 @@ export default class Wiz extends React.PureComponent<IWizProps,IWizState> {
             instructions, 
             players, 
             nextPlayer,
-            playerHandSizes, 
-            playerBets, 
             playerHand, 
             tableStack,
             strongSuit
@@ -115,8 +106,6 @@ export default class Wiz extends React.PureComponent<IWizProps,IWizState> {
                 instructions, 
                 players, 
                 nextPlayer,
-                playerHandSizes, 
-                playerBets, 
                 playerHand, 
                 tableStack,
                 strongSuit}))

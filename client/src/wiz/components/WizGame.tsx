@@ -11,36 +11,26 @@ import { getPlayerId } from "../../utils/Cookie";
 import { PossibleMoves } from "../interfaces/PossibleMoves";
 import SetBet from "./SetBet";
 import StrongSuit from "./StrongSuit";
+import IWizPlayer from "../interfaces/WizPlayer";
 
 interface IWizGameProps {
     instructions: PossibleMoves
-    players: Array<{id: string, name: string, score: number, takes: number}>
+    players: IWizPlayer[]
     nextPlayer: string
     strongSuit?: Suit
     playerHand: ICard[]
-    playerHandSizes: { [playerId: string]: number }
-    playerBets: { [playerId: string]: number }
     tableStack: ICard[]
     handleFanCardClick?: (card: ICard) => void
     handleBet?: (bet: number) => void
 }
 interface IWizGameState {
-    handCards: {suit: ICardProps["suit"], rank: ICardProps["rank"]}[]
-    stackCards: {suit: ICardProps["suit"], rank: ICardProps["rank"]}[]
 }
 export default class WizGame extends React.PureComponent<IWizGameProps,IWizGameState> {
     constructor(props: IWizGameProps) {
-        super( props)
-        this.state = {handCards: [], stackCards: []}
+        super(props)
         this.handleFanCardClick = this.handleFanCardClick.bind(this)
         this.handleBet = this.handleBet.bind(this)
     }
-    // moveCard(suit: ICardProps["suit"], rank: ICardProps["rank"]) {
-    //     const newHandCards = [...this.state.handCards].filter((card) => 
-    //         !(card.suit === suit && card.rank === rank))
-    //     const newStackCards = [...this.state.stackCards, {suit,rank}]
-    //     this.setState({handCards: newHandCards, stackCards: newStackCards})
-    // }
     handleFanCardClick(event: React.MouseEvent, 
                        suit: ICardProps["suit"], 
                        rank: ICardProps["rank"]) {
@@ -67,7 +57,7 @@ export default class WizGame extends React.PureComponent<IWizGameProps,IWizGameS
         let setBet = <React.Fragment />
         if (this.isYourTurn() && this.props.playerHand && 
             this.props.instructions === PossibleMoves.PLACE_BET &&
-            this.props.playerBets[getPlayerId()] === undefined) {
+            this.getPlayer() === undefined) {
             setBet = <SetBet maxBet={this.props.playerHand.length} handleBet={this.handleBet}/>
         }
         let strongSuit = <React.Fragment />
@@ -82,14 +72,12 @@ export default class WizGame extends React.PureComponent<IWizGameProps,IWizGameS
                     {strongSuit}
                     <CardStack cards={this.props.tableStack} />
                     <CardFan yourTurn={this.isYourTurn() && this.shouldPlayCard()} 
-                             cards={this.state.handCards.concat(this.props.playerHand)} 
+                             cards={this.props.playerHand} 
                              handleCardClick={this.handleFanCardClick}/>
-                    <WizOtherPlayers players={this.props.players} 
-                                     playerHands={this.props.playerHandSizes} />
+                    <WizOtherPlayers players={this.props.players} />
                 </CardBoard>
                 <ScoreBoard>
-                    <WizPlayerList players={this.props.players} 
-                                   playerBets={this.props.playerBets} 
+                    <WizPlayerList players={this.props.players}
                                    nextPlayer={this.props.nextPlayer} />
                 </ScoreBoard>
             </React.Fragment>
@@ -97,6 +85,11 @@ export default class WizGame extends React.PureComponent<IWizGameProps,IWizGameS
     }
     isYourTurn() {
         return getPlayerId() === this.props.nextPlayer
+    }
+    getPlayer() {
+        return this.props.players.find((player) => {
+            return player.id === getPlayerId()
+        })
     }
     shouldPlayCard() {
         return this.props.instructions === PossibleMoves.PLAY_CARD

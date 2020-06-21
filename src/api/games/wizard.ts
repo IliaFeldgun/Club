@@ -77,17 +77,17 @@ router.get('/:gameId/players', async (req,res) => {
         res.status(403).send("Player needs be set")
     }
 })
-router.get('/:gameId/handsizes', async (req, res) => {
-    const playerId = req.playerId
-    if (playerId) {
-        const gameId = req.params.gameId
-        const playerHandSizes = await WizMaster.getPlayerHandSizes(gameId)
-        res.send({playerHandSizes})
-    }
-    else {
-        res.status(403).send("Player needs be set")
-    }
-})
+// router.get('/:gameId/handsizes', async (req, res) => {
+//     const playerId = req.playerId
+//     if (playerId) {
+//         const gameId = req.params.gameId
+//         const playerHandSizes = await WizMaster.getPlayerHandSizes(gameId)
+//         res.send({playerHandSizes})
+//     }
+//     else {
+//         res.status(403).send("Player needs be set")
+//     }
+// })
 router.get('/:gameId/hand', async (req,res) => {
     const playerId = req.playerId
     if (playerId) {
@@ -110,17 +110,17 @@ router.get('/:gameId/stack', async (req,res) => {
         res.status(403).send("Player not set")
     }
 })
-router.get('/:gameId/bets', async (req, res) => {
-    const playerId = req.playerId
-    if (playerId) {
-        const gameId = req.params.gameId
-        const bets = await WizMaster.getGameBets(gameId)
-        res.send({bets})
-    }
-    else {
-        res.status(403).send("Player not set")
-    }
-})
+// router.get('/:gameId/bets', async (req, res) => {
+//     const playerId = req.playerId
+//     if (playerId) {
+//         const gameId = req.params.gameId
+//         const bets = await WizMaster.getGameBets(gameId)
+//         res.send({bets})
+//     }
+//     else {
+//         res.status(403).send("Player not set")
+//     }
+// })
 router.get('/:gameId/kozer', async (req, res) => {
     const playerId = req.playerId
     if (playerId) {
