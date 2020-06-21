@@ -66,7 +66,7 @@ export class WizApi {
     //             'Content-Type': 'application/json'
     //         },
     //     }
-    //     const res = await  fetch(`/api/game/wizard/${gameId}/handsizes`, options)
+    //     const res = await fetch(`/api/game/wizard/${gameId}/handsizes`, options)
     //     if (res.status !== 200) {
     //         // TODO: Handle
     //     }
@@ -169,7 +169,7 @@ export class WizApi {
 
         return (await res.json()).strongSuit
     }
-    static listenToUpdateEvent() {
-        return new EventSource('/api/game/wizard/updates')
+    static listenToUpdateEvent(gameId: string) {
+        return new EventSource(`/api/game/wizard/${gameId}/updates`)
     }
 }
