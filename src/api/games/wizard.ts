@@ -144,8 +144,8 @@ router.post('/:gameId/bet/:bet', async (req, res) => {
 
             // TODO: Refactor versioning
             const announcement = WizBuilder.newAnnouncement(
-                AnnouncementType.PLACED_BET, 
-                1, 
+                AnnouncementType.PLACED_BET,
+                1,
                 playerId
             )
             sendUpdateState(playerIds, announcement)

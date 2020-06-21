@@ -95,7 +95,7 @@ export default class WizInfo {
     }
     static getGameInstruction(game: IWizGame): PossibleMoves {
         let nextMove = PossibleMoves.NONE
-        
+
         if (game.isDone){
             nextMove = PossibleMoves.ANNOUNCE_WIN
         }
@@ -105,7 +105,7 @@ export default class WizInfo {
                 nextMove = round.nextMove
             }
         }
-        
+
         return nextMove
     }
     static isGameDone(game: IWizGame): boolean {

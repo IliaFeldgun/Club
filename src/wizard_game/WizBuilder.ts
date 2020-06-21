@@ -28,7 +28,7 @@ export default class WizBuilder {
             game.playerScores[player] = new WizScore()
         })
         game.currentRound = WizBuilder.newRoundState(gameId, 1, players, players[0])
-        
+
         if (await WizStore.setWizGame(gameId, game))
             return game.id
     }
