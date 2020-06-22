@@ -36,15 +36,15 @@ export async function registerToUpdates(
 }
 
 
-export function sendUpdateState(playerIds: IPlayer["id"][], data?: any) {
-    if (!data) {
-        data = {
+export function sendUpdateState(playerIds: IPlayer["id"][], payload?: any) {
+    if (!payload) {
+        payload = {
             update: true
         }
     }
     clients.forEach(client => {
         if (playerIds.indexOf(client.id) !== -1) {
-            client.res.write(`data: ${JSON.stringify(data)}\n\n`)
+            client.res.write(`data: ${JSON.stringify(payload)}\n\n`)
 
             // TODO: notice any following problems and delete this whole nonsense
             // Without this response wasn't sent, Possibly a bug
