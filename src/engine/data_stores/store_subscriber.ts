@@ -6,7 +6,7 @@ export default class StoreSubscriber {
     static async subscribe(
         itemId: string,
         clientId: string,
-        callback: () => void
+        onMessage: () => void
     ) {
         // TODO: Not async-safe
         if (!StoreSubscriber.subscriberCallbacks[itemId]) {
@@ -32,7 +32,7 @@ export default class StoreSubscriber {
             }
         }
         // TODO: Not async-safe
-        StoreSubscriber.subscriberCallbacks[itemId][clientId] = callback
+        StoreSubscriber.subscriberCallbacks[itemId][clientId] = onMessage
     }
     static async unsubscribe(itemId: string, clientId: string) {
         try {

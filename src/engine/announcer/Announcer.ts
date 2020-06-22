@@ -11,9 +11,9 @@ export default class Announcer {
     private static async storeSubscribe(
         gameId: string,
         playerId: IPlayer["id"],
-        callback: () => void
+        onMessage: () => void
     ) {
-        StoreSubscriber.subscribe(gameId, playerId, callback)
+        StoreSubscriber.subscribe(gameId, playerId, onMessage)
     }
     private static async storeUnsubscribe(
         gameId: string,
@@ -24,9 +24,9 @@ export default class Announcer {
     private static async sseSubscribe(
         req: Request,
         res: Response,
-        unsubscribeCallback: () => void
+        onUnsubscribe: () => void
     ) {
-        SSE.subscribeClient(req, res, unsubscribeCallback)
+        SSE.subscribeClient(req, res, onUnsubscribe)
     }
     private static async sseUnsubscribe(playerId: string) {
         SSE.unsubscribeClient(playerId)
