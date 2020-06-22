@@ -56,14 +56,14 @@ export default class Wiz extends React.PureComponent<IWizProps,IWizState> {
                     alert("NOPE")
                     window.location.reload()
                 }
-                this.fetchDataToState()
+                // this.fetchDataToState()
             })
         // }
     }
     handleBet(bet: number) {
         WizApi.sendBet(this.state.gameId, bet).then((isBetSent) => {
             if (isBetSent) {
-                this.fetchDataToState()
+                // this.fetchDataToState()
             }
         })
     }

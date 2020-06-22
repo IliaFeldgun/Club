@@ -12,39 +12,39 @@ export default class Announcer {
         playerId: IPlayer["id"],
         callback: () => void
     ) {
-        try {
-            // TODO: Refactor
-            if (Object.keys(Announcer.gameCallbacks).indexOf(gameId) === -1)
-            {
+        if (!Announcer.subscriberCallbacks[gameId]) {
+            Announcer.subscriberCallbacks[gameId] = {}
+            try {
+                // TODO: Refactor
                 await store.subscribe()(SET_CHANNEL, gameId)
-                Announcer.gameCallbacks[gameId] = {}
-            }
 
-            Announcer.gameCallbacks[gameId][playerId] = callback
-        }
-        catch (ex) {
-            // TODO: handle
-        }
-        store.onSubscribedMessage((channel, message) => {
-            // TODO: Decide if "if" necessary
-            if (channel === SET_CHANNEL) {
-                Object.values(Announcer.gameCallbacks[message]).forEach((func) => {
-                    func()
+                store.onSubscribedMessage((channel, message) => {
+                    // TODO: Decide if "if" necessary
+                    if (channel === SET_CHANNEL) {
+                        Object.values(Announcer.subscriberCallbacks[message]).forEach((func) => {
+                            func()
+                        })
+                    }
                 })
             }
-        })
+            catch (ex) {
+                // TODO: handle
+            }
+        }
+
+        Announcer.subscriberCallbacks[gameId][playerId] = callback
     }
     static async unsubscribe(gameId: string, playerId: IPlayer["id"]) {
         try {
-            delete Announcer.gameCallbacks[gameId][playerId]
-            if (Announcer.gameCallbacks[gameId] === {})
+            delete Announcer.subscriberCallbacks[gameId][playerId]
+            if (Announcer.subscriberCallbacks[gameId] === {})
                 await store.unsubscribe()(SET_CHANNEL, gameId)
         }
         catch (ex) {
             // TODO: handle
         }
     }
-    static gameCallbacks: {
+    private static subscriberCallbacks: {
         [gameId: string]:
         {
             [playerId: string]: () => void

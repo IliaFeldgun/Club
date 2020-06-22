@@ -20,7 +20,7 @@ router.get('/:gameId/updates', (req, res) => {
         // TODO: Refactor
         const game = await WizStore.getWizGame(gameId)
         if (game) {
-            sendUpdateState(game.playerOrder, game.currentRound.nextMove)
+            sendUpdateState([playerId], game.currentRound.nextMove)
         }
     })
 })
