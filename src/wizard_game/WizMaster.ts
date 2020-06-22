@@ -82,9 +82,14 @@ export default class WizMaster {
             }
     }
     static async dealCards(gameId: IWizGame["id"]): Promise<boolean> {
-        const round = await WizMaster.getGameRound(gameId)
-        WizMutator.dealCards(round)
-        return WizMaster.setGameRound(gameId, round)
+        const game = await WizStore.getWizGame(gameId)
+        if (game) {
+            WizMutator.dealCards(game)
+            return WizStore.setWizGame(gameId, game)
+        }
+        else {
+            return false
+        }
     }
     static async setGameRound(gameId: IWizGame["id"], round: IWizRound) : Promise<boolean> {
         return WizStore.setWizRound(gameId, round)
