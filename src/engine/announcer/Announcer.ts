@@ -1,53 +1,51 @@
-import store from "../data_stores/key_value_state_store"
+import {Request, Response} from 'express'
+import { registerToUpdates, sendUpdateState } from "../../engine/request_handlers/server-sent-events"
 import IPlayer from "../lobby/interfaces/Player"
-
+import StoreSubscriber from "../data_stores/store_subscriber"
 const SET_CHANNEL = '__keyevent@0__:set'
 export default class Announcer {
 
     // static announce(playerIds: IPlayer["id"][], announcement: IAnnouncement) {
     //     sendUpdateState(playerIds, announcement)
     // }
-    static async subscribe(
+    private static async storeSubscribe(
         gameId: string,
         playerId: IPlayer["id"],
         callback: () => void
     ) {
-        if (!Announcer.subscriberCallbacks[gameId]) {
-            Announcer.subscriberCallbacks[gameId] = {}
-            try {
-                // TODO: Refactor
-                await store.subscribe()(SET_CHANNEL, gameId)
-
-                store.onSubscribedMessage((channel, message) => {
-                    // TODO: Decide if "if" necessary
-                    if (channel === SET_CHANNEL) {
-                        Object.values(Announcer.subscriberCallbacks[message]).forEach((func) => {
-                            func()
-                        })
-                    }
-                })
-            }
-            catch (ex) {
-                // TODO: handle
-            }
-        }
-
-        Announcer.subscriberCallbacks[gameId][playerId] = callback
+        StoreSubscriber.subscribe(gameId, playerId, callback)
+    }
+    private static async storeUnsubscribe(
+        gameId: string,
+        playerId: IPlayer["id"]
+    ) {
+        StoreSubscriber.unsubscribe(gameId, playerId)
+    }
+    private static async sseSubscribe(
+        req: Request,
+        res: Response,
+        unsubscribeCallback: () => void
+    ) {
+        registerToUpdates(req, res, unsubscribeCallback)
+    }
+    private static async sseSend(playerId: IPlayer["id"], payload: any) {
+        sendUpdateState([playerId], payload)
+    }
+    static async subscribe(
+        req: Request,
+        res: Response,
+        gameId: string,
+        playerId: IPlayer["id"],
+        payloadSource: () => Promise<any>
+    ) {
+        Announcer.storeSubscribe(gameId, playerId, async () => {
+            Announcer.sseSend(playerId, await payloadSource())
+        })
+        Announcer.sseSubscribe(req, res, () => {
+            Announcer.unsubscribe(gameId, playerId)
+        })
     }
     static async unsubscribe(gameId: string, playerId: IPlayer["id"]) {
-        try {
-            delete Announcer.subscriberCallbacks[gameId][playerId]
-            if (Announcer.subscriberCallbacks[gameId] === {})
-                await store.unsubscribe()(SET_CHANNEL, gameId)
-        }
-        catch (ex) {
-            // TODO: handle
-        }
+        Announcer.storeUnsubscribe(gameId, playerId)
     }
-    private static subscriberCallbacks: {
-        [gameId: string]:
-        {
-            [playerId: string]: () => void
-        }
-    } = {}
 }
