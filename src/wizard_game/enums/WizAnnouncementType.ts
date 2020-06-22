@@ -1,4 +1,4 @@
-export enum AnnouncementType {
+export enum WizAnnouncementType {
     NONE = 0,
     DEALING,
     BETTING,

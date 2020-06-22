@@ -1,8 +1,8 @@
 import IAnnouncement from "@engine/announcer/interfaces/Announcement";
-import { AnnouncementType } from "../enums/AnnouncementType";
+import { WizAnnouncementType } from "../enums/WizAnnouncementType";
 import IPlayer from "../../engine/lobby/interfaces/Player";
 
 export default interface IWizAnnouncement extends IAnnouncement {
-    type: AnnouncementType
+    type: WizAnnouncementType
     player: IPlayer["id"]
 }
