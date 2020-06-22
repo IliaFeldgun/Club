@@ -4,23 +4,23 @@ import WizBuilder from "../../wizard_game/WizBuilder"
 import WizMaster from "../../wizard_game/WizMaster"
 import LobbyMaster from "../../engine/lobby/LobbyMaster"
 import LobbyStore from "../../engine/lobby/LobbyStore"
-import { registerToUpdates, sendUpdateState } from "../../engine/request_handlers/server-sent-events"
 import Announcer from "../../engine/announcer/Announcer"
 import WizStore from "../../wizard_game/WizStore"
+import { PossibleMoves } from "../../wizard_game/enums/PossibleMoves"
 
 const router = express.Router()
 router.get('/:gameId/updates', (req, res) => {
     const gameId = req.params.gameId
     const playerId = req.playerId
-    registerToUpdates(req, res, () => {
-        Announcer.unsubscribe(gameId, playerId)
-    })
 
-    Announcer.subscribe(gameId, playerId, async () => {
+    Announcer.subscribe(req, res, gameId, playerId, async () => {
         // TODO: Refactor
         const game = await WizStore.getWizGame(gameId)
         if (game) {
-            sendUpdateState([playerId], game.currentRound.nextMove)
+            return game.currentRound.nextMove
+        }
+        else {
+            return PossibleMoves.NONE
         }
     })
 })
