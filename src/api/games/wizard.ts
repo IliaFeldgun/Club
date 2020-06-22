@@ -6,7 +6,7 @@ import LobbyMaster from "../../engine/lobby/LobbyMaster"
 import LobbyStore from "../../engine/lobby/LobbyStore"
 import Announcer from "../../engine/announcer/Announcer"
 import WizStore from "../../wizard_game/WizStore"
-import { PossibleMoves } from "../../wizard_game/enums/PossibleMoves"
+import { WizAnnouncementType } from "../../wizard_game/enums/WizAnnouncementType"
 
 const router = express.Router()
 router.get('/:gameId/updates', (req, res) => {
@@ -17,10 +17,10 @@ router.get('/:gameId/updates', (req, res) => {
         // TODO: Refactor
         const game = await WizStore.getWizGame(gameId)
         if (game) {
-            return game.currentRound.nextMove
+            return game.announcement
         }
         else {
-            return PossibleMoves.NONE
+            return {}
         }
     })
 })
