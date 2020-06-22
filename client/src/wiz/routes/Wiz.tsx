@@ -39,9 +39,6 @@ export default class Wiz extends React.PureComponent<IWizProps,IWizState> {
         this.handleBet = this.handleBet.bind(this)
     }
     componentDidMount() {
-        // WizApi.listenToUpdateEvent().addEventListener("message", (event) => {
-            // this.fetchDataToState()
-        // })
         const eventSource = WizApi.listenToUpdateEvent(this.state.gameId)
         eventSource.onmessage = (event) => {
             console.log(event.data)
