@@ -5,7 +5,7 @@ export enum WizAnnouncementType {
     PLACED_BET,
     PLAYING_CARD,
     PLAYED_CARD,
-    TOOK_TAKE,
-    WON_ROUND,
+    WON_TAKE,
+    SCORES_CHANGED,
     WON_GAME
 }
