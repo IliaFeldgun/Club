@@ -9,6 +9,8 @@ import { PossibleMoves } from "./enums/PossibleMoves"
 import ICard from "../card_engine/interfaces/Card"
 import Card from "../card_engine/models/Card"
 import Stack from "../card_engine/models/Stack"
+import IWizAnnouncement from "./interfaces/WizAnnouncement"
+import { WizAnnouncementType } from "./enums/WizAnnouncementType"
 
 export default class WizMutator {
     static playBet(
@@ -55,12 +57,13 @@ export default class WizMutator {
             WizMutator.nextTurn(round)
         }
     }
-    static dealCards(round: IWizRound): boolean {
-        if (!round) {
+    static dealCards(game: IWizGame): boolean {
+        if (!game) {
             return false
         }
         else
         {
+            const round = game.currentRound
             const totalRounds =
                 WizGameRules.getTotalRounds(round.playerOrder.length)
 
@@ -78,7 +81,11 @@ export default class WizMutator {
                     round.playerOrder.forEach(playerId =>
                         round.playerHands[playerId].push(round.deck.cards.pop()))
                 }
-
+                WizMutator.setAnnouncement(
+                    game, 
+                    WizAnnouncementType.BETTING, 
+                    round.playerOrder[0]
+                )
                 return true
             }
         }
@@ -92,12 +99,15 @@ export default class WizMutator {
             game.playerOrder,
             game.playerOrder[0]
         )
-
-        const areCardsDealt = WizMutator.dealCards(newRound)
-
-        if (newRound && areCardsDealt && game) {
+        if (newRound) {
             game.currentRound = newRound
-            return true
+            const areCardsDealt = WizMutator.dealCards(game)
+            if (areCardsDealt) {
+                return true
+            }
+            else {
+                return false
+            }
         }
         else {
             return false
@@ -137,5 +147,17 @@ export default class WizMutator {
     }
     static addTakeToPlayerResult(round: IWizRound, winningPlayer: IPlayer["id"]) {
         round.playerResults[winningPlayer].successfulTakes++
+    }
+    static setAnnouncement(
+        game: IWizGame,
+        type: WizAnnouncementType,
+        player: IPlayer["id"]
+    ) {
+        const announcement = WizBuilder.newAnnouncement(
+            type,
+            game.announcement.version + 1,
+            player
+        )
+        game.announcement = announcement
     }
 }
