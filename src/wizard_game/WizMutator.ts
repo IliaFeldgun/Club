@@ -82,8 +82,8 @@ export default class WizMutator {
                         round.playerHands[playerId].push(round.deck.cards.pop()))
                 }
                 WizMutator.setAnnouncement(
-                    game, 
-                    WizAnnouncementType.BETTING, 
+                    game,
+                    WizAnnouncementType.BETTING,
                     round.playerOrder[0]
                 )
                 return true

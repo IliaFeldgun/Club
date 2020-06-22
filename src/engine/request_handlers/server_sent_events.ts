@@ -36,7 +36,7 @@ export default class ServerSentEvents {
     }
 
     static unsubscribeClient(clientId: string) {
-        ServerSentEvents.clients = ServerSentEvents.clients.filter(client => 
+        ServerSentEvents.clients = ServerSentEvents.clients.filter(client =>
             client.id !== clientId
         )
     }
