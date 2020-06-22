@@ -24,11 +24,11 @@ export default class WizMaster {
         bet: number,
         playerId: IPlayer["id"]
     ): Promise<boolean> {
-        const round = await WizMaster.getGameRound(gameId)
+        const game = await WizStore.getWizGame(gameId)
 
-        if (round && WizInfo.canPlayBet(round, bet, playerId)) {
-            WizMutator.playBet(round, bet, playerId)
-            return await WizMaster.setGameRound(gameId, round)
+        if (game && WizInfo.canPlayBet(game.currentRound, bet, playerId)) {
+            WizMutator.playBet(game, bet, playerId)
+            return await WizStore.setWizGame(gameId, game)
         }
         else {
             return false
