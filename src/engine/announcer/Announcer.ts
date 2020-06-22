@@ -26,10 +26,13 @@ export default class Announcer {
         res: Response,
         unsubscribeCallback: () => void
     ) {
-        SSE.registerToUpdates(req, res, unsubscribeCallback)
+        SSE.subscribeClient(req, res, unsubscribeCallback)
+    }
+    private static async sseUnsubscribe(playerId: string) {
+        SSE.unsubscribeClient(playerId)
     }
     private static async sseSend(playerId: IPlayer["id"], payload: any) {
-        SSE.sendUpdateState([playerId], payload)
+        SSE.sendUpdateToClient([playerId], payload)
     }
     static async subscribe(
         req: Request,
@@ -47,5 +50,6 @@ export default class Announcer {
     }
     static async unsubscribe(gameId: string, playerId: IPlayer["id"]) {
         Announcer.storeUnsubscribe(gameId, playerId)
+        Announcer.sseUnsubscribe(playerId)
     }
 }
