@@ -8,6 +8,7 @@ export default class StoreSubscriber {
         clientId: string,
         callback: () => void
     ) {
+        // TODO: Not async-safe
         if (!StoreSubscriber.subscriberCallbacks[itemId]) {
 
             StoreSubscriber.subscriberCallbacks[itemId] = {}
@@ -30,11 +31,12 @@ export default class StoreSubscriber {
                 // TODO: handle
             }
         }
-
+        // TODO: Not async-safe
         StoreSubscriber.subscriberCallbacks[itemId][clientId] = callback
     }
     static async unsubscribe(itemId: string, clientId: string) {
         try {
+            // TODO: Not async-safe
             delete StoreSubscriber.subscriberCallbacks[itemId][clientId]
             if (StoreSubscriber.subscriberCallbacks[itemId] === {})
                 await store.unsubscribe()(SET_CHANNEL, itemId)
