@@ -11,7 +11,7 @@ import { generateId } from "../engine/id_generator"
 import WizStore from "./WizStore"
 import WizPlayerRoundResult from "./models/WizPlayerRoundResult"
 import { PossibleMoves } from "./enums/PossibleMoves"
-import { AnnouncementType } from "./enums/AnnouncementType"
+import { WizAnnouncementType } from "./enums/WizAnnouncementType"
 import IWizAnnouncement from "./interfaces/WizAnnouncement"
 import WizAnnouncement from "./models/WizAnnouncement"
 
@@ -28,7 +28,11 @@ export default class WizBuilder {
             game.playerScores[player] = new WizScore()
         })
         game.currentRound = WizBuilder.newRoundState(1, players, players[0])
-
+        game.announcement = WizBuilder.newAnnouncement(
+            WizAnnouncementType.NONE,
+            0,
+            ""
+        )
         if (await WizStore.setWizGame(gameId, game))
             return game.id
     }
@@ -55,7 +59,7 @@ export default class WizBuilder {
     }
 
     static newAnnouncement(
-        type: AnnouncementType,
+        type: WizAnnouncementType,
         version: number,
         player: IPlayer["id"],
         clientMessage?: string): IWizAnnouncement {
