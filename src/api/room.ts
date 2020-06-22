@@ -6,7 +6,7 @@ import LobbyStore from "../engine/lobby/LobbyStore";
 import SSE from "../engine/request_handlers/server_sent_events"
 
 const router = express.Router()
-router.get('/updates', SSE.registerToUpdates)
+router.get('/updates', SSE.subscribeClient)
 
 router.post('/', async (req, res) => {
     const playerId = req.playerId
@@ -81,7 +81,7 @@ router.post('/:roomId/join', async ( req, res ) => {
 
         if (roomId && await LobbyMaster.addPlayerToRoom(playerId, roomId)) {
             const playerIds = await LobbyMaster.getRoomPlayerIds(roomId)
-            SSE.sendUpdateState(playerIds)
+            SSE.sendUpdateToClient(playerIds)
 
             res.send({roomId})
         }
@@ -103,7 +103,7 @@ router.delete('/:roomId/player', async ( req, res ) => {
 
         if (roomId && await LobbyMaster.removePlayerFromRoom(playerId, roomId)) {
             const playerIds = await LobbyMaster.getRoomPlayerIds(roomId)
-            SSE.sendUpdateState(playerIds)
+            SSE.sendUpdateToClient(playerIds)
             res.send("OK")
         }
         else {
