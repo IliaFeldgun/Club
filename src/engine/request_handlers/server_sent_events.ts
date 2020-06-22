@@ -8,10 +8,10 @@ const SSE_RESPONSE_HEADER = {
     'X-Accel-Buffering': 'no',
   };
 export default class ServerSentEvents {
-    static async registerToUpdates(
+    static async subscribeClient(
         req: Request,
         res: Response,
-        unsubscribe?: () => void
+        onUnsubscribe?: () => void
     ) {
         req.socket.setTimeout(0)
         req.socket.setNoDelay(true)
@@ -21,23 +21,26 @@ export default class ServerSentEvents {
         res.write(`data: ${JSON.stringify("OK")}\n\n`)
         // TODO: Refactor it to session ID
         const clientId = req.playerId
+        // TODO: Perhaps allow multiple responses per client
         const newClient = {
             id: clientId,
             res
         }
-        const clients = ServerSentEvents.clients
-        // TODO: Perhaps allow multiple responses per client
-        clients.push(newClient);
+        ServerSentEvents.clients.push(newClient)
 
         req.on('close', () => {
             // TODO: Possibly log this
-            unsubscribe()
-            ServerSentEvents.clients = clients.filter(client => client.id !== clientId)
+            onUnsubscribe()
+            ServerSentEvents.unsubscribeClient(clientId)
         })
     }
 
-
-    static sendUpdateState(playerIds: IPlayer["id"][], payload?: any) {
+    static unsubscribeClient(clientId: string) {
+        ServerSentEvents.clients = ServerSentEvents.clients.filter(client => 
+            client.id !== clientId
+        )
+    }
+    static sendUpdateToClient(playerIds: IPlayer["id"][], payload?: any) {
         if (!payload) {
             payload = {
                 update: true
