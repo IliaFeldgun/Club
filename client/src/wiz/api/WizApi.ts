@@ -1,5 +1,6 @@
-import ICard, { Suit } from "../interfaces/Card"
+import ICard, { Suit } from "../../interfaces/Card"
 import { PossibleMoves } from "../interfaces/PossibleMoves"
+import IWizPlayer from "../interfaces/WizPlayer"
 
 export class WizApi {
     static newGame(roomId: string) {
@@ -26,12 +27,7 @@ export class WizApi {
         }
         return (await res.json()).instruction
     }
-    static async getGamePlayers(gameId: string): Promise<{
-        id: string,
-        name: string,
-        score: number,
-        takes: number
-    }[]> {
+    static async getGamePlayers(gameId: string): Promise<IWizPlayer[]> {
         const options: RequestInit = {
             method: "GET",
             cache: "no-cache",
@@ -61,22 +57,22 @@ export class WizApi {
 
         return (await res.json()).nextPlayer
     }
-    static async getPlayerHandSizes(gameId: string): 
-    Promise<{ [playerId: string]: number }> {
-        const options: RequestInit = {
-            method: "GET",
-            cache: "no-cache",
-            headers: {
-                'Content-Type': 'application/json'
-            },
-        }
-        const res = await  fetch(`/api/game/wizard/${gameId}/handsizes`, options)
-        if (res.status !== 200) {
-            // TODO: Handle
-        }
+    // static async getPlayerHandSizes(gameId: string): 
+    // Promise<{ [playerId: string]: number }> {
+    //     const options: RequestInit = {
+    //         method: "GET",
+    //         cache: "no-cache",
+    //         headers: {
+    //             'Content-Type': 'application/json'
+    //         },
+    //     }
+    //     const res = await fetch(`/api/game/wizard/${gameId}/handsizes`, options)
+    //     if (res.status !== 200) {
+    //         // TODO: Handle
+    //     }
 
-        return (await res.json()).playerHandSizes
-    }
+    //     return (await res.json()).playerHandSizes
+    // }
     static async getPlayerHand(gameId: string) {
         const options: RequestInit = {
             method: "GET",
@@ -141,22 +137,22 @@ export class WizApi {
             return false
         }
     }
-    static async getPlayerBets(gameId: string): 
-        Promise<{ [playerId: string]: number }> {
-            const options: RequestInit = {
-                method: "GET",
-                cache: "no-cache",
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-            }
-            const res = await fetch(`/api/game/wizard/${gameId}/bets`, options)
-            if (res.status !== 200) {
-                // TODO: Handle
-            }
+    // static async getPlayerBets(gameId: string): 
+    //     Promise<{ [playerId: string]: number }> {
+    //         const options: RequestInit = {
+    //             method: "GET",
+    //             cache: "no-cache",
+    //             headers: {
+    //                 'Content-Type': 'application/json'
+    //             },
+    //         }
+    //         const res = await fetch(`/api/game/wizard/${gameId}/bets`, options)
+    //         if (res.status !== 200) {
+    //             // TODO: Handle
+    //         }
     
-            return (await res.json()).bets
-    }
+    //         return (await res.json()).bets
+    // }
     static async getStrongSuit(gameId: string):
         Promise<Suit> {
         const options: RequestInit = {
@@ -173,7 +169,7 @@ export class WizApi {
 
         return (await res.json()).strongSuit
     }
-    static listenToUpdateEvent() {
-        return new EventSource('/api/game/wizard/updates')
+    static listenToUpdateEvent(gameId: string) {
+        return new EventSource(`/api/game/wizard/${gameId}/updates`)
     }
 }

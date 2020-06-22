@@ -1,17 +1,13 @@
 import IRoom from "../engine/interfaces/Room";
-import LOBBY_API_MAP from "../engine/ApiMap";
+import LOBBY_API_MAP from "../engine/LobbyApiMap";
 
 export default class LobbyApi {
     static async newPlayer(playerName: string) {
-        const data = new URLSearchParams();
-        data.append("playerName", playerName)
-
-        const options: RequestInit = { 
-            method: "POST",
-            cache: "no-cache",
-            body: data
-        }
-        return fetch('/api/player', options)
+        const data = LOBBY_API_MAP.PLAYER.CREATE_PLAYER.data(playerName)
+        const url = LOBBY_API_MAP.PLAYER.CREATE_PLAYER.url()
+        const options = LOBBY_API_MAP.PLAYER.CREATE_PLAYER.options
+        options.body = data
+        return fetch(url, options)
     }
 
     static async newRoom() {

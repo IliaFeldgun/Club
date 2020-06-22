@@ -1,4 +1,4 @@
-const API_MAP = {
+const WIZ_API_MAP = {
     WIZ: {
         SEND_CARD: {
             URL: "/api/game/wizard",
@@ -17,4 +17,4 @@ const API_MAP = {
     }
 }
 
-export default API_MAP
+export default WIZ_API_MAP

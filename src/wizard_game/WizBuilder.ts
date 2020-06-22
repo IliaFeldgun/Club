@@ -11,33 +11,41 @@ import { generateId } from "../engine/id_generator"
 import WizStore from "./WizStore"
 import WizPlayerRoundResult from "./models/WizPlayerRoundResult"
 import { PossibleMoves } from "./enums/PossibleMoves"
+import { WizAnnouncementType } from "./enums/WizAnnouncementType"
+import IWizAnnouncement from "./interfaces/WizAnnouncement"
+import WizAnnouncement from "./models/WizAnnouncement"
 
 export default class WizBuilder {
 
-    static async newGameState(roomId: IRoom["id"],
-                        players: IPlayer["id"][]) : Promise<IWizGame["id"]>
-    {
+    static async newGameState(
+        roomId: IRoom["id"],
+        players: IPlayer["id"][]
+    ) : Promise<IWizGame["id"]> {
         const gameId = generateId(roomId,process.env.UUID_GAME_NAMESPACE)
         const game = new WizGame(gameId, roomId)
         players.forEach((player) => {
             game.playerOrder.push(player)
             game.playerScores[player] = new WizScore()
         })
+        game.currentRound = WizBuilder.newRoundState(1, players, players[0])
+        game.announcement = WizBuilder.newAnnouncement(
+            WizAnnouncementType.NONE,
+            0,
+            ""
+        )
         if (await WizStore.setWizGame(gameId, game))
             return game.id
     }
-    static async newRoundState(gameId: IWizGame["id"],
-                               roundNumber: number,
-                               players: IPlayer["id"][],
-                               firstPlayer: IPlayer["id"]): Promise<IWizRound["id"]>
-    {
-        const roundId = generateId(gameId + roundNumber,
-                                   process.env.UUID_ROUND_NAMESPACE)
 
+    static newRoundState(
+        roundNumber: number,
+        players: IPlayer["id"][],
+        firstPlayer: IPlayer["id"]
+    ): IWizRound {
         const roundDeck = new Deck(true)
         const roundTableStack = new Stack([])
 
-        const round = new WizRound(roundId, gameId, roundNumber, roundDeck, roundTableStack)
+        const round = new WizRound(roundNumber, roundDeck, roundTableStack)
         round.nextMove = PossibleMoves.PLACE_BET
 
         round.playerOrder = WizBuilder.generatePlayerOrder(firstPlayer, players)
@@ -47,11 +55,16 @@ export default class WizBuilder {
             round.playerResults[player] = new WizPlayerRoundResult(roundNumber)
         })
 
-        if (await WizStore.setWizRound(round.id, round))
-            return round.id
-
+        return round
     }
 
+    static newAnnouncement(
+        type: WizAnnouncementType,
+        version: number,
+        player: IPlayer["id"],
+        clientMessage?: string): IWizAnnouncement {
+            return new WizAnnouncement(version, type, player, clientMessage)
+    }
     static generatePlayerOrder(firstPlayer: IPlayer["id"],
                                players: IPlayer["id"][]): IPlayer["id"][]
     {

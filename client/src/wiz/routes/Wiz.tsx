@@ -1,10 +1,11 @@
 import React from "react";
 import './Wiz.css';
-import WizGame from "../components/Wiz/WizGame";
+import WizGame from "../components/WizGame";
 import { match, RouteComponentProps } from "react-router";
 import { WizApi } from "../api/WizApi";
-import ICard, { Suit, Rank } from "../interfaces/Card";
+import ICard, { Suit, Rank } from "../../interfaces/Card";
 import { PossibleMoves } from "../interfaces/PossibleMoves";
+import IWizPlayer from "../interfaces/WizPlayer";
 
 interface IRouteParams {
     id: string
@@ -13,11 +14,10 @@ interface IWizProps extends RouteComponentProps<IRouteParams>{
     match: match<IRouteParams>
 }
 interface IWizState {
+    gameId: string
     instructions: PossibleMoves
-    players: Array<{id: string, name: string, score: number, takes: number}>
+    players: IWizPlayer[]
     nextPlayer: string
-    playerHandSizes: { [playerId: string]: number }
-    playerBets: { [playerId: string]: number }
     playerHand: ICard[]
     tableStack: ICard[]
     strongSuit?: Suit
@@ -27,11 +27,10 @@ export default class Wiz extends React.PureComponent<IWizProps,IWizState> {
         super(props)
 
         this.state = {
+            gameId: props.match.params.id,
             instructions: PossibleMoves.NONE,
             players: [], 
             nextPlayer: "",
-            playerHandSizes: {},
-            playerBets: {},
             playerHand: [], 
             tableStack: []
         }
@@ -40,37 +39,34 @@ export default class Wiz extends React.PureComponent<IWizProps,IWizState> {
         this.handleBet = this.handleBet.bind(this)
     }
     componentDidMount() {
-        // WizApi.listenToUpdateEvent().addEventListener("message", (event) => {
-            // this.fetchDataToState()
-        // })
-        WizApi.listenToUpdateEvent().onmessage = (event) => {
+        const eventSource = WizApi.listenToUpdateEvent(this.state.gameId)
+        eventSource.onmessage = (event) => {
+            console.log(event.data)
             this.fetchDataToState()
         }
         this.fetchDataToState()
     }
     handleCardSend(card: ICard) {
         // if (this.canPlayCard(card)) {
-            WizApi.sendCard(this.props.match.params.id, card).then((isCardSent) => {
+            WizApi.sendCard(this.state.gameId, card).then((isCardSent) => {
                 if (!isCardSent) {
                     alert("NOPE")
                     window.location.reload()
                 }
-                this.fetchDataToState()
+                // this.fetchDataToState()
             })
         // }
     }
     handleBet(bet: number) {
-        WizApi.sendBet(this.props.match.params.id, bet).then((isBetSent) => {
+        WizApi.sendBet(this.state.gameId, bet).then((isBetSent) => {
             if (isBetSent) {
-                this.fetchDataToState()
+                // this.fetchDataToState()
             }
         })
     }
     render() {
         let toRender = <WizGame players={this.state.players} 
                                 nextPlayer={this.state.nextPlayer}
-                                playerHandSizes={this.state.playerHandSizes}
-                                playerBets={this.state.playerBets}
                                 playerHand={this.state.playerHand}
                                 tableStack={this.state.tableStack}
                                 handleFanCardClick={this.handleCardSend}
@@ -88,13 +84,11 @@ export default class Wiz extends React.PureComponent<IWizProps,IWizState> {
     }
     fetchDataToState() {
         const AllRequests: Promise<any>[] = []
-        const gameId = this.props.match.params.id
+        const gameId = this.state.gameId
         // TODO: Maybe unite API
         AllRequests.push(WizApi.getGameInstructions(gameId))
         AllRequests.push(WizApi.getGamePlayers(gameId))
         AllRequests.push(WizApi.getNextPlayer(gameId))
-        AllRequests.push(WizApi.getPlayerHandSizes(gameId))
-        AllRequests.push(WizApi.getPlayerBets(gameId))
         AllRequests.push(WizApi.getPlayerHand(gameId))
         AllRequests.push(WizApi.getTableStack(gameId))
         AllRequests.push(WizApi.getStrongSuit(gameId))
@@ -103,8 +97,6 @@ export default class Wiz extends React.PureComponent<IWizProps,IWizState> {
             instructions, 
             players, 
             nextPlayer,
-            playerHandSizes, 
-            playerBets, 
             playerHand, 
             tableStack,
             strongSuit
@@ -113,8 +105,6 @@ export default class Wiz extends React.PureComponent<IWizProps,IWizState> {
                 instructions, 
                 players, 
                 nextPlayer,
-                playerHandSizes, 
-                playerBets, 
                 playerHand, 
                 tableStack,
                 strongSuit}))

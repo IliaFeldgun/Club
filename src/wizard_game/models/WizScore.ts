@@ -1,6 +1,3 @@
-import WizGameRules from "../WizGameRules"
-import IWizBet from "../interfaces/WizBet"
-import IWizPlayerRoundResult from "../interfaces/WizPlayerRoundResult"
 import IWizScore from "../interfaces/WizScore"
 
 export default class WizScore implements IWizScore {
@@ -8,5 +5,14 @@ export default class WizScore implements IWizScore {
 
     constructor() {
         this.total = 0
+    }
+    static max(scores: WizScore[]) {
+        const scoreNumbers = scores.map((score) => {
+            return score.total
+        })
+        const maxScore = scoreNumbers.reduce((a,b) => {
+            return Math.max(a,b)
+        })
+        return maxScore
     }
 }

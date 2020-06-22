@@ -1,10 +1,12 @@
 import IWizRound from "./interfaces/WizRound"
 import IPlayer from "../engine/lobby/interfaces/Player"
-import ICard from "../card_engine/interfaces/Card"
+import ICard, { Suit } from "../card_engine/interfaces/Card"
 import WizGameRules from "./WizGameRules"
 import Card from "../card_engine/models/Card"
 import Stack from "../card_engine/models/Stack"
 import { PossibleMoves } from "./enums/PossibleMoves"
+import IWizGame from "./interfaces/WizGame"
+import WizScore from "./models/WizScore"
 
 export default class WizInfo {
     static getPlayerByCard(round: IWizRound, card: ICard): IPlayer["id"] {
@@ -85,5 +87,40 @@ export default class WizInfo {
         }
 
         return playerBets
+    }
+    static getRoundStrongSuit(round: IWizRound): Suit {
+        return round.strongSuit
+    }
+    static getGamePlayerIds(game: IWizGame): IPlayer["id"][] {
+        return game.playerOrder
+    }
+    static getGameInstruction(game: IWizGame): PossibleMoves {
+        let nextMove = PossibleMoves.NONE
+
+        if (game.isDone){
+            nextMove = PossibleMoves.ANNOUNCE_WIN
+        }
+        else {
+            const round = game.currentRound
+            if (round) {
+                nextMove = round.nextMove
+            }
+        }
+
+        return nextMove
+    }
+    static isGameDone(game: IWizGame): boolean {
+        const totalRounds =
+            WizGameRules.getTotalRounds(game.playerOrder.length)
+        return game.currentRound.roundNumber > totalRounds
+    }
+    static getGameWinner(game: IWizGame): IPlayer["id"] {
+        const maxScore = WizScore.max(Object.values(game.playerScores))
+        const winner = Object.entries(game.playerScores).find(([player, score]) => {
+            return score.total === maxScore
+        })
+
+        return winner[0]
+
     }
 }
