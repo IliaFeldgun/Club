@@ -3,10 +3,10 @@ import IRoom from "../engine/lobby/interfaces/Room";
 import LobbyBuilder from "../engine/lobby/LobbyBuilder";
 import LobbyMaster from "../engine/lobby/LobbyMaster";
 import LobbyStore from "../engine/lobby/LobbyStore";
-import {registerToUpdates, sendUpdateState} from "../engine/request_handlers/server-sent-events"
+import SSE from "../engine/request_handlers/server_sent_events"
 
 const router = express.Router()
-router.get('/updates', registerToUpdates)
+router.get('/updates', SSE.registerToUpdates)
 
 router.post('/', async (req, res) => {
     const playerId = req.playerId
@@ -81,7 +81,7 @@ router.post('/:roomId/join', async ( req, res ) => {
 
         if (roomId && await LobbyMaster.addPlayerToRoom(playerId, roomId)) {
             const playerIds = await LobbyMaster.getRoomPlayerIds(roomId)
-            sendUpdateState(playerIds)
+            SSE.sendUpdateState(playerIds)
 
             res.send({roomId})
         }
@@ -103,7 +103,7 @@ router.delete('/:roomId/player', async ( req, res ) => {
 
         if (roomId && await LobbyMaster.removePlayerFromRoom(playerId, roomId)) {
             const playerIds = await LobbyMaster.getRoomPlayerIds(roomId)
-            sendUpdateState(playerIds)
+            SSE.sendUpdateState(playerIds)
             res.send("OK")
         }
         else {

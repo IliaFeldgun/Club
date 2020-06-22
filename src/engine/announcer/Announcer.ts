@@ -1,5 +1,5 @@
 import {Request, Response} from 'express'
-import { registerToUpdates, sendUpdateState } from "../../engine/request_handlers/server-sent-events"
+import SSE from "../request_handlers/server_sent_events"
 import IPlayer from "../lobby/interfaces/Player"
 import StoreSubscriber from "../data_stores/store_subscriber"
 const SET_CHANNEL = '__keyevent@0__:set'
@@ -26,10 +26,10 @@ export default class Announcer {
         res: Response,
         unsubscribeCallback: () => void
     ) {
-        registerToUpdates(req, res, unsubscribeCallback)
+        SSE.registerToUpdates(req, res, unsubscribeCallback)
     }
     private static async sseSend(playerId: IPlayer["id"], payload: any) {
-        sendUpdateState([playerId], payload)
+        SSE.sendUpdateState([playerId], payload)
     }
     static async subscribe(
         req: Request,
