@@ -14,13 +14,18 @@ import { WizAnnouncementType } from "./enums/WizAnnouncementType"
 
 export default class WizMutator {
     static playBet(
-        round: IWizRound,
+        game: IWizGame,
         bet: number,
         playerId: IPlayer["id"]
     ): void {
-
+        const round = game.currentRound
         round.playerBets[playerId] = new WizBet(bet)
         WizMutator.nextPlayer(round.playerOrder)
+        WizMutator.setAnnouncement(
+            game,
+            WizAnnouncementType.PLACED_BET,
+            playerId
+        )
         if (WizInfo.didAllBet(round)) {
             round.nextMove = PossibleMoves.PLAY_CARD
         }
@@ -40,18 +45,41 @@ export default class WizMutator {
         round.playerHands[playerId] = cardsLeft
         Stack.push(round.tableStack, cardPlayed)
         WizMutator.nextPlayer(round.playerOrder)
-
+        WizMutator.setAnnouncement(
+            game,
+            WizAnnouncementType.PLAYED_CARD,
+            playerId
+        )
         const takeWinner = WizMutator.assertWinner(round)
 
         if (takeWinner) {
             round.playerOrder =
                 WizBuilder.generatePlayerOrder(takeWinner, round.playerOrder)
+            WizMutator.setAnnouncement(
+                game,
+                WizAnnouncementType.WON_TAKE,
+                takeWinner
+            )
         }
 
         if (WizInfo.areAllHandsEmpty(round)) {
             WizMutator.calculateScores(game)
+            WizMutator.setAnnouncement(
+                game,
+                WizAnnouncementType.SCORES_CHANGED,
+                ""
+            )
             WizMutator.nextRound(game)
-            game.isDone = WizInfo.isGameDone(game)
+            const isGameDone = WizInfo.isGameDone(game)
+            if (isGameDone) {
+                game.isDone = isGameDone
+                const winner = WizInfo.getGameWinner(game)
+                WizMutator.setAnnouncement(
+                    game,
+                    WizAnnouncementType.WON_GAME,
+                    winner
+                )
+            }
         }
         else {
             WizMutator.nextTurn(round)
