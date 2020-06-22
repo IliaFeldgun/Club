@@ -6,6 +6,7 @@ import Card from "../card_engine/models/Card"
 import Stack from "../card_engine/models/Stack"
 import { PossibleMoves } from "./enums/PossibleMoves"
 import IWizGame from "./interfaces/WizGame"
+import WizScore from "./models/WizScore"
 
 export default class WizInfo {
     static getPlayerByCard(round: IWizRound, card: ICard): IPlayer["id"] {
@@ -112,5 +113,14 @@ export default class WizInfo {
         const totalRounds =
             WizGameRules.getTotalRounds(game.playerOrder.length)
         return game.currentRound.roundNumber > totalRounds
+    }
+    static getGameWinner(game: IWizGame): IPlayer["id"] {
+        const maxScore = WizScore.max(Object.values(game.playerScores))
+        const winner = Object.entries(game.playerScores).find(([player, score]) => {
+            return score.total === maxScore
+        })
+
+        return winner[0]
+
     }
 }
