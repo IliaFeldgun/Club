@@ -57,3 +57,34 @@ footer {
     margin-top: 1%;
     width: max-content;
 }
+/*snackbar*/
+.grey-popup {
+  visibility: hidden;
+  min-width: 50vw;
+  margin-left: -25vw;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 2px;
+  padding: 1vh;
+  position: fixed;
+  z-index: 300;
+  left: 50%;
+  top: 10vh;
+  font-size: 17px;
+}
+.grey-popup.show {
+  visibility: visible;
+  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+  
+@keyframes fadein {
+from {top: 0; opacity: 0;}
+to {top: 10vh; opacity: 0.9;}
+}
+
+@keyframes fadeout {
+from {top: 10vh; opacity: 0.9;}
+to {top: 0; opacity: 0;}
+}
