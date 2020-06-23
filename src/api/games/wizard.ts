@@ -38,7 +38,7 @@ router.post('/:roomId', async ( req, res ) => {
 
             if (gameId && isRoomSet && areCardsDealt)
             {
-                res.send({gameId})
+                res.status(200).send({gameId})
             }
             else {
                 res.status(500)
@@ -61,7 +61,7 @@ router.get('/:gameId', async (req, res) => {
     const gameId = req.params.gameId
     if (playerId && WizMaster.isPlayerInGame(playerId, gameId)) {
         const instruction = await WizMaster.getGameInstruction(gameId)
-        res.send({instruction})
+        res.status(200).send({instruction})
     }
     else {
         res.status(403).send("Player needs be set")
@@ -74,7 +74,7 @@ router.get('/:gameId/nextPlayer', async (req, res) => {
         const round = await WizMaster.getGameRound(gameId)
         if (round) {
             const nextPlayer = round.playerOrder[0]
-            res.send({nextPlayer})
+            res.status(200).send({nextPlayer})
         }
     }
     else {
@@ -86,7 +86,7 @@ router.get('/:gameId/players', async (req,res) => {
     if (playerId) {
         const gameId = req.params.gameId
         const players = await WizMaster.getWizPlayersByGame(gameId)
-        res.send({players})
+        res.status(200).send({players})
     }
     else {
         res.status(403).send("Player needs be set")
@@ -108,7 +108,7 @@ router.get('/:gameId/hand', async (req,res) => {
     if (playerId) {
         const gameId = req.params.gameId
         const playerHand = await WizMaster.getPlayerHand(gameId, playerId)
-        res.send({playerHand})
+        res.status(200).send({playerHand})
     }
     else {
         res.status(403).send("Player needs to be set")
@@ -119,7 +119,7 @@ router.get('/:gameId/stack', async (req,res) => {
     if (playerId) {
         const gameId = req.params.gameId
         const stack = await WizMaster.getTableStack(gameId)
-        res.send({stack})
+        res.status(200).send({stack})
     }
     else {
         res.status(403).send("Player not set")
@@ -141,7 +141,7 @@ router.get('/:gameId/kozer', async (req, res) => {
     if (playerId) {
         const gameId = req.params.gameId
         const strongSuit = await WizMaster.getRoundStrongSuit(gameId)
-        res.send({strongSuit})
+        res.status(200).send({strongSuit})
     }
     else {
         res.status(403).send("Player not set")
@@ -157,7 +157,7 @@ router.post('/:gameId/bet/:bet', async (req, res) => {
         if (isBetPlayed) {
             const playerIds = await WizMaster.getGamePlayerIds(gameId)
 
-            res.send({isBetPlayed})
+            res.status(200).send({isBetPlayed})
         }
         else {
             res.status(500).send()
@@ -176,7 +176,7 @@ router.post('/:gameId/play', async ( req, res ) => {
         if (isCardPlayed){
             const playerIds = await WizMaster.getGamePlayerIds(gameId)
 
-            res.send({isCardPlayed})
+            res.status(200).send({isCardPlayed})
         }
         else {
             res.status(500).send()
