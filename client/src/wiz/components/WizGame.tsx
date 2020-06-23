@@ -12,6 +12,8 @@ import { PossibleMoves } from "../interfaces/PossibleMoves";
 import SetBet from "./SetBet";
 import StrongSuit from "./StrongSuit";
 import IWizPlayer from "../interfaces/WizPlayer";
+import IWizAnnouncement from "../interfaces/WizAnnouncement";
+import Announcement from "./Announcement";
 
 interface IWizGameProps {
     instructions: PossibleMoves
@@ -20,6 +22,7 @@ interface IWizGameProps {
     strongSuit?: Suit
     playerHand: ICard[]
     tableStack: ICard[]
+    announcement?: IWizAnnouncement
     handleFanCardClick?: (card: ICard) => void
     handleBet?: (bet: number) => void
 }
@@ -62,10 +65,19 @@ export default class WizGame extends React.PureComponent<IWizGameProps,IWizGameS
         if (this.props.strongSuit) {
             strongSuit = <StrongSuit strongSuit={this.props.strongSuit} />
         }
+        let announcement = <React.Fragment />
+        if (this.props.announcement) {
+            announcement = 
+            <Announcement 
+                announcement={this.props.announcement} 
+                players={this.props.players}
+            />
+        }
 
         return (
             <React.Fragment>
                 {setBet}
+                {announcement}
                 <CardBoard>
                     {strongSuit}
                     <CardStack cards={this.props.tableStack} />
