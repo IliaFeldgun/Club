@@ -6,6 +6,7 @@ import { WizApi } from "../api/WizApi";
 import ICard, { Suit, Rank } from "../../interfaces/Card";
 import { PossibleMoves } from "../interfaces/PossibleMoves";
 import IWizPlayer from "../interfaces/WizPlayer";
+import IWizAnnouncement from "../interfaces/WizAnnouncement";
 
 interface IRouteParams {
     id: string
@@ -21,6 +22,7 @@ interface IWizState {
     playerHand: ICard[]
     tableStack: ICard[]
     strongSuit?: Suit
+    announcement?: IWizAnnouncement
 }
 export default class Wiz extends React.PureComponent<IWizProps,IWizState> {
     constructor(props: IWizProps) {
@@ -32,7 +34,8 @@ export default class Wiz extends React.PureComponent<IWizProps,IWizState> {
             players: [], 
             nextPlayer: "",
             playerHand: [], 
-            tableStack: []
+            tableStack: [],
+            announcement: undefined
         }
 
         this.handleCardSend = this.handleCardSend.bind(this)
@@ -41,7 +44,9 @@ export default class Wiz extends React.PureComponent<IWizProps,IWizState> {
     componentDidMount() {
         const eventSource = WizApi.listenToUpdateEvent(this.state.gameId)
         eventSource.onmessage = (event) => {
-            console.log(event.data)
+            this.setState(() => ({
+                announcement: JSON.parse(event.data)
+            }))
             this.fetchDataToState()
         }
         this.fetchDataToState()
@@ -72,7 +77,8 @@ export default class Wiz extends React.PureComponent<IWizProps,IWizState> {
                                 handleFanCardClick={this.handleCardSend}
                                 handleBet={this.handleBet}
                                 strongSuit={this.state.strongSuit}
-                                instructions={this.state.instructions}/>
+                                instructions={this.state.instructions}
+                                announcement={this.state.announcement}/>
         // TODO: Render error element
         // if (!this.state.game || !this.state.players)
             // toRender = <React.Fragment/>

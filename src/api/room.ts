@@ -15,7 +15,7 @@ router.post('/', async (req, res) => {
         const roomId = await LobbyBuilder.createRoom(playerId)
         const isPlayerinRoom = await LobbyMaster.addPlayerToRoom(playerId, roomId)
         if(roomId && isPlayerinRoom) {
-            res.send({roomId})
+            res.status(200).send({roomId})
         }
         else {
             res.status(500)
@@ -35,7 +35,7 @@ router.get('/:roomId', async (req, res) => {
     if (playerId) {
         const room: IRoom = await LobbyStore.getRoom(roomId)
         if (room) {
-            res.send({room});
+            res.status(200).send({room});
         }
         else {
             res.status(500)
@@ -50,7 +50,7 @@ router.get('/:roomId/playernames', async (req,res) => {
     if (playerId) {
         const players = await LobbyMaster.getRoomPlayers(roomId)
         if (players) {
-            res.send({playerNames: players.map((player) => player.name)})
+            res.status(200).send({playerNames: players.map((player) => player.name)})
         }
         else {
             res.status(500)
@@ -83,7 +83,7 @@ router.post('/:roomId/join', async ( req, res ) => {
             const playerIds = await LobbyMaster.getRoomPlayerIds(roomId)
             SSE.sendUpdateToClient(playerIds)
 
-            res.send({roomId})
+            res.status(200).send({roomId})
         }
         else {
             res.status(500).send("FAIL")
@@ -104,7 +104,7 @@ router.delete('/:roomId/player', async ( req, res ) => {
         if (roomId && await LobbyMaster.removePlayerFromRoom(playerId, roomId)) {
             const playerIds = await LobbyMaster.getRoomPlayerIds(roomId)
             SSE.sendUpdateToClient(playerIds)
-            res.send("OK")
+            res.status(200).send("OK")
         }
         else {
             res.status(500).send("FAIL")

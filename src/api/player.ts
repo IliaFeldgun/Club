@@ -12,7 +12,7 @@ router.post('/', async (req, res) => {
         if (playerId) {
             res.cookie("player_name", playerName, { signed: true, sameSite: true})
             res.cookie("player_id", playerId, { signed: true, sameSite: true })
-            res.send("Player created, cookie sent")
+            res.status(200).send("Player created, cookie sent")
         }
         else {
             res.status(500)
@@ -31,7 +31,7 @@ router.delete('/', async (req, res) => {
         if (await LobbyStore.deletePlayer(playerId)) {
             res.clearCookie("player_name", { signed: true })
             res.clearCookie("player_id", { signed: true })
-            res.send("Player deleted, cookie deleted")
+            res.status(200).send("Player deleted, cookie deleted")
         }
         else {
             res.status(500)
@@ -39,7 +39,7 @@ router.delete('/', async (req, res) => {
         }
     }
     else {
-        res.send("You are not any player (No cookies)")
+        res.status(403).send("You are not any player (No cookies)")
     }
 })
 
@@ -49,7 +49,7 @@ router.get('/rooms', async (req, res) => {
     if (playerId) {
         const rooms = await LobbyMaster.getPlayerRoomIds(playerId)
         if (rooms) {
-            res.send({rooms})
+            res.status(200).send({rooms})
         }
         else {
             res.status(500)

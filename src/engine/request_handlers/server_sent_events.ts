@@ -52,10 +52,9 @@ export default class ServerSentEvents {
                 client.res.write(`data: ${JSON.stringify(payload)}\n\n`)
 
                 // TODO: notice any following problems and delete this whole nonsense
-                // Without this response wasn't sent, Possibly a bug
-                // Bug possibly fixed
-                // Seems to not work on :3000, because of React-Scripts proxying
                 // client.res.writeProcessing()
+                // Without this response wasn't sent, Possibly a bug
+                // Seems to not work on :3000, because of React-Scripts proxying
             }
         })
     }
