@@ -18,7 +18,10 @@ export default class StoreSubscriber {
 
                 store.onSubscribedMessage((channel, eventItemId) => {
                     // TODO: Decide if "if" necessary
-                    if (channel === SET_CHANNEL) {
+                    if (
+                        channel === SET_CHANNEL &&
+                        StoreSubscriber.subscriberCallbacks[eventItemId]
+                    ) {
                         Object.values(
                             StoreSubscriber.subscriberCallbacks[eventItemId]
                         ).forEach(
