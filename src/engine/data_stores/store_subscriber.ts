@@ -18,6 +18,7 @@ export default class StoreSubscriber {
 
                 store.onSubscribedMessage((channel, eventItemId) => {
                     // TODO: Decide if "if" necessary
+                    // TODO: Rogue messages appearing
                     if (
                         channel === SET_CHANNEL &&
                         StoreSubscriber.subscriberCallbacks[eventItemId]
