@@ -1,173 +1,127 @@
+import axios, { AxiosError } from "axios"
 import ICard, { Suit } from "../../interfaces/Card"
 import { PossibleMoves } from "../interfaces/PossibleMoves"
 import IWizPlayer from "../interfaces/WizPlayer"
+import WIZ_API_MAP from "./WizApiMap"
 
 export class WizApi {
-    static newGame(roomId: string) {
-        const options: RequestInit = {
-            method: "POST",
-            cache: "no-cache",
-            headers: {
-                'Content-Type': 'application/json'
-            },
+    static async newGame(roomId: string): Promise<string> {
+        const url = WIZ_API_MAP.NEW_GAME.url(roomId)
+        const config = WIZ_API_MAP.NEW_GAME.config()
+        try {
+            const response = await axios(url, config)
+            return response.data.gameId
         }
-        return fetch(`/api/game/wizard/${roomId}`, options)
+        catch (ex) {
+            const error: AxiosError = ex
+            // TODO: Handle            
+            throw error
+        }
     }
     static async getGameInstructions(gameId: string): Promise<PossibleMoves> {
-        const options: RequestInit = {
-            method: "GET",
-            cache: "no-cache",
-            headers: {
-                'Content-Type': 'application/json'
-            },
+        const url = WIZ_API_MAP.GET_GAME_INSTRUCTIONS.url(gameId)
+        const config = WIZ_API_MAP.GET_GAME_INSTRUCTIONS.config()
+        try {
+            const response = await axios(url, config)
+            return response.data.instruction
         }
-        const res = await fetch(`/api/game/wizard/${gameId}`, options) 
-        if (res.status !== 200) {
-            // TODO: Handle
+        catch (ex) {
+            const error: AxiosError = ex
+            // TODO: Handle            
+            throw error
         }
-        return (await res.json()).instruction
     }
     static async getGamePlayers(gameId: string): Promise<IWizPlayer[]> {
-        const options: RequestInit = {
-            method: "GET",
-            cache: "no-cache",
-            headers: {
-                'Content-Type': 'application/json'
-            },
+        const url = WIZ_API_MAP.GET_GAME_PLAYERS.url(gameId)
+        const config = WIZ_API_MAP.GET_GAME_PLAYERS.config()
+        try {
+            const response = await axios(url, config)
+            return response.data.players
         }
-        const res = await fetch(`/api/game/wizard/${gameId}/players`, options)
-        if (res.status !== 200) {
-            // TODO: Handle
+        catch (ex) {
+            const error: AxiosError = ex
+            // TODO: Handle            
+            throw error
         }
-
-        return (await res.json()).players
     }
     static async getNextPlayer(gameId: string): Promise<string> {
-        const options: RequestInit = {
-            method: "GET",
-            cache: "no-cache",
-            headers: {
-                'Content-Type': 'application/json'
-            },
+        const url = WIZ_API_MAP.GET_NEXT_PLAYER.url(gameId)
+        const config = WIZ_API_MAP.GET_NEXT_PLAYER.config()
+        try {
+            const response = await axios(url, config)
+            return response.data.nextPlayer
         }
-        const res = await fetch(`/api/game/wizard/${gameId}/nextplayer`, options)
-        if (res.status !== 200) {
-            // TODO: Handle
+        catch (ex) {
+            const error: AxiosError = ex
+            // TODO: Handle            
+            throw error
         }
-
-        return (await res.json()).nextPlayer
     }
-    // static async getPlayerHandSizes(gameId: string): 
-    // Promise<{ [playerId: string]: number }> {
-    //     const options: RequestInit = {
-    //         method: "GET",
-    //         cache: "no-cache",
-    //         headers: {
-    //             'Content-Type': 'application/json'
-    //         },
-    //     }
-    //     const res = await fetch(`/api/game/wizard/${gameId}/handsizes`, options)
-    //     if (res.status !== 200) {
-    //         // TODO: Handle
-    //     }
-
-    //     return (await res.json()).playerHandSizes
-    // }
     static async getPlayerHand(gameId: string) {
-        const options: RequestInit = {
-            method: "GET",
-            cache: "no-cache",
-            headers: {
-                'Content-Type': 'application/json'
-            },
+        const url = WIZ_API_MAP.GET_PLAYER_HAND.url(gameId)
+        const config = WIZ_API_MAP.GET_PLAYER_HAND.config()
+        try {
+            const response = await axios(url, config)
+            return response.data.playerHand
         }
-        const res = await fetch(`/api/game/wizard/${gameId}/hand`, options)
-        if (res.status !== 200) {
-            // TODO: Handle
+        catch (ex) {
+            const error: AxiosError = ex
+            // TODO: Handle            
+            throw error
         }
-
-        return (await res.json()).playerHand
     }
     static async getTableStack(gameId: string) {
-        const options: RequestInit = {
-            method: "GET",
-            cache: "no-cache",
-            headers: {
-                'Content-Type': 'application/json'
-            },
+        const url = WIZ_API_MAP.GET_TABLE_STACK.url(gameId)
+        const config = WIZ_API_MAP.GET_TABLE_STACK.config()
+        try {
+            const response = await axios(url, config)
+            return response.data.stack
         }
-        const res = await fetch(`/api/game/wizard/${gameId}/stack`, options) 
-        if (res.status !== 200) {
-            // TODO: Handle
+        catch (ex) {
+            const error: AxiosError = ex
+            // TODO: Handle            
+            throw error
         }
-        return (await res.json()).stack
+    }
+    static async getStrongSuit(gameId: string):
+        Promise<Suit> {        
+            const url = WIZ_API_MAP.GET_STRONG_SUIT.url(gameId)
+            const config = WIZ_API_MAP.GET_STRONG_SUIT.config()
+            try {
+                const response = await axios(url, config)
+                return response.data.strongSuit
+            }
+            catch (ex) {
+                const error: AxiosError = ex
+                // TODO: Handle            
+                throw error
+            }
     }
     static async sendCard(gameId: string, card: ICard): Promise<boolean> {
-        const options: RequestInit = {
-            method: "POST",
-            cache: "no-cache",
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(card)
-        }
-
-        const res = await fetch(`/api/game/wizard/${gameId}/play`, options)
-        if (res.status === 200) {
+        const url = WIZ_API_MAP.SEND_CARD.url(gameId)
+        const config = WIZ_API_MAP.SEND_CARD.config(card)
+        try {
+            const response = await axios(url, config)
             return true
         }
-        else {
-            return false
+        catch (ex) {
+            const error: AxiosError = ex
+            // TODO: Handle            
+            throw error
         }
     }
     static async sendBet(gameId: string, bet: number): Promise<boolean> {
-        const options: RequestInit = {
-            method: "POST",
-            cache: "no-cache",
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }
-
-        const res = await fetch(`/api/game/wizard/${gameId}/bet/${bet}`, options)
-        if (res.status === 200) {
+        const url = WIZ_API_MAP.SEND_BET.url(gameId, bet)
+        const config = WIZ_API_MAP.SEND_BET.config()
+        try {
+            const response = await axios(url, config)
             return true
         }
-        else {
-            return false
+        catch (ex) {
+            const error: AxiosError = ex
+            // TODO: Handle            
+            throw error
         }
-    }
-    // static async getPlayerBets(gameId: string): 
-    //     Promise<{ [playerId: string]: number }> {
-    //         const options: RequestInit = {
-    //             method: "GET",
-    //             cache: "no-cache",
-    //             headers: {
-    //                 'Content-Type': 'application/json'
-    //             },
-    //         }
-    //         const res = await fetch(`/api/game/wizard/${gameId}/bets`, options)
-    //         if (res.status !== 200) {
-    //             // TODO: Handle
-    //         }
-    
-    //         return (await res.json()).bets
-    // }
-    static async getStrongSuit(gameId: string):
-        Promise<Suit> {
-        const options: RequestInit = {
-            method: "GET",
-            cache: "no-cache",
-            headers: {
-                'Content-Type': 'application/json'
-            },
-        }
-        const res = await fetch(`/api/game/wizard/${gameId}/kozer`, options)
-        if (res.status !== 200) {
-            // TODO: Handle
-        }
-
-        return (await res.json()).strongSuit
     }
     static listenToUpdateEvent(gameId: string) {
         return new EventSource(`/api/game/wizard/${gameId}/updates`)
