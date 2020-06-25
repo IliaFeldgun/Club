@@ -2,12 +2,8 @@ import {Request, Response} from 'express'
 import SSE from "../request_handlers/server_sent_events"
 import IPlayer from "../lobby/interfaces/Player"
 import StoreSubscriber from "../data_stores/store_subscriber"
-const SET_CHANNEL = '__keyevent@0__:set'
-export default class Announcer {
 
-    // static announce(playerIds: IPlayer["id"][], announcement: IAnnouncement) {
-    //     sendUpdateState(playerIds, announcement)
-    // }
+export default class Announcer {
     private static async storeSubscribe(
         gameId: string,
         playerId: IPlayer["id"],
