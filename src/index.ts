@@ -7,7 +7,7 @@ import wizard from "./api/games/wizard"
 import player from "./api/player"
 import room from "./api/room"
 import httpLogger from "morgan"
-import {logger} from "./winston"
+import logger from "./engine/winston"
 import assertPlayer from "./engine/request_handlers/player_assert"
 
 const app = express();
