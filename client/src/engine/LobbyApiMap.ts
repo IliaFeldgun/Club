@@ -23,6 +23,7 @@ function POST_FORM_CONFIG(): AxiosRequestConfig {
         method: "POST",
         headers: {
             'Cache-Control': 'no-cache',
+            'Content-Type': 'multipart/form-data'
         }
     }
 }
@@ -75,10 +76,10 @@ const LOBBY_API_MAP = {
         },
         CREATE_PLAYER: {
             config: (playerName: string) => {
-                const params = new URLSearchParams()
-                params.append("playerName", playerName)
+                const data = new FormData()
+                data.append("playerName", playerName)
 
-                return {... POST_FORM_CONFIG(), params}
+                return {... POST_FORM_CONFIG(), data}
             },
             url: () => {
                 return `/api/player`
