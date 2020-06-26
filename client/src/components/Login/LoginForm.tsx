@@ -30,7 +30,7 @@ export default class LoginForm extends React.PureComponent<ILoginFormProps,ILogi
     }
     sendLogin() {
         if(this.state.playerName) {
-            LobbyApi.newPlayer(this.state.playerName).then((response) => {
+            LobbyApi.newPlayer(this.state.playerName).then((isCreated) => {
                 window.location.reload(false)
             })
         }
