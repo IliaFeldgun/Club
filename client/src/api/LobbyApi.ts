@@ -1,74 +1,117 @@
+import axios, { AxiosError } from "axios"
 import IRoom from "../engine/interfaces/Room";
 import LOBBY_API_MAP from "../engine/LobbyApiMap";
 
 export default class LobbyApi {
-    static async newPlayer(playerName: string) {
-        const data = LOBBY_API_MAP.PLAYER.CREATE_PLAYER.data(playerName)
+    static async newPlayer(playerName: string): Promise<boolean> {
         const url = LOBBY_API_MAP.PLAYER.CREATE_PLAYER.url()
-        const options = LOBBY_API_MAP.PLAYER.CREATE_PLAYER.options
-        options.body = data
-        return fetch(url, options)
+        const config = LOBBY_API_MAP.PLAYER.CREATE_PLAYER.config(playerName)
+        try {
+            const response = await axios(url, config)
+            return true
+        }
+        catch (ex) {
+            const error: AxiosError = ex
+            // TODO: Handle            
+            throw error
+        }
     }
 
-    static async newRoom() {
-        const options = LOBBY_API_MAP.ROOM.CREATE_ROOM.options
+    static async newRoom(): Promise<string> {
         const url = LOBBY_API_MAP.ROOM.CREATE_ROOM.url()
-        return fetch(url, options)
+        const config = LOBBY_API_MAP.ROOM.CREATE_ROOM.config()
+        try {
+            const response = await axios(url, config)
+            return response.data.roomId
+        }
+        catch (ex) {
+            const error: AxiosError = ex
+            // TODO: Handle            
+            throw error
+        }
     }
 
-    static async getRoomPlayers(roomId: string) {
-        const options = LOBBY_API_MAP.ROOM.GET_PLAYER_NAMES.options
+    static async getRoomPlayerNames(roomId: string): Promise<string[]> {
         const url = LOBBY_API_MAP.ROOM.GET_PLAYER_NAMES.url(roomId)
-        return fetch(url, options)
+        const config = LOBBY_API_MAP.ROOM.GET_PLAYER_NAMES.config()
+        try {
+            const response = await axios(url, config)
+            return response.data.playerNames
+        }
+        catch (ex) {
+            const error: AxiosError = ex
+            // TODO: Handle            
+            throw error
+        }
     }
 
-    static async joinRoom(roomId: string) {
-        const options = LOBBY_API_MAP.ROOM.JOIN_ROOM.options
+    static async joinRoom(roomId: string): Promise<string>{
         const url = LOBBY_API_MAP.ROOM.JOIN_ROOM.url(roomId)
-        return fetch(url, options)
+        const config = LOBBY_API_MAP.ROOM.JOIN_ROOM.config()
+        try {
+            const response = await axios(url, config)
+            return response.data.roomId
+        }
+        catch (ex) {
+            const error: AxiosError = ex
+            // TODO: Handle            
+            throw error
+        }
     }
     
     static async getPlayerRooms(): Promise<string[]> {
-        const options = LOBBY_API_MAP.PLAYER.GET_ROOMS.options
         const url = LOBBY_API_MAP.PLAYER.GET_ROOMS.url()
-        const res = await fetch(url, options)
-        if (res.status !== 200) {
-            // TODO: Handle
+        const config = LOBBY_API_MAP.PLAYER.GET_ROOMS.config()
+        try {
+            const response = await axios(url, config)
+            return response.data.rooms
         }
-
-        return (await res.json()).rooms
+        catch (ex) {
+            const error: AxiosError = ex
+            // TODO: Handle            
+            throw error
+        }
     }
     static async getRoomLeader(roomId: string): Promise<string> {
-        const options = LOBBY_API_MAP.ROOM.GET_LEADER.options
         const url = LOBBY_API_MAP.ROOM.GET_LEADER.url(roomId)
-        const res = await fetch(url, options)
-        if (res.status !== 200) {
-            // TODO: Handle
+        const config = LOBBY_API_MAP.ROOM.GET_LEADER.config()
+        try {
+            const response = await axios(url, config)
+            return response.data.leader
         }
-
-        return (await res.json()).leader
+        catch (ex) {
+            const error: AxiosError = ex
+            // TODO: Handle            
+            throw error
+        }
     }
     static async getRoomGame(roomId: string): Promise<{id: string, name: string}>
     {
-        const options = LOBBY_API_MAP.ROOM.GET_GAME.options
         const url = LOBBY_API_MAP.ROOM.GET_GAME.url(roomId)
-        const res = await fetch(url, options)
-        if (res.status !== 200) {
-            // TODO: Handle
+        const config = LOBBY_API_MAP.ROOM.GET_GAME.config()
+        try {
+            const response = await axios(url, config)
+            return response.data.game
         }
-
-        return (await res.json()).game
+        catch (ex) {
+            const error: AxiosError = ex
+            // TODO: Handle            
+            throw error
+        }
     }
     static async getRoom(roomId: string): Promise<IRoom> {
-        const options = LOBBY_API_MAP.ROOM.GET_ROOM.options
         const url = LOBBY_API_MAP.ROOM.GET_ROOM.url(roomId)
+        const config = LOBBY_API_MAP.ROOM.GET_ROOM.config()
 
-        const res = await fetch(url, options)
-        if (res.status !== 200) {
-            // TODO: Handle
+        try {
+            const response = await axios(url, config)
+            return response.data.room
         }
-
-        return (await res.json()).room
+        catch (ex) {
+            const error: AxiosError = ex
+            // TODO: Handle            
+            throw error
+        }
     }
     static listenToUpdateEvent() {
         return new EventSource('/api/room/updates')
