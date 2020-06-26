@@ -20,16 +20,8 @@ export default class Rooms extends React.PureComponent<IRoomCreateProps,IRoomCre
         this.handleRoomCreation = this.handleRoomCreation.bind(this)
     }
     handleRoomCreation(event: React.MouseEvent<HTMLButtonElement>) {
-        LobbyApi.newRoom().then((res: Response) => 
-        {  
-            if (res.status === 403) {
-                window.location.assign("/login")
-            }
-            else {
-                res.json().then((json) => {
-                    window.location.assign("/room/" + json.roomId) 
-                })
-            }
+        LobbyApi.newRoom().then((roomId) => {
+            window.location.assign("/room/" + roomId) 
         })
     }
     render() {

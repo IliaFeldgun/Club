@@ -10,16 +10,9 @@ export default class JoinButton extends React.PureComponent<IJoinButtonProps,{}>
         this.handleRoomJoin = this.handleRoomJoin.bind(this)
     }
     handleRoomJoin(event: React.MouseEvent<HTMLButtonElement>) {
-        LobbyApi.joinRoom(this.props.roomId).then((res: Response) => 
-        {  
-            if (res.status === 403) {
-                window.location.assign("/login")
-            }
-            else {
-                res.json().then((json) => {
-                    window.location.assign("/room/" + json.roomId) 
-                })
-            }
+        LobbyApi.joinRoom(this.props.roomId).then((roomId) => 
+        {
+            window.location.assign("/room/" + roomId)
         })
     }
     render() {

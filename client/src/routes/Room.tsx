@@ -41,13 +41,6 @@ export default class Room extends React.PureComponent<IRoomProps,IRoomState>{
             this.fetchDataToState()
         }
         this.fetchDataToState()
-        // LobbyApi.getRoomLeader(this.state.roomId).then((leader) => {
-        //     this.setState(() => ({leader}))
-        // })
-
-        // LobbyApi.getRoomGame(this.state.roomId).then((game) => {
-        //     this.setState(() => ({gameName: game.name, gameId: game.id}))
-        // })
     }
     render() {
         let joinButton = <React.Fragment/>
@@ -86,12 +79,8 @@ export default class Room extends React.PureComponent<IRoomProps,IRoomState>{
                     gameId: room.gameId
                 }))
         })
-        LobbyApi.getRoomPlayers(this.state.roomId).then((res: Response) => {
-            if (res.status === 200) {
-                res.json().then((json) => {
-                    this.setState(() => ({players: [...json.playerNames]}))
-                })
-            }
+        LobbyApi.getRoomPlayerNames(this.state.roomId).then((playerNames) => {
+            this.setState(() => ({players: playerNames}))
         })
 
     }
