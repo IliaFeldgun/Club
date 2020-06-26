@@ -23,7 +23,7 @@ function POST_FORM_CONFIG(): AxiosRequestConfig {
         method: "POST",
         headers: {
             'Cache-Control': 'no-cache',
-            'Content-Type': 'multipart/form-data'
+            'Content-Type': 'application/x-www-form-urlencoded'
         }
     }
 }
