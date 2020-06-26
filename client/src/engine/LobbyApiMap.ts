@@ -1,5 +1,5 @@
 import { AxiosRequestConfig } from 'axios'
-
+import QueryString from 'querystring'
 function GET_CONFIG(): AxiosRequestConfig {
     return {
         method: "GET",
@@ -23,7 +23,7 @@ function POST_FORM_CONFIG(): AxiosRequestConfig {
         method: "POST",
         headers: {
             'Cache-Control': 'no-cache',
-            'Content-Type': 'application/x-www-form-urlencoded'
+            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
         }
     }
 }
@@ -76,9 +76,7 @@ const LOBBY_API_MAP = {
         },
         CREATE_PLAYER: {
             config: (playerName: string) => {
-                const data = new FormData()
-                data.append("playerName", playerName)
-
+                const data = QueryString.stringify({playerName})
                 return {... POST_FORM_CONFIG(), data}
             },
             url: () => {
