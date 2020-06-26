@@ -25,7 +25,7 @@ const WIZ_API_MAP = {
         url: (roomId: string) => {
             return `/api/game/wizard/${roomId}`
         },
-        config: GET_CONFIG
+        config: POST_CONFIG
     },
     GET_GAME_INSTRUCTIONS: {
         url: (gameId: string) => {
