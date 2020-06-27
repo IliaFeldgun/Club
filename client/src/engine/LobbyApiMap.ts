@@ -77,7 +77,7 @@ const LOBBY_API_MAP = {
         CREATE_PLAYER: {
             config: (playerName: string) => {
                 const data = QueryString.stringify({playerName})
-                return {... POST_FORM_CONFIG(), data}
+                return {...POST_FORM_CONFIG(), data}
             },
             url: () => {
                 return `/api/player`
