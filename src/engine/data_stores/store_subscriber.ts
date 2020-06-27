@@ -13,7 +13,7 @@ export default class StoreSubscriber {
 
         await StoreSubscriber.subscribeToItem(itemId)
         StoreSubscriber.addSubscriber(itemId, clientId, onMessage)
-        
+
         logger.verbose("Store subscription process ended", {itemId, clientId})
     }
     static async unsubscribe(itemId: string, clientId: string) {
@@ -50,7 +50,7 @@ export default class StoreSubscriber {
                         )
                     }
                 })
-                
+
                 logger.verbose(`Successfully subscribed to store key`, {itemId})
             }
             catch (ex) {
