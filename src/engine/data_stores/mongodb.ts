@@ -26,6 +26,7 @@ export default class MongoDBClient {
         const client = new MongoClient(mongoConnString, mongoOptions)
         try {
             this.client = await client.connect()
+            logger.info("MongoDB client successfully connected")
             return true
         }
         catch (ex) {
