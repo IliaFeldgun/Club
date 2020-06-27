@@ -34,7 +34,7 @@ export default class Card implements ICard {
     // }
 
     static isCard(card: ICard): boolean {
-        const hasTwoProps = Object.keys(card).length == 2
+        const hasTwoProps = Object.keys(card).length === 2
         return hasTwoProps && isNumber(card.rank) && isNumber(card.suit)
     }
     static equals(card1: ICard, card2: ICard): boolean {
