@@ -1,4 +1,5 @@
 import MongoDBClient from './mongodb'
+import logger from '../winston'
 
 const DB_NAME = process.env.MONGODB_DB
 
@@ -11,12 +12,12 @@ export default class Database {
                 return db.collection(collectionName)
             }
             else {
-                // TODO: handle
+                logger.error("Database not found", {DB_NAME})
                 return undefined
             }
         }
         else {
-            // TODO: handle
+            logger.error("MongoDB client was not established")
             return undefined
         }
     }
@@ -27,7 +28,7 @@ export default class Database {
             return await collection.findOne(filterObject)
         }
         catch {
-            // TODO: handle
+            logger.error("Failed to get", {collectionName})
         }
     }
     static async insert(collectionName: string, object: any): Promise<boolean> {
@@ -37,6 +38,7 @@ export default class Database {
             return true
         }
         else {
+            logger.error("Failed to insert", {collectionName})
             return false
         }
     }
@@ -47,6 +49,7 @@ export default class Database {
             return true
         }
         else {
+            logger.error("Failed to upsert", {collectionName, filter})
             return false
         }
 
@@ -59,6 +62,7 @@ export default class Database {
             return true
         }
         else {
+            logger.error("Failed to replace", {collectionName, idToReplace})
             return false
         }
 
@@ -71,6 +75,8 @@ export default class Database {
             return true
         }
         else {
+            logger.error("Failed to delete", {collectionName, idToUpdate})
+            
             return false
         }
     }
@@ -81,11 +87,17 @@ export default class Database {
             return true
         }
         else {
+            logger.error("Failed to delete", {collectionName, filter})
             return false
         }
     }
-    static async pushToArray(collectionName: string, idToUpdate: string, arrayName: string, values: string[]):
-        Promise<boolean> {
+    static async pushToArray(
+        collectionName: string, 
+        idToUpdate: string, 
+        arrayName: string, 
+        values: string[]
+    ): Promise<boolean> {
+
         const collection = await Database.getCollectionByName(collectionName)
         const toPush: any = {}
         toPush[arrayName] = {$each: values}
@@ -94,6 +106,7 @@ export default class Database {
             return true
         }
         else {
+            logger.error("Failed to push to array", {collectionName, idToUpdate, arrayName})
             return false
         }
     }
@@ -102,7 +115,8 @@ export default class Database {
         idToUpdate: string,
         arrayName: string,
         value: string
-        ): Promise<boolean> {
+    ): Promise<boolean> {
+
         const collection = await Database.getCollectionByName(collectionName)
         const toPull: any = {}
         toPull[arrayName] = value
@@ -111,6 +125,7 @@ export default class Database {
             return true
         }
         else {
+            logger.error("Failed to pull from array", {collectionName, idToUpdate, arrayName})
             return false
         }
     }
