@@ -1,4 +1,5 @@
 import ICard, { Rank, Suit, Color } from "../interfaces/Card"
+import { isNumber } from "util"
 
 export default class Card implements ICard {
     suit: Suit
@@ -32,6 +33,10 @@ export default class Card implements ICard {
     //     return color
     // }
 
+    static isCard(card: ICard): boolean {
+        const hasTwoProps = Object.keys(card).length === 2
+        return hasTwoProps && isNumber(card.rank) && isNumber(card.suit)
+    }
     static equals(card1: ICard, card2: ICard): boolean {
         return (card1.rank === card2.rank && card1.suit === card2.suit)
     }

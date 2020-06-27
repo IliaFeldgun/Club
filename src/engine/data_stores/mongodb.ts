@@ -1,4 +1,5 @@
-import { MongoClientOptions, MongoClient} from 'mongodb'
+import { MongoClientOptions, MongoClient, MongoError} from 'mongodb'
+import logger from '../winston'
 
 const mongoOptions: MongoClientOptions = {
     useUnifiedTopology: true
@@ -25,12 +26,14 @@ export default class MongoDBClient {
         const client = new MongoClient(mongoConnString, mongoOptions)
         try {
             this.client = await client.connect()
+            logger.info("MongoDB client successfully connected")
             return true
         }
         catch (ex) {
+            const exError: MongoError = ex
             client.close()
+            logger.error("Failed to connect to mongoDB: ", exError)
             return false
-            // TODO: handle and log
         }
     }
 }

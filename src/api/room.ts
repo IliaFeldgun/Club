@@ -4,58 +4,62 @@ import LobbyBuilder from "../engine/lobby/LobbyBuilder";
 import LobbyMaster from "../engine/lobby/LobbyMaster";
 import LobbyStore from "../engine/lobby/LobbyStore";
 import SSE from "../engine/request_handlers/server_sent_events"
+import Validator from 'validator'
+import { HttpError } from "../engine/request_handlers/error_handler";
 
 const router = express.Router()
 router.get('/updates', SSE.subscribeClient)
 
-router.post('/', async (req, res) => {
+router.post('/', async (req, res, next) => {
     const playerId = req.playerId
 
-    if (playerId) {
-        const roomId = await LobbyBuilder.createRoom(playerId)
-        const isPlayerinRoom = await LobbyMaster.addPlayerToRoom(playerId, roomId)
-        if(roomId && isPlayerinRoom) {
-            res.status(200).send({roomId})
-        }
-        else {
-            res.status(500)
-            res.send("FAIL")
-        }
+    if (!playerId) {
+        next(new HttpError(401, "No player detected"))
+    }
+
+    const roomId = await LobbyBuilder.createRoom(playerId)
+    const isPlayerinRoom = await LobbyMaster.addPlayerToRoom(playerId, roomId)
+
+    if(roomId && isPlayerinRoom) {
+        res.status(200).send({roomId})
     }
     else {
-        res.status(403)
-        res.send("Room can't be created, you need to set a player")
+        next(new HttpError(500, "Failed to create room"))
     }
 });
 
-router.get('/:roomId', async (req, res) => {
-    const roomId = req.params.roomId
+router.get('/:roomId', async (req, res, next) => {
     const playerId = req.playerId
-
-    if (playerId) {
-        const room: IRoom = await LobbyStore.getRoom(roomId)
-        if (room) {
-            res.status(200).send({room});
-        }
-        else {
-            res.status(500)
-            res.send("FAIL")
-        }
+    if (!playerId) {
+        next(new HttpError(401, "No player detected"))
+    }
+    const roomId = req.params.roomId
+    if (!Validator.isUUID(roomId)) {
+        next(new HttpError(400, "Room ID invalid"))
+    }
+    const room: IRoom = await LobbyStore.getRoom(roomId)
+    if (room) {
+        res.status(200).send({room});
+    }
+    else {
+        next(new HttpError(500, "Failed to retrieve room"))
     }
 })
-router.get('/:roomId/playernames', async (req,res) => {
-    const roomId = req.params.roomId
+router.get('/:roomId/playernames', async (req,res, next) => {
     const playerId = req.playerId
-
-    if (playerId) {
-        const players = await LobbyMaster.getRoomPlayers(roomId)
-        if (players) {
-            res.status(200).send({playerNames: players.map((player) => player.name)})
-        }
-        else {
-            res.status(500)
-            res.send("FAIL")
-        }
+    if (!playerId) {
+        next(new HttpError(401, "No player detected"))
+    }
+    const roomId = req.params.roomId
+    if (!Validator.isUUID(roomId)) {
+        next(new HttpError(400, "Room ID invalid"))
+    }
+    const players = await LobbyMaster.getRoomPlayers(roomId)
+    if (players) {
+        res.status(200).send({playerNames: players.map((player) => player.name)})
+    }
+    else {
+        next(new HttpError(500, "Failed to get room player names"))
     }
 })
 // router.get('/:roomId/leader', async (req,res) => {
@@ -73,85 +77,44 @@ router.get('/:roomId/playernames', async (req,res) => {
 //         }
 //     }
 // })
-router.post('/:roomId/join', async ( req, res ) => {
+router.post('/:roomId/join', async ( req, res, next ) => {
     const playerId = req.playerId
+    if (!playerId) {
+        next(new HttpError(401, "No player detected"))
+    }
     const roomId = req.params.roomId
+    if (!Validator.isUUID(roomId)) {
+        next(new HttpError(400, "Room ID invalid"))
+    }
+    if (roomId && await LobbyMaster.addPlayerToRoom(playerId, roomId)) {
+        const playerIds = await LobbyMaster.getRoomPlayerIds(roomId)
+        SSE.sendUpdateToClient(playerIds)
 
-    if (playerId) {
-
-        if (roomId && await LobbyMaster.addPlayerToRoom(playerId, roomId)) {
-            const playerIds = await LobbyMaster.getRoomPlayerIds(roomId)
-            SSE.sendUpdateToClient(playerIds)
-
-            res.status(200).send({roomId})
-        }
-        else {
-            res.status(500).send("FAIL")
-        }
+        res.status(200).send({roomId})
     }
     else {
-        res.status(403)
-        res.send("Room can't be joined, you need to set a player")
+        next(new HttpError(500, "Failed to join room"))
     }
 });
 
-router.delete('/:roomId/player', async ( req, res ) => {
+router.delete('/:roomId/player', async ( req, res, next ) => {
     const playerId = req.playerId
-
-    if (playerId) {
-        const roomId = req.params.roomId
-
-        if (roomId && await LobbyMaster.removePlayerFromRoom(playerId, roomId)) {
-            const playerIds = await LobbyMaster.getRoomPlayerIds(roomId)
-            SSE.sendUpdateToClient(playerIds)
-            res.status(200).send("OK")
-        }
-        else {
-            res.status(500).send("FAIL")
-        }
+    if (!playerId) {
+        next(new HttpError(401, "No player detected"))
+    }
+    const roomId = req.params.roomId
+    if (!Validator.isUUID(roomId)) {
+        next(new HttpError(400, "Room ID invalid"))
+    }
+    if (await LobbyMaster.removePlayerFromRoom(playerId, roomId)) {
+        const playerIds = await LobbyMaster.getRoomPlayerIds(roomId)
+        SSE.sendUpdateToClient(playerIds)
+        res.status(200).send("OK")
     }
     else {
-        res.status(403)
-        res.send("Room can't be joined, you need to set a player")
+        next(new HttpError(500, "Failed to remove player"))
     }
-} );
-// router.post('/:roomId/game/:gameName', async ( req, res ) => {
-//     // TODO: possibly not a useful route
-//     const playerId = req.playerId
-//     const roomId = req.params.roomId
-//     const gameName = req.params.gameName
-
-//     const room : IRoom = await LobbyStore.getRoom(roomId)
-//     if (room) {
-//         if (room.leader === playerId) {
-//             await LobbyMaster.setRoomGameType(roomId, gameName)
-//             const playerIds = room.players
-//             sendUpdateState(playerIds)
-//             res.send({})
-//         }
-//         else {
-//             res.send("You are not room leader")
-//         }
-//     }
-//     else {
-//         res.status(500).send("FAIL")
-//     }
-// });
-
-// router.get('/:roomId/game', async ( req, res ) => {
-//     const playerId = req.playerId
-//     if (playerId) {
-//         const roomId = req.params.roomId
-
-//         const game = await LobbyMaster.getRoomGame(roomId)
-//         if (game) {
-//             res.send({game})
-//         }
-//     }
-//     else {
-//         res.status(403).send("FAIL")
-//     }
-// } );
+});
 router.put('/leader', ( req, res ) => {
     // req.player
     // req.room

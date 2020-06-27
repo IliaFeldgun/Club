@@ -7,6 +7,7 @@ import LobbyStore from "./LobbyStore";
 
 export default class LobbyBuilder {
     static async createPlayer(playerName: string): Promise<IPlayer["id"]>{
+        // TODO: Look out for injection, ID generation currently prevents it
         const playerId = generateId(playerName, process.env.UUID_PLAYER_NAMESPACE)
 
         if (await LobbyStore.getPlayer(playerId))
@@ -18,6 +19,7 @@ export default class LobbyBuilder {
         }
     }
     static async createRoom(playerId: IPlayer["id"]): Promise<IRoom["id"]> {
+        // TODO: Look out for injection, ID generation currently prevents it
         const roomId = generateId(playerId, process.env.UUID_ROOM_NAMESPACE)
 
         const room: IRoom = new Room(roomId, playerId)

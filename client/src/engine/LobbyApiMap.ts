@@ -1,56 +1,67 @@
-const GET_OPTIONS: RequestInit = {
-    method: "GET",
-    cache: "no-cache",
-    headers: {
-        'Content-Type': 'application/json'
+import { AxiosRequestConfig } from 'axios'
+import QueryString from 'querystring'
+function GET_CONFIG(): AxiosRequestConfig {
+    return {
+        method: "GET",
+        headers: {
+            'Content-Type': 'application/json',
+            'Cache-Control': 'no-cache'
+        }
     }
 }
-const POST_OPTIONS: RequestInit = {
-    method: "POST",
-    cache: "no-cache",
-    headers: {
-        'Content-Type': 'application/json'
+function POST_CONFIG(): AxiosRequestConfig {
+    return {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+            'Cache-Control': 'no-cache'
+        }
     }
 }
-const POST_FORM_OPTIONS: RequestInit = {
-    method: "POST",
-    cache: "no-cache",
+function POST_FORM_CONFIG(): AxiosRequestConfig {
+    return {
+        method: "POST",
+        headers: {
+            'Cache-Control': 'no-cache',
+            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+        }
+    }
 }
 
 const LOBBY_API_MAP = {
     ROOM: {
         GET_ROOM: {
-            options: GET_OPTIONS,
+            config: GET_CONFIG,
             url: (roomId: string) => {
                 return `/api/room/${roomId}`
             }
         },
         CREATE_ROOM: {
-            options: POST_OPTIONS,
+            config: POST_CONFIG,
             url: () => {
                 return `/api/room`
             }
         },
         JOIN_ROOM: {
-            options: POST_OPTIONS,
+            config: POST_CONFIG,
             url: (roomId: string) => {
                 return `/api/room/${roomId}/join`
             }
         },
         GET_LEADER: {
-            options: GET_OPTIONS,
+            config: GET_CONFIG,
             url: (roomId: string) => {
                 return `/api/room/${roomId}/leader`
             }
         },
         GET_PLAYER_NAMES: {
-            options: GET_OPTIONS,
+            config: GET_CONFIG,
             url: (roomId: string) => {
                 return `/api/room/${roomId}/playernames`
             }
         },
         GET_GAME: {
-            options: GET_OPTIONS,
+            config: GET_CONFIG,
             url: (roomId: string) => {
                 return `/api/room/${roomId}/game`
             }
@@ -58,21 +69,19 @@ const LOBBY_API_MAP = {
     },
     PLAYER: {
         GET_ROOMS: {
-            options: GET_OPTIONS,
+            config: GET_CONFIG,
             url: () => {
                 return `/api/player/rooms`
             }
         },
         CREATE_PLAYER: {
-            options: POST_FORM_OPTIONS,
+            config: (playerName: string) => {
+                const data = QueryString.stringify({playerName})
+                return {...POST_FORM_CONFIG(), data}
+            },
             url: () => {
                 return `/api/player`
             },
-            data: (playerName: string) => {
-                const data = new URLSearchParams();
-                data.append("playerName", playerName)
-                return data
-            }
         }
     }
 }

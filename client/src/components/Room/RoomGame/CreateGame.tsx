@@ -12,16 +12,11 @@ export default class CreateGame extends React.PureComponent<ICreateGameProps,{}>
         this.handleGameCreation = this.handleGameCreation.bind(this)
     }
     handleGameCreation(event: React.MouseEvent<HTMLButtonElement>) {
-        const gameCreator = createGame(this.props.gameName)
+        const gameName = this.props.gameName
+        const gameCreator = createGame(gameName)
         if (gameCreator) {
-            gameCreator(this.props.roomId).then((res: Response) => 
-            {
-                // Statuses not failed
-                if (res.status !== 403 && res.status !== 500) {
-                    res.json().then((json) => 
-                        window.location.assign(`/${this.props.gameName}/` + json.gameId) 
-                    )
-                }
+            gameCreator(this.props.roomId).then((gameId: string) => {
+                window.location.assign(`/${gameName}/` + gameId) 
             })
         }
     }

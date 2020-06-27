@@ -11,6 +11,8 @@ export default class ServerSentEvents {
     static async subscribeClient(
         req: Request,
         res: Response,
+        /// TODO: find if next is relevant
+        // next: NextFunction,
         onUnsubscribe?: () => void
     ) {
         req.socket.setTimeout(0)
