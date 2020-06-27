@@ -4,11 +4,12 @@ import logger from '../winston'
 
 export const redisClient = newClient()
 export const redisPublisher = newPublisherClient()
-const port = Number.parseInt(process.env.REDIS_PORT, 10)
-const host = process.env.REDIS_HOST
-const password = process.env.REDIS_PASSWORD
 
 function newClient() {
+    const port = Number.parseInt(process.env.REDIS_PORT, 10)
+    const host = process.env.REDIS_HOST
+    const password = process.env.REDIS_PASSWORD
+    
     const client = redis.createClient({port, host, password})
 
     client.on('error', (channel, message) => {
