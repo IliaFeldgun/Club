@@ -9,6 +9,7 @@ import WizStore from "../../wizard_game/WizStore"
 import Validator from 'validator'
 import { HttpError } from "../../engine/request_handlers/error_handler";
 import { isNumber, isBoolean } from "util"
+import Card from "../../card_engine/models/Card"
 
 const router = express.Router()
 router.get('/:gameId/updates', (req, res, next) => {
@@ -225,9 +226,13 @@ router.post('/:gameId/play', async ( req, res, next ) => {
     if (!Validator.isUUID(gameId)) {
         next(new HttpError(400, "Game ID invalid"))
     }
-    // TODO: Check if card
     const card = req.body
+    if (!Card.isCard(card)) {
+        next(new HttpError(400, "Invalid card requested"))
+    }
+
     const isCardPlayed = await WizMaster.tryPlayCard(gameId, card, playerId)
+
     if (isBoolean(isCardPlayed)){
         res.status(200).send({isCardPlayed})
     }
