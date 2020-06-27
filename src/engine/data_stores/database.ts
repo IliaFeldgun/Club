@@ -76,7 +76,7 @@ export default class Database {
         }
         else {
             logger.error("Failed to delete", {collectionName, idToUpdate})
-            
+
             return false
         }
     }
@@ -92,9 +92,9 @@ export default class Database {
         }
     }
     static async pushToArray(
-        collectionName: string, 
-        idToUpdate: string, 
-        arrayName: string, 
+        collectionName: string,
+        idToUpdate: string,
+        arrayName: string,
         values: string[]
     ): Promise<boolean> {
 
