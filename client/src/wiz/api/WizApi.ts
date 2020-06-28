@@ -102,7 +102,7 @@ export class WizApi {
         const config = WIZ_API_MAP.SEND_CARD.config(card)
         try {
             const response = await axios(url, config)
-            return true
+            return response.data.isCardPlayed
         }
         catch (ex) {
             const error: AxiosError = ex
@@ -115,7 +115,7 @@ export class WizApi {
         const config = WIZ_API_MAP.SEND_BET.config()
         try {
             const response = await axios(url, config)
-            return true
+            return response.data.isBetPlayed
         }
         catch (ex) {
             const error: AxiosError = ex

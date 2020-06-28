@@ -8,7 +8,7 @@ export default class LobbyApi {
         const config = LOBBY_API_MAP.PLAYER.CREATE_PLAYER.config(playerName)
         try {
             const response = await axios(url, config)
-            return true
+            return response.data.playerId !== undefined
         }
         catch (ex) {
             const error: AxiosError = ex
