@@ -15,11 +15,11 @@ const router = express.Router()
 router.get('/:gameId/updates', (req, res, next) => {
     const playerId = req.playerId
     if (!playerId) {
-        next(new HttpError(401, "No player detected"))
+        return next(new HttpError(401, "No player detected"))
     }
     const gameId = req.params.gameId
     if (!Validator.isUUID(gameId)) {
-        next(new HttpError(400, "Room ID invalid"))
+        return next(new HttpError(400, "Room ID invalid"))
     }
     Announcer.subscribe(req, res, gameId, playerId, async () => {
         // TODO: Refactor
@@ -36,19 +36,19 @@ router.get('/:gameId/updates', (req, res, next) => {
 router.post('/:roomId', async ( req, res, next ) => {
     const playerId = req.playerId
     if (!playerId) {
-        next(new HttpError(401, "No player detected"))
+        return next(new HttpError(401, "No player detected"))
     }
     const roomId = req.params.roomId
     if (!Validator.isUUID(roomId)) {
-        next(new HttpError(400, "Room ID invalid"))
+        return next(new HttpError(400, "Room ID invalid"))
     }
 
     const room : IRoom = await LobbyStore.getRoom(roomId)
     if (!room) {
-        next(new HttpError(500, "Failed to get room"))
+        return next(new HttpError(500, "Failed to get room"))
     }
     if (room.leader !== playerId) {
-        next(new HttpError(403, "Not room leader"))
+        return next(new HttpError(403, "Not room leader"))
     }
 
     const gameId = await WizBuilder.newGameState(room.id, room.players)
@@ -60,38 +60,38 @@ router.post('/:roomId', async ( req, res, next ) => {
         res.status(200).send({gameId})
     }
     else {
-        next(new HttpError(500, "Failed to initialize game"))
+        return next(new HttpError(500, "Failed to initialize game"))
     }
 })
 
 router.get('/:gameId', async (req, res, next) => {
     const playerId = req.playerId
     if (!playerId) {
-        next(new HttpError(401, "No player detected"))
+        return next(new HttpError(401, "No player detected"))
     }
     const gameId = req.params.gameId
     if (!Validator.isUUID(gameId)) {
-        next(new HttpError(400, "Game ID invalid"))
+        return next(new HttpError(400, "Game ID invalid"))
     }
     if (!WizMaster.isPlayerInGame(playerId, gameId)) {
-        next(new HttpError(403, "Player isn't in game"))
+        return next(new HttpError(403, "Player isn't in game"))
     }
     const instruction = await WizMaster.getGameInstruction(gameId)
     if (instruction) {
         res.status(200).send({instruction})
     }
     else {
-        next(new HttpError(500, "Failed to retrieve instructions"))
+        return next(new HttpError(500, "Failed to retrieve instructions"))
     }
 })
 router.get('/:gameId/nextPlayer', async (req, res, next) => {
     const playerId = req.playerId
     if (!playerId) {
-        next(new HttpError(401, "No player detected"))
+        return next(new HttpError(401, "No player detected"))
     }
     const gameId = req.params.gameId
     if (!Validator.isUUID(gameId)) {
-        next(new HttpError(400, "Game ID invalid"))
+        return next(new HttpError(400, "Game ID invalid"))
     }
     const round = await WizMaster.getGameRound(gameId)
     if (round) {
@@ -99,24 +99,24 @@ router.get('/:gameId/nextPlayer', async (req, res, next) => {
         res.status(200).send({nextPlayer})
     }
     else {
-        next(new HttpError(500, "Failed to retrieve next player"))
+        return next(new HttpError(500, "Failed to retrieve next player"))
     }
 })
 router.get('/:gameId/players', async (req, res, next) => {
     const playerId = req.playerId
     if (!playerId) {
-        next(new HttpError(401, "No player detected"))
+        return next(new HttpError(401, "No player detected"))
     }
     const gameId = req.params.gameId
     if (!Validator.isUUID(gameId)) {
-        next(new HttpError(400, "Game ID invalid"))
+        return next(new HttpError(400, "Game ID invalid"))
     }
     const players = await WizMaster.getWizPlayersByGame(gameId)
     if (players) {
         res.status(200).send({players})
     }
     else {
-        next(new HttpError(500, "Failed to retrieve players"))
+        return next(new HttpError(500, "Failed to retrieve players"))
     }
 })
 // router.get('/:gameId/handsizes', async (req, res) => {
@@ -133,11 +133,11 @@ router.get('/:gameId/players', async (req, res, next) => {
 router.get('/:gameId/hand', async (req, res, next) => {
     const playerId = req.playerId
     if (!playerId) {
-        next(new HttpError(401, "No player detected"))
+        return next(new HttpError(401, "No player detected"))
     }
     const gameId = req.params.gameId
     if (!Validator.isUUID(gameId)) {
-        next(new HttpError(400, "Game ID invalid"))
+        return next(new HttpError(400, "Game ID invalid"))
     }
     // TODO: Check if player in game
     const playerHand = await WizMaster.getPlayerHand(gameId, playerId)
@@ -145,25 +145,25 @@ router.get('/:gameId/hand', async (req, res, next) => {
         res.status(200).send({playerHand})
     }
     else {
-        next(new HttpError(500, "Failed to retrieve player hand"))
+        return next(new HttpError(500, "Failed to retrieve player hand"))
     }
 
 })
 router.get('/:gameId/stack', async (req, res, next) => {
     const playerId = req.playerId
     if (!playerId) {
-        next(new HttpError(401, "No player detected"))
+        return next(new HttpError(401, "No player detected"))
     }
     const gameId = req.params.gameId
     if (!Validator.isUUID(gameId)) {
-        next(new HttpError(400, "Game ID invalid"))
+        return next(new HttpError(400, "Game ID invalid"))
     }
     const stack = await WizMaster.getTableStack(gameId)
     if (stack) {
         res.status(200).send({stack})
     }
     else {
-        next(new HttpError(500, "Failed to retrieve table stack"))
+        return next(new HttpError(500, "Failed to retrieve table stack"))
     }
 })
 // router.get('/:gameId/bets', async (req, res) => {
@@ -180,11 +180,11 @@ router.get('/:gameId/stack', async (req, res, next) => {
 router.get('/:gameId/kozer', async (req, res, next) => {
     const playerId = req.playerId
     if (!playerId) {
-        next(new HttpError(401, "No player detected"))
+        return next(new HttpError(401, "No player detected"))
     }
     const gameId = req.params.gameId
     if (!Validator.isUUID(gameId)) {
-        next(new HttpError(400, "Game ID invalid"))
+        return next(new HttpError(400, "Game ID invalid"))
     }
     const strongSuit = await WizMaster.getRoundStrongSuit(gameId)
     if (strongSuit) {
@@ -192,43 +192,43 @@ router.get('/:gameId/kozer', async (req, res, next) => {
         res.status(200).send({strongSuit})
     }
     else {
-        next(new HttpError(500, "Failed to retrieve strong suit"))
+        return next(new HttpError(500, "Failed to retrieve strong suit"))
     }
 })
 
 router.post('/:gameId/bet/:bet', async (req, res, next) => {
     const playerId = req.playerId
     if (!playerId) {
-        next(new HttpError(401, "No player detected"))
+        return next(new HttpError(401, "No player detected"))
     }
     const gameId = req.params.gameId
     if (!Validator.isUUID(gameId)) {
-        next(new HttpError(400, "Game ID invalid"))
+        return next(new HttpError(400, "Game ID invalid"))
     }
     const bet = +req.params.bet
     if (!isNumber(bet)) {
-        next(new HttpError(400, "Invalid bet requested"))
+        return next(new HttpError(400, "Invalid bet requested"))
     }
     const isBetPlayed = await WizMaster.tryPlayBet(gameId, bet, playerId)
     if (isBoolean(isBetPlayed)) {
         res.status(200).send({isBetPlayed})
     }
     else {
-        next(new HttpError(500, "Failed to play bet"))
+        return next(new HttpError(500, "Failed to play bet"))
     }
 })
 router.post('/:gameId/play', async ( req, res, next ) => {
     const playerId = req.playerId
     if (!playerId) {
-        next(new HttpError(401, "No player detected"))
+        return next(new HttpError(401, "No player detected"))
     }
     const gameId = req.params.gameId
     if (!Validator.isUUID(gameId)) {
-        next(new HttpError(400, "Game ID invalid"))
+        return next(new HttpError(400, "Game ID invalid"))
     }
     const card = req.body
     if (!Card.isCard(card)) {
-        next(new HttpError(400, "Invalid card requested"))
+        return next(new HttpError(400, "Invalid card requested"))
     }
 
     const isCardPlayed = await WizMaster.tryPlayCard(gameId, card, playerId)
@@ -237,7 +237,7 @@ router.post('/:gameId/play', async ( req, res, next ) => {
         res.status(200).send({isCardPlayed})
     }
     else {
-        next(new HttpError(500, "Failed to play card"))
+        return next((new HttpError(500, "Failed to play card"))
     }
 })
 
