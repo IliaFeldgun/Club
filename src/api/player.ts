@@ -17,7 +17,7 @@ router.post('/', async (req, res, next) => {
     if (playerId) {
         res.cookie("player_name", playerName, { signed: true, sameSite: true})
         res.cookie("player_id", playerId, { signed: true, sameSite: true })
-        res.status(200).send("Player created, cookie sent")
+        res.status(200).send({playerId})
     }
     else {
         next(new HttpError(500, "Player could not be created"))
