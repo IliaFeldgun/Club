@@ -237,7 +237,7 @@ router.post('/:gameId/play', async ( req, res, next ) => {
         res.status(200).send({isCardPlayed})
     }
     else {
-        return next((new HttpError(500, "Failed to play card"))
+        return next(new HttpError(500, "Failed to play card"))
     }
 })
 
