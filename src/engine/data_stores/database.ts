@@ -1,4 +1,5 @@
 import MongoDBClient from './mongodb'
+import Sanitize from 'mongo-sanitize'
 import logger from '../winston'
 
 const DB_NAME = process.env.MONGODB_DB
@@ -23,7 +24,7 @@ export default class Database {
     }
     static async get(collectionName: string, filterObject: any): Promise<any> {
         const collection = await Database.getCollectionByName(collectionName)
-
+        filterObject = Sanitize(filterObject)
         try {
             return await collection.findOne(filterObject)
         }
@@ -33,6 +34,7 @@ export default class Database {
     }
     static async insert(collectionName: string, object: any): Promise<boolean> {
         const collection = await Database.getCollectionByName(collectionName)
+        object = Sanitize(object)
         const result = await collection.insertOne(object)
         if (result.insertedCount === 1) {
             return true
@@ -44,6 +46,8 @@ export default class Database {
     }
     static async upsert(collectionName: string, filter: any, object: any): Promise<boolean> {
         const collection = await Database.getCollectionByName(collectionName)
+        filter = Sanitize(filter)
+        object = Sanitize(object)
         const result = await collection.updateOne(filter, {$set: object}, {upsert: true})
         if (result.result.ok === 1) {
             return true
@@ -57,6 +61,8 @@ export default class Database {
     static async replace(collectionName: string, idToReplace: string, object: any):
         Promise<boolean> {
         const collection = await Database.getCollectionByName(collectionName)
+        idToReplace = Sanitize(idToReplace)
+        object = Sanitize(object)
         const result = await collection.replaceOne({id: idToReplace}, object)
         if (result.modifiedCount === 1) {
             return true
@@ -70,6 +76,8 @@ export default class Database {
     static async update(collectionName: string, idToUpdate: string, object: any):
         Promise<boolean> {
         const collection = await Database.getCollectionByName(collectionName)
+        idToUpdate = Sanitize(idToUpdate)
+        object = Sanitize(object)
         const result = await collection.updateOne({id: idToUpdate}, {$set: object})
         if (result.modifiedCount === 1) {
             return true
@@ -82,6 +90,7 @@ export default class Database {
     }
     static async delete(collectionName: string, filter: any): Promise<boolean> {
         const collection = await Database.getCollectionByName(collectionName)
+        filter = Sanitize(filter)
         const result = await collection.deleteOne(filter)
         if (result.deletedCount === 1) {
             return true
@@ -100,6 +109,9 @@ export default class Database {
 
         const collection = await Database.getCollectionByName(collectionName)
         const toPush: any = {}
+        arrayName = Sanitize(arrayName)
+        idToUpdate = Sanitize(idToUpdate)
+        values = Sanitize(values)
         toPush[arrayName] = {$each: values}
         const result  = await collection.updateOne({id: idToUpdate}, {$push: toPush})
         if (result.modifiedCount === 1) {
@@ -119,6 +131,9 @@ export default class Database {
 
         const collection = await Database.getCollectionByName(collectionName)
         const toPull: any = {}
+        idToUpdate = Sanitize(idToUpdate)
+        arrayName = Sanitize(arrayName)
+        value = Sanitize(value)
         toPull[arrayName] = value
         const result = await collection.updateOne({id: idToUpdate}, {$pull: {toPull}})
         if (result.modifiedCount === 1) {
