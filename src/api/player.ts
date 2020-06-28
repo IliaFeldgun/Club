@@ -13,6 +13,9 @@ router.post('/', async (req, res, next) => {
     }
 
     const playerName = req.body.playerName
+    if (!Validator.isAlphanumeric(playerName)) {
+        return next(new HttpError(400, "Player name must be alphanumeric"))
+    }
     const playerId = await LobbyBuilder.createPlayer(playerName)
 
     if (playerId) {
