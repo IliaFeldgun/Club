@@ -1,5 +1,5 @@
 import { AxiosRequestConfig } from 'axios'
-import QueryString from 'querystring'
+
 function GET_CONFIG(): AxiosRequestConfig {
     return {
         method: "GET",
