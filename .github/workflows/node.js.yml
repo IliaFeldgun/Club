@@ -28,7 +28,6 @@ jobs:
     - run: npm run build --if-present
     - run: npm test
       env:
-        ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
         COOKIE_SECRET: ${{ secrets.COOKIE_SECRET }}
         MONGODB_CONNECTION_STRING: ${{ secrets.MONGODB_CONNECTION_STRING }}
         MONGODB_DB: ${{ secrets.MONGODB_DB }}
