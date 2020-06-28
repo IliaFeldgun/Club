@@ -11,7 +11,7 @@
     "server": "npm run prebuild && tsc && npm run start",
     "dev": "npm run build && node .",
     "start": "node .",
-    "test": "jest --forceExit"
+    "test": "jest --forceExit --setupFiles dotenv/config"
   },
   "repository": {
     "type": "git",
