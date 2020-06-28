@@ -28,4 +28,12 @@ jobs:
     - run: npm run build --if-present
     - run: npm test
       env:
-        COOKIE_SECRET: ${{secrets:COOKIE_SECRET}}
+        COOKIE_SECRET: ${{ secrets.COOKIE_SECRET }}
+        MONGODB_CONNECTION_STRING: ${{ secrets.MONGODB_CONNECTION_STRING }}
+        MONGODB_DB: ${{ secrets.MONGODB_DB }}
+        REDIS_HOST: ${{ secrets.REDIS_HOST }}
+        REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
+        REDIS_PORT: ${{ secrets.REDIS_PORT }}
+        UUID_GAME_NAMESPACE: ${{ secrets.UUID_GAME_NAMESPACE }}
+        UUID_PLAYER_NAMESPACE: ${{ secrets.UUID_PLAYER_NAMESPACE }}
+        UUID_ROOM_NAMESPACE: ${{ secrets.UUID_ROOM_NAMESPACE }}
