@@ -1,5 +1,9 @@
 # Club Roadmap
 
+### Cookies security
+Cookies now run across different origins.
+Need to investigate and make sure cookies don't make the app XSS vulnerable
+
 ### Redis cleanup
 Game state destruction needs to be implemented. 
 Use Key Value State Store to clean up objects that are no longer needed.
@@ -15,10 +19,6 @@ Sign in with facebook/google
 
 ### Normalize errors
 Create error handling with standartized errors, perhaps Axios will assist with the client
-
-### Axios
-Check out if axios will make handling requests better.
-Also Axios will allow better testing with Jest, rather than installing fetch on server side.
 
 ### Log everything
 Logging exists only for http requests on server
