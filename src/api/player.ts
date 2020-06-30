@@ -4,6 +4,7 @@ import LobbyStore from "../engine/lobby/LobbyStore"
 import LobbyMaster from "../engine/lobby/LobbyMaster"
 import Validator from "validator"
 import {HttpError} from "../engine/request_handlers/error_handler"
+import IPlayer from "../engine/lobby/interfaces/Player"
 
 const router = express.Router()
 
@@ -19,12 +20,32 @@ router.post('/', async (req, res, next) => {
     const playerId = await LobbyBuilder.createPlayer(playerName)
 
     if (playerId) {
-        res.cookie("player_name", playerName, { signed: true })
-        res.cookie("player_id", playerId, { signed: true })
+        res.cookie("player_name", playerName, { signed: true, httpOnly: true })
+        res.cookie("player_id", playerId, { signed: true, httpOnly: true })
         res.status(200).send({playerId})
     }
     else {
         return next(new HttpError(500, "Player could not be created"))
+    }
+})
+
+router.get('/', async (req, res, next) => {
+    if (!req.playerId) {
+        return next(new HttpError(401, "Player not logged in"))
+    }
+
+    const player: IPlayer = await LobbyStore.getPlayer(req.playerId)
+
+    if (player) {
+        res.status(200).send({
+            player: {
+                playerId: player.id,
+                playerName: player.name
+            }
+        })
+    }
+    else {
+        return next(new HttpError(500, "Player could not be retrieved"))
     }
 })
 
