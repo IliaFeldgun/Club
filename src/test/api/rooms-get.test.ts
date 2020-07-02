@@ -1,7 +1,5 @@
 import request from 'supertest'
 import app from '../../api/app'
-import Room from '../../engine/lobby/models/Room'
-import IRoom from '../../engine/lobby/interfaces/Room'
 
 describe("Testing room retrieval", () => {
     const playerApiRoute = "/api/player"
