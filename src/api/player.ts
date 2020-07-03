@@ -56,14 +56,9 @@ router.delete('/', async (req, res, next) => {
         return next(new HttpError(401, "No player detected to delete"))
     }
 
-    if (await LobbyStore.deletePlayer(playerId)) {
-        res.clearCookie("player_name", { signed: true })
-        res.clearCookie("player_id", { signed: true })
-        res.status(200).send("Player deleted, cookie deleted")
-    }
-    else {
-        return next(new HttpError(500, "Player could not be deleted"))
-    }
+    res.clearCookie("player_name", { signed: true })
+    res.clearCookie("player_id", { signed: true })
+    res.status(200).send("Cookie deleted")
 })
 
 router.get('/rooms', async (req, res, next) => {
