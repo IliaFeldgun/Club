@@ -141,7 +141,6 @@ router.get('/:gameId/hand', async (req, res, next) => {
     if (!Validator.isUUID(gameId)) {
         return next(new HttpError(400, "Game ID invalid"))
     }
-    // TODO: Check if player in game
     const playerHand = await WizMaster.getPlayerHand(gameId, playerId)
     if (playerHand) {
         res.status(200).send({playerHand})
