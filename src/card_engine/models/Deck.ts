@@ -10,24 +10,23 @@ export default class Deck extends Stack implements IDeck {
 
     constructor(jokers: boolean){
         super([])
-        // TODO: decouple
-        function generateDeck(stack: IStack)
-        {
-            const maxRank = Rank.ACE
+        Deck.generateDeck(this, jokers)
+        Stack.shuffle(this)
+    }
+    
+    private static generateDeck(stack: IStack, jokers: boolean)
+    {
+        const maxRank = Rank.ACE
 
-            for (let suit = Suit.HEART; suit <= Suit.SPADE; suit++) {
-                for (let rank = Rank.TWO; rank <= Rank.ACE; rank++){
-                    Stack.push(stack,new Card(suit, rank))
-                }
-            }
-
-            if (jokers) {
-                Stack.push(stack, new Card(Suit.HEART, Rank.JOKER))
-                Stack.push(stack, new Card(Suit.SPADE, Rank.JOKER))
+        for (let suit = Suit.HEART; suit <= Suit.SPADE; suit++) {
+            for (let rank = Rank.TWO; rank <= Rank.ACE; rank++){
+                Stack.push(stack,new Card(suit, rank))
             }
         }
 
-        generateDeck(this)
-        Stack.shuffle(this)
+        if (jokers) {
+            Stack.push(stack, new Card(Suit.HEART, Rank.JOKER))
+            Stack.push(stack, new Card(Suit.SPADE, Rank.JOKER))
+        }
     }
 }
