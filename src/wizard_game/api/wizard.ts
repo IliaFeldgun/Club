@@ -21,7 +21,7 @@ router.get('/:gameId/updates', (req, res, next) => {
     if (!Validator.isUUID(gameId)) {
         return next(new HttpError(400, "Room ID invalid"))
     }
-    Announcer.subscribe(req, res, gameId, playerId, async () => {
+    Announcer.subscribe(req, res, gameId, async () => {
         // TODO: Refactor
         const game = await WizStore.getWizGame(gameId)
         if (game) {
