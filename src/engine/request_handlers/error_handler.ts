@@ -14,7 +14,7 @@ export function logError(
     res: Response,
     next: NextFunction
 ) {
-    logger.error({err, url: req.url})
+    logger.error({err, sessionId: req.sessionID, url: req.url})
     next(err)
 }
 export function handleClientError(

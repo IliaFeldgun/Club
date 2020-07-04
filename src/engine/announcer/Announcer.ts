@@ -1,21 +1,20 @@
 import {Request, Response} from 'express'
 import SSE from "../request_handlers/server_sent_events"
-import IPlayer from "../lobby/interfaces/Player"
 import StoreSubscriber from "../data_stores/store_subscriber"
 
 export default class Announcer {
     private static async storeSubscribe(
         gameId: string,
-        playerId: IPlayer["id"],
+        sessionId: string,
         onMessage: () => void
     ) {
-        StoreSubscriber.subscribe(gameId, playerId, onMessage)
+        StoreSubscriber.subscribe(gameId, sessionId, onMessage)
     }
     private static async storeUnsubscribe(
         gameId: string,
-        playerId: IPlayer["id"]
+        sessionId: string
     ) {
-        StoreSubscriber.unsubscribe(gameId, playerId)
+        StoreSubscriber.unsubscribe(gameId, sessionId)
     }
     private static async sseSubscribe(
         req: Request,
@@ -24,28 +23,28 @@ export default class Announcer {
     ) {
         SSE.subscribeClient(req, res, onUnsubscribe)
     }
-    private static async sseUnsubscribe(playerId: string) {
-        SSE.unsubscribeClient(playerId)
+    private static async sseUnsubscribe(sessionId: string) {
+        SSE.unsubscribeClient(sessionId)
     }
-    private static async sseSend(playerId: IPlayer["id"], payload: any) {
-        SSE.sendUpdateToClient([playerId], payload)
+    private static async sseSend(sessionId: string, payload: any) {
+        SSE.sendUpdateToClient([sessionId], payload)
     }
     static async subscribe(
         req: Request,
         res: Response,
         gameId: string,
-        playerId: IPlayer["id"],
         payloadSource: () => Promise<any>
     ) {
-        Announcer.storeSubscribe(gameId, playerId, async () => {
-            Announcer.sseSend(playerId, await payloadSource())
+        const sessionId = req.sessionID
+        Announcer.storeSubscribe(gameId, sessionId, async () => {
+            Announcer.sseSend(sessionId, await payloadSource())
         })
         Announcer.sseSubscribe(req, res, () => {
-            Announcer.unsubscribe(gameId, playerId)
+            Announcer.unsubscribe(gameId, sessionId)
         })
     }
-    static async unsubscribe(gameId: string, playerId: IPlayer["id"]) {
-        Announcer.storeUnsubscribe(gameId, playerId)
-        Announcer.sseUnsubscribe(playerId)
+    static async unsubscribe(gameId: string, sessionId: string) {
+        Announcer.storeUnsubscribe(gameId, sessionId)
+        Announcer.sseUnsubscribe(sessionId)
     }
 }

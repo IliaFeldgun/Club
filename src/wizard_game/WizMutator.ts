@@ -64,11 +64,6 @@ export default class WizMutator {
 
         if (WizInfo.areAllHandsEmpty(round)) {
             WizMutator.calculateScores(game)
-            WizMutator.setAnnouncement(
-                game,
-                WizAnnouncementType.SCORES_CHANGED,
-                ""
-            )
             WizMutator.nextRound(game)
             const isGameDone = WizInfo.isGameDone(game)
             if (isGameDone) {

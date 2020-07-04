@@ -11,7 +11,7 @@ describe("Testing player login", () => {
             .send({playerName})
         expect(res.status).toBe(200)
         const cookie = res.get("Set-Cookie")
-        expect(cookie.length).toBe(2)
+        expect(cookie.length).toBe(1)
         expect(Validator.isUUID(res.body.playerId)).toBe(true)
     })
     test('Player creation with invalid characters', async () => {

@@ -1,10 +1,8 @@
 import express from "express"
 import LobbyBuilder from "../engine/lobby/LobbyBuilder"
-import LobbyStore from "../engine/lobby/LobbyStore"
 import LobbyMaster from "../engine/lobby/LobbyMaster"
 import Validator from "validator"
-import {HttpError} from "../engine/request_handlers/error_handler"
-import IPlayer from "../engine/lobby/interfaces/Player"
+import { HttpError } from "../engine/request_handlers/error_handler"
 
 const router = express.Router()
 
@@ -20,8 +18,8 @@ router.post('/', async (req, res, next) => {
     const playerId = await LobbyBuilder.createPlayer(playerName)
 
     if (playerId) {
-        res.cookie("player_name", playerName, { signed: true, httpOnly: true })
-        res.cookie("player_id", playerId, { signed: true, httpOnly: true })
+        req.session.playerName = playerName
+        req.session.playerId = playerId
         res.status(200).send({playerId})
     }
     else {
@@ -34,19 +32,13 @@ router.get('/', async (req, res, next) => {
         return next(new HttpError(401, "Player not logged in"))
     }
 
-    const player: IPlayer = await LobbyStore.getPlayer(req.playerId)
+    res.status(200).send({
+        player: {
+            playerId: req.session.playerId,
+            playerName: req.session.playerName
+        }
+    })
 
-    if (player) {
-        res.status(200).send({
-            player: {
-                playerId: player.id,
-                playerName: player.name
-            }
-        })
-    }
-    else {
-        return next(new HttpError(500, "Player could not be retrieved"))
-    }
 })
 
 router.delete('/', async (req, res, next) => {
@@ -56,14 +48,10 @@ router.delete('/', async (req, res, next) => {
         return next(new HttpError(401, "No player detected to delete"))
     }
 
-    if (await LobbyStore.deletePlayer(playerId)) {
-        res.clearCookie("player_name", { signed: true })
-        res.clearCookie("player_id", { signed: true })
-        res.status(200).send("Player deleted, cookie deleted")
-    }
-    else {
-        return next(new HttpError(500, "Player could not be deleted"))
-    }
+    req.session.destroy((err) => {
+        return next(err)
+    })
+    res.status(200).send("Player logged out")
 })
 
 router.get('/rooms', async (req, res, next) => {

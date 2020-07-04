@@ -1,5 +1,4 @@
 import { Request, Response } from "express"
-import IPlayer from "../lobby/interfaces/Player";
 
 const SSE_RESPONSE_HEADER = {
     'Connection': 'keep-alive',
@@ -22,7 +21,7 @@ export default class ServerSentEvents {
 
         res.write(`data: ${JSON.stringify("OK")}\n\n`)
         // TODO: Refactor it to session ID
-        const clientId = req.playerId
+        const clientId = req.sessionID
         // TODO: Perhaps allow multiple responses per client
         const newClient = {
             id: clientId,
@@ -42,7 +41,7 @@ export default class ServerSentEvents {
             client.id !== clientId
         )
     }
-    static sendUpdateToClient(playerIds: IPlayer["id"][], payload?: any) {
+    static sendUpdateToClient(clientIds: string[], payload?: any) {
         if (!payload) {
             payload = {
                 update: true
@@ -50,7 +49,7 @@ export default class ServerSentEvents {
         }
         const clients = ServerSentEvents.clients
         clients.forEach(client => {
-            if (playerIds.indexOf(client.id) !== -1) {
+            if (clientIds.indexOf(client.id) !== -1) {
                 client.res.write(`data: ${JSON.stringify(payload)}\n\n`)
 
                 // TODO: notice any following problems and delete this whole nonsense
