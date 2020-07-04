@@ -20,7 +20,6 @@ export default class ServerSentEvents {
         res.writeHead(200, SSE_RESPONSE_HEADER)
 
         res.write(`data: ${JSON.stringify("OK")}\n\n`)
-        // TODO: Refactor it to session ID
         const clientId = req.sessionID
         // TODO: Perhaps allow multiple responses per client
         const newClient = {
@@ -60,7 +59,6 @@ export default class ServerSentEvents {
         })
     }
     private static clients: {
-        // TODO: Convert to sessionId
         id: string
         res: Response
     }[] = []
