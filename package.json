@@ -33,7 +33,6 @@
     "@types/redlock": "^4.0.1",
     "@types/uuid": "^7.0.4",
     "@types/validator": "^13.1.0",
-    "@types/winston": "^2.4.4",
     "connect-redis": "^4.0.4",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
