@@ -12,7 +12,8 @@ export default class ServerSentEvents {
         res: Response,
         /// TODO: find if next is relevant
         // next: NextFunction,
-        onUnsubscribe?: () => void
+        onUnsubscribe?: () => void,
+        customClientId?: string
     ) {
         req.socket.setTimeout(0)
         req.socket.setNoDelay(true)
@@ -20,8 +21,8 @@ export default class ServerSentEvents {
         res.writeHead(200, SSE_RESPONSE_HEADER)
 
         res.write(`data: ${JSON.stringify("OK")}\n\n`)
-        const clientId = req.sessionID
-        // TODO: Perhaps allow multiple responses per client
+        const clientId = customClientId ? customClientId : req.sessionID
+
         const newClient = {
             id: clientId,
             res
@@ -30,7 +31,8 @@ export default class ServerSentEvents {
 
         req.on('close', () => {
             // TODO: Possibly log this
-            onUnsubscribe()
+            if (onUnsubscribe)
+                onUnsubscribe()
             ServerSentEvents.unsubscribeClient(clientId)
         })
     }
