@@ -32,7 +32,7 @@ router.get('/:gameId/updates', (req, res, next) => {
 
     }
     Announcer.subscribe(req, res, gameId, announcementPayloader)
-    
+
 })
 
 router.post('/:roomId', async ( req, res, next ) => {

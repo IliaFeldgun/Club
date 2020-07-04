@@ -40,5 +40,5 @@ function newPublisherClient(clientName: string) {
 // )
 
 // redLock.on('clientError', (error) => {
-//     
+//
 // })

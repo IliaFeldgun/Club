@@ -13,7 +13,7 @@ export default class Deck extends Stack implements IDeck {
         Deck.generateDeck(this, jokers)
         Stack.shuffle(this)
     }
-    
+
     private static generateDeck(stack: IStack, jokers: boolean)
     {
         const maxRank = Rank.ACE
