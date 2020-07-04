@@ -13,13 +13,14 @@ const configuredSession = session({
     cookie: {
         signed: true,
         httpOnly: true,
-        maxAge: 86400, // 1 day
+        maxAge: 86400 * 1000, // 1 day, milliseconds for some reason
         path: "/api",
         secure: false
     },
     name: "club.connect.sid",
     resave: false,
-    unset: "destroy"
+    unset: "destroy",
+    saveUninitialized: false
 })
 
 export default configuredSession
