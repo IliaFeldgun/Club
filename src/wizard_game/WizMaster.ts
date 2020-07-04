@@ -50,8 +50,6 @@ export default class WizMaster {
     }
     static async getWizPlayersByGame(gameId: IWizGame["id"]):
         Promise<IWizPlayer[]> {
-            // TODO: refactor
-
             const game = await WizStore.getWizGame(gameId)
 
             if (game) {
@@ -60,7 +58,7 @@ export default class WizMaster {
                 const playerHandSizes = WizInfo.getPlayerHandSizes(round)
                 const playerBets = WizInfo.getBets(round)
                 if (players) {
-                    const wizPlayers = (players.map((player) => {
+                    const wizPlayers: IWizPlayer[]= (players.map((player) => {
                         return {
                             id: player.id,
                             name: player.name,
