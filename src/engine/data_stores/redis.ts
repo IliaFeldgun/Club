@@ -4,7 +4,7 @@ import logger from '../winston'
 
 export const redisClient = newClient()
 export const redisPublisher = newPublisherClient()
-
+export const redisSessionClient = newClient()
 function newClient() {
     const port = Number.parseInt(process.env.REDIS_PORT, 10)
     const host = process.env.REDIS_HOST
