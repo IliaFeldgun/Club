@@ -18,8 +18,6 @@ app.use(session)
 // app.use(express.urlencoded({extended: true}))
 app.use(assertPlayer)
 
-app.use(express.static('./client/build'))
-
 app.use("/api/game/wizard", wizard)
 app.use("/api/player", player)
 app.use("/api/room", room)
