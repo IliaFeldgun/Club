@@ -8,10 +8,12 @@ export default class Room implements IRoom {
     // TODO: Create a model for games
     gameName: string
     gameId: string
+    isPublic: boolean
     constructor(id: string, leader: IPlayer["id"]) {
         this.id = id
         this.leader = leader
         this.players = []
+        this.isPublic = false
     }
 
     /*

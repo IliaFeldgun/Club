@@ -7,6 +7,7 @@ export default interface IRoom {
     // TODO: Create a model for games
     gameName: string
     gameId: string
+    isPublic: boolean
     // addPlayer: (player: IPlayer["id"]) => void
     // removePlayer: (player: IPlayer) => void
     // close: () => void
