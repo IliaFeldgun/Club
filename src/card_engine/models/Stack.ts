@@ -33,18 +33,3 @@ export default class Stack implements IStack {
             stackCard.rank === card.rank && stackCard.suit === card.suit)
     }
 }
-/*
-function riffleShuffle(cards: Array<Card>) {
-    const cutDeckVariant = cards.length / 2 + Math.floor(Math.random() * 9) - 4;
-    const leftHalf = cards.splice(0, cutDeckVariant);
-    let leftCount = leftHalf.length;
-    let rightCount = cards.length - Math.floor(Math.random() * 4);
-    while(leftCount > 0) {
-      const takeAmount = Math.floor(Math.random() * 4);
-      cards.splice(rightCount, 0, ...leftHalf.splice(leftCount, takeAmount));
-      leftCount -= takeAmount;
-      rightCount = rightCount - Math.floor(Math.random() * 4) + takeAmount;
-    }
-    cards.splice(rightCount, 0, ...leftHalf);
-  }
-*/
