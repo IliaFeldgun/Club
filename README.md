@@ -1,4 +1,6 @@
 # Wiz
+[![License](https://img.shields.io/npm/l/enzyme.svg)](https://github.com/enzymejs/enzyme/blob/master/LICENSE.md)
+
 This is a platform for browser turn based games.
 
 Developed using mostly the Express.js framework with TypeScript.
