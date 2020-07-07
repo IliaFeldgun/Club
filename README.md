@@ -1,5 +1,5 @@
 # ♣ Club
-[![License](https://img.shields.io/github/license/IliaFeldgun/Club?style=flat-square)](https://github.com/IliaFeldgun/Club/master/LICENSE)
+[![License](https://img.shields.io/github/license/IliaFeldgun/Club?style=flat-square)](https://github.com/IliaFeldgun/Club/blob/master/LICENSE)
 [![Build](https://img.shields.io/github/workflow/status/IliaFeldgun/Club/Node.js%20CI?style=flat-square)](https://github.com/IliaFeldgun/Club/actions?query=workflow%3A%22Node.js+CI%22)
 
 This is a platform for browser turn based games.
