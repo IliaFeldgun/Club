@@ -12,7 +12,8 @@ export default class ServerSentEvents {
         res: Response,
         /// TODO: find if next is relevant
         // next: NextFunction,
-        onUnsubscribe?: () => void
+        onUnsubscribe?: () => void,
+        customClientId?: string
     ) {
         req.socket.setTimeout(0)
         req.socket.setNoDelay(true)
@@ -20,9 +21,8 @@ export default class ServerSentEvents {
         res.writeHead(200, SSE_RESPONSE_HEADER)
 
         res.write(`data: ${JSON.stringify("OK")}\n\n`)
-        // TODO: Refactor it to session ID
-        const clientId = req.sessionID
-        // TODO: Perhaps allow multiple responses per client
+        const clientId = customClientId ? customClientId : req.sessionID
+
         const newClient = {
             id: clientId,
             res
@@ -31,7 +31,8 @@ export default class ServerSentEvents {
 
         req.on('close', () => {
             // TODO: Possibly log this
-            onUnsubscribe()
+            if (onUnsubscribe)
+                onUnsubscribe()
             ServerSentEvents.unsubscribeClient(clientId)
         })
     }
@@ -51,16 +52,10 @@ export default class ServerSentEvents {
         clients.forEach(client => {
             if (clientIds.indexOf(client.id) !== -1) {
                 client.res.write(`data: ${JSON.stringify(payload)}\n\n`)
-
-                // TODO: notice any following problems and delete this whole nonsense
-                // client.res.writeProcessing()
-                // Without this response wasn't sent, Possibly a bug
-                // Seems to not work on :3000, because of React-Scripts proxying
             }
         })
     }
     private static clients: {
-        // TODO: Convert to sessionId
         id: string
         res: Response
     }[] = []

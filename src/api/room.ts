@@ -8,7 +8,13 @@ import Validator from 'validator'
 import { HttpError } from "../engine/request_handlers/error_handler";
 
 const router = express.Router()
-router.get('/updates', SSE.subscribeClient)
+router.get('/updates', (req, res, next) => {
+    const playerId = req.playerId
+    if (!playerId) {
+        return next(new HttpError(401, "No player detected"))
+    }
+    SSE.subscribeClient(req, res, undefined, playerId)
+})
 
 router.post('/', async (req, res, next) => {
     const playerId = req.playerId

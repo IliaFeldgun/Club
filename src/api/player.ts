@@ -51,7 +51,7 @@ router.delete('/', async (req, res, next) => {
     req.session.destroy((err) => {
         return next(err)
     })
-    res.status(200).send("Player logged out")
+    res.status(200).send({playerId})
 })
 
 router.get('/rooms', async (req, res, next) => {

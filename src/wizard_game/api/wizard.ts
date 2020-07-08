@@ -21,8 +21,7 @@ router.get('/:gameId/updates', (req, res, next) => {
     if (!Validator.isUUID(gameId)) {
         return next(new HttpError(400, "Room ID invalid"))
     }
-    Announcer.subscribe(req, res, gameId, async () => {
-        // TODO: Refactor
+    const announcementPayloader = async () => {
         const game = await WizStore.getWizGame(gameId)
         if (game) {
             return game.announcement
@@ -30,7 +29,10 @@ router.get('/:gameId/updates', (req, res, next) => {
         else {
             return {}
         }
-    })
+
+    }
+    Announcer.subscribe(req, res, gameId, announcementPayloader)
+
 })
 
 router.post('/:roomId', async ( req, res, next ) => {
@@ -139,7 +141,6 @@ router.get('/:gameId/hand', async (req, res, next) => {
     if (!Validator.isUUID(gameId)) {
         return next(new HttpError(400, "Game ID invalid"))
     }
-    // TODO: Check if player in game
     const playerHand = await WizMaster.getPlayerHand(gameId, playerId)
     if (playerHand) {
         res.status(200).send({playerHand})

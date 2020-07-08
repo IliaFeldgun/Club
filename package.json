@@ -6,7 +6,7 @@
   "scripts": {
     "prebuild": "tslint -c tslint.json -p tsconfig.json --fix",
     "build": "tsc",
-    "dev": "npm run build && node .",
+    "dev": "tsc && node .",
     "start": "node .",
     "test": "jest --forceExit --setupFiles dotenv/config"
   },
@@ -24,7 +24,6 @@
     "@types/connect-redis": "0.0.14",
     "@types/cookie-parser": "^1.4.2",
     "@types/cors": "^2.8.6",
-    "@types/dotenv": "^8.2.0",
     "@types/express-session": "^1.17.0",
     "@types/mongo-sanitize": "^1.0.1",
     "@types/mongodb": "^3.5.23",
@@ -33,7 +32,6 @@
     "@types/redlock": "^4.0.1",
     "@types/uuid": "^7.0.4",
     "@types/validator": "^13.1.0",
-    "@types/winston": "^2.4.4",
     "connect-redis": "^4.0.4",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
