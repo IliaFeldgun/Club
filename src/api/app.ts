@@ -9,6 +9,7 @@ import assertPlayer from "../engine/request_handlers/player_assert"
 import * as errorHandler from "../engine/request_handlers/error_handler"
 const app = express();
 
+app.enable('trust proxy')
 app.use(cors({origin: process.env.CLIENT_ORIGIN, credentials: true}))
 app.use(httpLogger('dev'))
 app.use(express.json());
