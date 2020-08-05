@@ -25,7 +25,8 @@ const configuredSession = session({
     name: "club.connect.sid",
     resave: false,
     unset: "destroy",
-    saveUninitialized: false
+    saveUninitialized: false,
+    proxy: true
 })
 
 export default configuredSession
