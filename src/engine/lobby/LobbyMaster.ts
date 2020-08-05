@@ -61,8 +61,16 @@ export default class LobbyMaster {
         }
     }
     static async getRoomPlayers(roomId: IRoom["id"]): Promise<IPlayer[]> {
-
         const playerIds = await LobbyMaster.getRoomPlayerIds(roomId)
+        if (playerIds) {
+            return LobbyMaster.getPlayersFromIds(playerIds)
+        }
+        else {
+            return []
+        }
+    }
+
+    static async getPlayersFromIds(playerIds: IPlayer["id"][]): Promise<IPlayer[]> {
         if (playerIds) {
             const playerReqs: Promise<IPlayer>[] = []
             playerIds.forEach((id) => {

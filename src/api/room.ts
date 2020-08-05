@@ -44,30 +44,32 @@ router.get('/:roomId', async (req, res, next) => {
         return next(new HttpError(400, "Room ID invalid"))
     }
     const room: IRoom = await LobbyStore.getRoom(roomId)
-    if (room) {
+    const players = await LobbyMaster.getRoomPlayers(roomId)
+    if (room && players) {
+        room.players = players.map((player) => player.name)
         res.status(200).send({room});
     }
     else {
         return next(new HttpError(500, "Failed to retrieve room"))
     }
 })
-router.get('/:roomId/playernames', async (req,res, next) => {
-    const playerId = req.playerId
-    if (!playerId) {
-        return next(new HttpError(401, "No player detected"))
-    }
-    const roomId = req.params.roomId
-    if (!Validator.isUUID(roomId)) {
-        return next(new HttpError(400, "Room ID invalid"))
-    }
-    const players = await LobbyMaster.getRoomPlayers(roomId)
-    if (players) {
-        res.status(200).send({playerNames: players.map((player) => player.name)})
-    }
-    else {
-        return next(new HttpError(500, "Failed to get room player names"))
-    }
-})
+// router.get('/:roomId/playernames', async (req,res, next) => {
+//     const playerId = req.playerId
+//     if (!playerId) {
+//         return next(new HttpError(401, "No player detected"))
+//     }
+//     const roomId = req.params.roomId
+//     if (!Validator.isUUID(roomId)) {
+//         return next(new HttpError(400, "Room ID invalid"))
+//     }
+//     const players = await LobbyMaster.getRoomPlayers(roomId)
+//     if (players) {
+//         res.status(200).send({playerNames: players.map((player) => player.name)})
+//     }
+//     else {
+//         return next(new HttpError(500, "Failed to get room player names"))
+//     }
+// })
 // router.get('/:roomId/leader', async (req,res) => {
 //     const roomId = req.params.roomId
 //     const playerId = req.playerId
