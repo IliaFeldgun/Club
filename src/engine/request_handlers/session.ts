@@ -1,8 +1,11 @@
 import session from 'express-session'
 import ConnectRedis from 'connect-redis'
 import {redisSessionClient} from '../data_stores/redis'
+
+const IS_PRODUCTION = process.env.NODE_ENV === 'production'
 const COOKIE_SECRET = process.env.COOKIE_SECRET
-const SECURE = process.env.NODE_ENV === 'production'
+const SECURE = IS_PRODUCTION
+
 const RedisStore = ConnectRedis(session)
 const configuredSession = session({
     store: new RedisStore({
@@ -22,7 +25,8 @@ const configuredSession = session({
     name: "club.connect.sid",
     resave: false,
     unset: "destroy",
-    saveUninitialized: false
+    saveUninitialized: false,
+    proxy: true
 })
 
 export default configuredSession
