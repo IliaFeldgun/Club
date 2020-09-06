@@ -20,7 +20,7 @@ export default class LobbyBuilder {
     }
     static async createRoom(playerId: IPlayer["id"]): Promise<IRoom["id"]> {
         // TODO: Look out for injection, ID generation currently prevents it
-        const roomId = generateId(playerId, process.env.UUID_ROOM_NAMESPACE)
+        const roomId = generateId(playerId + Date.now, process.env.UUID_ROOM_NAMESPACE)
 
         const room: IRoom = new Room(roomId, playerId)
 
