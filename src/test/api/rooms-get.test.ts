@@ -12,13 +12,13 @@ describe("Testing room retrieval", () => {
     
     beforeAll(async () => {
         const playerRes = await request(app)
-        .post(playerApiRoute)
-        .send({playerName})
+            .post(playerApiRoute)
+            .send({playerName})
         cookie = playerRes.get("Set-Cookie")
         const roomRes = await request(app)
-        .post(roomCreateApiRoute)
-        .set("Cookie", cookie)
-        .send()
+            .post(roomCreateApiRoute)
+            .set("Cookie", cookie)
+            .send()
         createdRoomId = roomRes.body.roomId
     })
     

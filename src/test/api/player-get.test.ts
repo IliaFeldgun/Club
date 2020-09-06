@@ -8,8 +8,8 @@ describe("Testing player retrieval", () => {
 
     beforeAll(async () => {
         const playerRes = await request(app)
-        .post(playerApiRoute)
-        .send({playerName})
+            .post(playerApiRoute)
+            .send({ playerName })
         cookie = playerRes.get("Set-Cookie")
     })
 
