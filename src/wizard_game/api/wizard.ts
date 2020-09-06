@@ -35,35 +35,35 @@ router.get('/:gameId/updates', (req, res, next) => {
 
 })
 
-router.post('/:roomId', async (req, res, next) => {
-    const playerId = req.playerId
-    if (!playerId) {
-        return next(new HttpError(401, "No player detected"))
-    }
-    const roomId = req.params.roomId
-    if (!Validator.isUUID(roomId)) {
-        return next(new HttpError(400, "Room ID invalid"))
-    }
+// router.post('/:roomId', async (req, res, next) => {
+//     const playerId = req.playerId
+//     if (!playerId) {
+//         return next(new HttpError(401, "No player detected"))
+//     }
+//     const roomId = req.params.roomId
+//     if (!Validator.isUUID(roomId)) {
+//         return next(new HttpError(400, "Room ID invalid"))
+//     }
 
-    const room: IRoom = await LobbyStore.getRoom(roomId)
-    if (!room) {
-        return next(new HttpError(500, "Failed to get room"))
-    }
-    if (room.leader !== playerId) {
-        return next(new HttpError(403, "Not room leader"))
-    }
+//     const room: IRoom = await LobbyStore.getRoom(roomId)
+//     if (!room) {
+//         return next(new HttpError(500, "Failed to get room"))
+//     }
+//     if (room.leader !== playerId) {
+//         return next(new HttpError(403, "Not room leader"))
+//     }
 
-    const gameId = await WizBuilder.newGameState(room.id, room.players)
-    const isRoomSet = await LobbyMaster.setRoomGame(room.id, "wizard", gameId)
-    const areCardsDealt = await WizMaster.dealCards(gameId)
+//     const gameId = await WizBuilder.newGameState(room.id, room.players)
+//     const isRoomSet = await LobbyMaster.setRoomGame(room.id, "wizard", gameId)
+//     const areCardsDealt = await WizMaster.dealCards(gameId)
 
-    if (gameId && isRoomSet && areCardsDealt) {
-        res.status(200).send({ gameId })
-    }
-    else {
-        return next(new HttpError(500, "Failed to initialize game"))
-    }
-})
+//     if (gameId && isRoomSet && areCardsDealt) {
+//         res.status(200).send({ gameId })
+//     }
+//     else {
+//         return next(new HttpError(500, "Failed to initialize game"))
+//     }
+// })
 
 router.get('/:gameId', async (req, res, next) => {
     const playerId = req.playerId
