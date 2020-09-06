@@ -1,11 +1,11 @@
 import express from "express"
-import IRoom from "../engine/lobby/interfaces/Room";
-import LobbyBuilder from "../engine/lobby/LobbyBuilder";
-import LobbyMaster from "../engine/lobby/LobbyMaster";
-import LobbyStore from "../engine/lobby/LobbyStore";
+import IRoom from "../engine/lobby/interfaces/Room"
+import LobbyBuilder from "../engine/lobby/LobbyBuilder"
+import LobbyMaster from "../engine/lobby/LobbyMaster"
+import LobbyStore from "../engine/lobby/LobbyStore"
 import SSE from "../engine/request_handlers/server_sent_events"
 import Validator from 'validator'
-import { HttpError } from "../engine/request_handlers/error_handler";
+import { HttpError } from "../engine/request_handlers/error_handler"
 
 const router = express.Router()
 router.get('/updates', (req, res, next) => {
@@ -26,13 +26,13 @@ router.post('/', async (req, res, next) => {
     const roomId = await LobbyBuilder.createRoom(playerId)
     const isPlayerinRoom = await LobbyMaster.addPlayerToRoom(playerId, roomId)
 
-    if(roomId && isPlayerinRoom) {
-        res.status(200).send({roomId})
+    if (roomId && isPlayerinRoom) {
+        res.status(200).send({ roomId })
     }
     else {
         return next(new HttpError(500, "Failed to create room"))
     }
-});
+})
 
 router.get('/:roomId', async (req, res, next) => {
     const playerId = req.playerId
@@ -47,7 +47,7 @@ router.get('/:roomId', async (req, res, next) => {
     const players = await LobbyMaster.getRoomPlayers(roomId)
     if (room && players) {
         room.players = players.map((player) => player.name)
-        res.status(200).send({room});
+        res.status(200).send({ room })
     }
     else {
         return next(new HttpError(500, "Failed to retrieve room"))
@@ -85,7 +85,7 @@ router.get('/:roomId', async (req, res, next) => {
 //         }
 //     }
 // })
-router.post('/:roomId/join', async ( req, res, next ) => {
+router.post('/:roomId/join', async (req, res, next) => {
     const playerId = req.playerId
     if (!playerId) {
         return next(new HttpError(401, "No player detected"))
@@ -98,14 +98,14 @@ router.post('/:roomId/join', async ( req, res, next ) => {
         const playerIds = await LobbyMaster.getRoomPlayerIds(roomId)
         SSE.sendUpdateToClient(playerIds)
 
-        res.status(200).send({roomId})
+        res.status(200).send({ roomId })
     }
     else {
         return next(new HttpError(500, "Failed to join room"))
     }
-});
+})
 
-router.delete('/:roomId/player', async ( req, res, next ) => {
+router.delete('/:roomId/player', async (req, res, next) => {
     const playerId = req.playerId
     if (!playerId) {
         return next(new HttpError(401, "No player detected"))
@@ -122,12 +122,13 @@ router.delete('/:roomId/player', async ( req, res, next ) => {
     else {
         return next(new HttpError(500, "Failed to remove player"))
     }
-});
-router.put('/leader', ( req, res ) => {
+})
+
+router.put('/leader', (req, res) => {
     // req.player
     // req.room
     // req.newleader
-    res.send( "Leader changed" );
-} );
+    res.send("Leader changed")
+})
 
 export default router
