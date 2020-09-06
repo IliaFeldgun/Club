@@ -6,6 +6,7 @@ import LobbyStore from "../engine/lobby/LobbyStore"
 import SSE from "../engine/request_handlers/server_sent_events"
 import Validator from 'validator'
 import { HttpError } from "../engine/request_handlers/error_handler"
+import GameBuilder from "../engine/lobby/GameBuilder"
 
 const router = express.Router()
 router.get('/updates', (req, res, next) => {
@@ -34,6 +35,11 @@ router.post('/', async (req, res, next) => {
     }
 })
 
+router.get('/games', async (req, res, next) => {
+    res.status(200).send({
+        games: [...GameBuilder.getAvailableGames()]
+    })
+})
 router.get('/:roomId', async (req, res, next) => {
     const playerId = req.playerId
     if (!playerId) {
@@ -121,6 +127,43 @@ router.delete('/:roomId/player', async (req, res, next) => {
     }
     else {
         return next(new HttpError(500, "Failed to remove player"))
+    }
+})
+router.post('/:roomId/game/:gameName', async (req, res, next) => {
+    const playerId = req.playerId
+    if (!playerId) {
+        return next(new HttpError(401, "No player detected"))
+    }
+
+    const roomId = req.params.roomId
+    if (!Validator.isUUID(roomId)) {
+        return next(new HttpError(400, "Room ID invalid"))
+    }
+
+    const gameName = req.params.gameName
+    if (!GameBuilder.isValidGame(gameName)) {
+        return next(new HttpError(400, "No such game"))
+    }
+    const room: IRoom = await LobbyStore.getRoom(roomId)
+
+    if (!room) {
+        return next(new HttpError(500, "Failed to get room"))
+    }
+
+    if (room.leader !== playerId) {
+        return next(new HttpError(403, "Not room leader"))
+    }
+
+    const gameId = await GameBuilder.newGame(room, gameName)
+    const isRoomSet = await LobbyMaster.setRoomGame(room.id, gameName, gameId)
+
+
+    if (gameId && isRoomSet) {
+        SSE.sendUpdateToClient(room.players)
+        res.status(200).send({ gameId })
+    }
+    else {
+        return next(new HttpError(500, "Failed to initialize game"))
     }
 })
 
