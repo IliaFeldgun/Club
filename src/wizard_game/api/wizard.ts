@@ -35,7 +35,7 @@ router.get('/:gameId/updates', (req, res, next) => {
 
 })
 
-router.post('/:roomId', async ( req, res, next ) => {
+router.post('/:roomId', async (req, res, next) => {
     const playerId = req.playerId
     if (!playerId) {
         return next(new HttpError(401, "No player detected"))
@@ -45,7 +45,7 @@ router.post('/:roomId', async ( req, res, next ) => {
         return next(new HttpError(400, "Room ID invalid"))
     }
 
-    const room : IRoom = await LobbyStore.getRoom(roomId)
+    const room: IRoom = await LobbyStore.getRoom(roomId)
     if (!room) {
         return next(new HttpError(500, "Failed to get room"))
     }
@@ -55,11 +55,10 @@ router.post('/:roomId', async ( req, res, next ) => {
 
     const gameId = await WizBuilder.newGameState(room.id, room.players)
     const isRoomSet = await LobbyMaster.setRoomGame(room.id, "wizard", gameId)
-    const areCardsDealt  = await WizMaster.dealCards(gameId)
+    const areCardsDealt = await WizMaster.dealCards(gameId)
 
-    if (gameId && isRoomSet && areCardsDealt)
-    {
-        res.status(200).send({gameId})
+    if (gameId && isRoomSet && areCardsDealt) {
+        res.status(200).send({ gameId })
     }
     else {
         return next(new HttpError(500, "Failed to initialize game"))
@@ -80,7 +79,7 @@ router.get('/:gameId', async (req, res, next) => {
     }
     const instruction = await WizMaster.getGameInstruction(gameId)
     if (instruction) {
-        res.status(200).send({instruction})
+        res.status(200).send({ instruction })
     }
     else {
         return next(new HttpError(500, "Failed to retrieve instructions"))
@@ -98,7 +97,7 @@ router.get('/:gameId/nextPlayer', async (req, res, next) => {
     const round = await WizMaster.getGameRound(gameId)
     if (round) {
         const nextPlayer = round.playerOrder[0]
-        res.status(200).send({nextPlayer})
+        res.status(200).send({ nextPlayer })
     }
     else {
         return next(new HttpError(500, "Failed to retrieve next player"))
@@ -115,7 +114,7 @@ router.get('/:gameId/players', async (req, res, next) => {
     }
     const players = await WizMaster.getWizPlayersByGame(gameId)
     if (players) {
-        res.status(200).send({players})
+        res.status(200).send({ players })
     }
     else {
         return next(new HttpError(500, "Failed to retrieve players"))
@@ -143,7 +142,7 @@ router.get('/:gameId/hand', async (req, res, next) => {
     }
     const playerHand = await WizMaster.getPlayerHand(gameId, playerId)
     if (playerHand) {
-        res.status(200).send({playerHand})
+        res.status(200).send({ playerHand })
     }
     else {
         return next(new HttpError(500, "Failed to retrieve player hand"))
@@ -161,7 +160,7 @@ router.get('/:gameId/stack', async (req, res, next) => {
     }
     const stack = await WizMaster.getTableStack(gameId)
     if (stack) {
-        res.status(200).send({stack})
+        res.status(200).send({ stack })
     }
     else {
         return next(new HttpError(500, "Failed to retrieve table stack"))
@@ -190,7 +189,7 @@ router.get('/:gameId/kozer', async (req, res, next) => {
     const strongSuit = await WizMaster.getRoundStrongSuit(gameId)
     if (strongSuit) {
 
-        res.status(200).send({strongSuit})
+        res.status(200).send({ strongSuit })
     }
     else {
         return next(new HttpError(500, "Failed to retrieve strong suit"))
@@ -212,13 +211,13 @@ router.post('/:gameId/bet/:bet', async (req, res, next) => {
     }
     const isBetPlayed = await WizMaster.tryPlayBet(gameId, bet, playerId)
     if (isBoolean(isBetPlayed)) {
-        res.status(200).send({isBetPlayed})
+        res.status(200).send({ isBetPlayed })
     }
     else {
         return next(new HttpError(500, "Failed to play bet"))
     }
 })
-router.post('/:gameId/play', async ( req, res, next ) => {
+router.post('/:gameId/play', async (req, res, next) => {
     const playerId = req.playerId
     if (!playerId) {
         return next(new HttpError(401, "No player detected"))
@@ -234,8 +233,8 @@ router.post('/:gameId/play', async ( req, res, next ) => {
 
     const isCardPlayed = await WizMaster.tryPlayCard(gameId, card, playerId)
 
-    if (isBoolean(isCardPlayed)){
-        res.status(200).send({isCardPlayed})
+    if (isBoolean(isCardPlayed)) {
+        res.status(200).send({ isCardPlayed })
     }
     else {
         return next(new HttpError(500, "Failed to play card"))
