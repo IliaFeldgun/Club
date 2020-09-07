@@ -7,11 +7,10 @@ export default class Stack implements IStack {
         this.cards = [...cards]
     }
     static shuffle(stack: IStack) {
-        function stackShuffle(cards: ICard[])
-        {
+        function stackShuffle(cards: ICard[]) {
             let cardsRemain = cards.length;
 
-            while(cardsRemain) {
+            while (cardsRemain) {
                 cards.push(cards.splice(Math.floor(Math.random() * cardsRemain), 1)[0])
                 cardsRemain--
             }

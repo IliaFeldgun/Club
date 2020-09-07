@@ -13,7 +13,7 @@ export default class Database {
                 return db.collection(collectionName)
             }
             else {
-                logger.error("Database not found", {DB_NAME})
+                logger.error("Database not found", { DB_NAME })
                 return undefined
             }
         }
@@ -29,7 +29,7 @@ export default class Database {
             return await collection.findOne(filterObject)
         }
         catch {
-            logger.error("Failed to get", {collectionName})
+            logger.error("Failed to get", { collectionName })
         }
     }
     static async insert(collectionName: string, object: any): Promise<boolean> {
@@ -40,7 +40,7 @@ export default class Database {
             return true
         }
         else {
-            logger.error("Failed to insert", {collectionName})
+            logger.error("Failed to insert", { collectionName })
             return false
         }
     }
@@ -48,12 +48,12 @@ export default class Database {
         const collection = await Database.getCollectionByName(collectionName)
         filter = Sanitize(filter)
         object = Sanitize(object)
-        const result = await collection.updateOne(filter, {$set: object}, {upsert: true})
+        const result = await collection.updateOne(filter, { $set: object }, { upsert: true })
         if (result.result.ok === 1) {
             return true
         }
         else {
-            logger.error("Failed to upsert", {collectionName, filter})
+            logger.error("Failed to upsert", { collectionName, filter })
             return false
         }
 
@@ -63,12 +63,12 @@ export default class Database {
         const collection = await Database.getCollectionByName(collectionName)
         idToReplace = Sanitize(idToReplace)
         object = Sanitize(object)
-        const result = await collection.replaceOne({id: idToReplace}, object)
+        const result = await collection.replaceOne({ id: idToReplace }, object)
         if (result.modifiedCount === 1) {
             return true
         }
         else {
-            logger.error("Failed to replace", {collectionName, idToReplace})
+            logger.error("Failed to replace", { collectionName, idToReplace })
             return false
         }
 
@@ -78,12 +78,12 @@ export default class Database {
         const collection = await Database.getCollectionByName(collectionName)
         idToUpdate = Sanitize(idToUpdate)
         object = Sanitize(object)
-        const result = await collection.updateOne({id: idToUpdate}, {$set: object})
+        const result = await collection.updateOne({ id: idToUpdate }, { $set: object })
         if (result.modifiedCount === 1) {
             return true
         }
         else {
-            logger.error("Failed to delete", {collectionName, idToUpdate})
+            logger.error("Failed to delete", { collectionName, idToUpdate })
 
             return false
         }
@@ -96,7 +96,7 @@ export default class Database {
             return true
         }
         else {
-            logger.error("Failed to delete", {collectionName, filter})
+            logger.error("Failed to delete", { collectionName, filter })
             return false
         }
     }
@@ -112,13 +112,13 @@ export default class Database {
         arrayName = Sanitize(arrayName)
         idToUpdate = Sanitize(idToUpdate)
         values = Sanitize(values)
-        toPush[arrayName] = {$each: values}
-        const result  = await collection.updateOne({id: idToUpdate}, {$push: toPush})
+        toPush[arrayName] = { $each: values }
+        const result = await collection.updateOne({ id: idToUpdate }, { $push: toPush })
         if (result.modifiedCount === 1) {
             return true
         }
         else {
-            logger.error("Failed to push to array", {collectionName, idToUpdate, arrayName})
+            logger.error("Failed to push to array", { collectionName, idToUpdate, arrayName })
             return false
         }
     }
@@ -135,12 +135,12 @@ export default class Database {
         arrayName = Sanitize(arrayName)
         value = Sanitize(value)
         toPull[arrayName] = value
-        const result = await collection.updateOne({id: idToUpdate}, {$pull: {toPull}})
+        const result = await collection.updateOne({ id: idToUpdate }, { $pull: { toPull } })
         if (result.modifiedCount === 1) {
             return true
         }
         else {
-            logger.error("Failed to pull from array", {collectionName, idToUpdate, arrayName})
+            logger.error("Failed to pull from array", { collectionName, idToUpdate, arrayName })
             return false
         }
     }

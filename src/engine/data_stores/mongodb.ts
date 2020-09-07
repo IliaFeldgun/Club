@@ -1,4 +1,4 @@
-import { MongoClientOptions, MongoClient, MongoError} from 'mongodb'
+import { MongoClientOptions, MongoClient, MongoError } from 'mongodb'
 import logger from '../winston'
 
 const mongoOptions: MongoClientOptions = {

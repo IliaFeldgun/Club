@@ -20,7 +20,7 @@ router.post('/', async (req, res, next) => {
     if (playerId) {
         req.session.playerName = playerName
         req.session.playerId = playerId
-        res.status(200).send({playerId})
+        res.status(200).send({ playerId })
     }
     else {
         return next(new HttpError(500, "Player could not be created"))
@@ -51,7 +51,7 @@ router.delete('/', async (req, res, next) => {
     req.session.destroy((err) => {
         return next(err)
     })
-    res.status(200).send({playerId})
+    res.status(200).send({ playerId })
 })
 
 router.get('/rooms', async (req, res, next) => {
@@ -62,7 +62,7 @@ router.get('/rooms', async (req, res, next) => {
     }
     const rooms = await LobbyMaster.getPlayerRoomIds(playerId)
     if (rooms) {
-        res.status(200).send({rooms})
+        res.status(200).send({ rooms })
     }
     else {
         return next(new HttpError(500, "Failed to get rooms"))

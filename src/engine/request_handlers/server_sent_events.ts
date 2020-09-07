@@ -5,7 +5,7 @@ const SSE_RESPONSE_HEADER = {
     'Content-Type': 'text/event-stream',
     'Cache-Control': 'no-cache',
     'X-Accel-Buffering': 'no',
-  };
+};
 export default class ServerSentEvents {
     static async subscribeClient(
         req: Request,

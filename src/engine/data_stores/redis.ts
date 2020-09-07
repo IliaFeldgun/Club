@@ -10,7 +10,7 @@ function newClient(clientName: string) {
     const host = process.env.REDIS_HOST
     const password = process.env.REDIS_PASSWORD
 
-    const client = redis.createClient({port, host, password})
+    const client = redis.createClient({ port, host, password })
 
     client.on('error', (channel, message) => {
         logger.error(`${clientName} error; `, message)

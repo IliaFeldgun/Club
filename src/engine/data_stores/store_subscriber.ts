@@ -9,21 +9,21 @@ export default class StoreSubscriber {
         clientId: string,
         onMessage: () => void
     ) {
-        logger.verbose("Store subscription process started", {itemId, clientId})
+        logger.verbose("Store subscription process started", { itemId, clientId })
 
         await StoreSubscriber.subscribeToItem(itemId)
         StoreSubscriber.addSubscriber(itemId, clientId, onMessage)
 
-        logger.verbose("Store subscription process ended", {itemId, clientId})
+        logger.verbose("Store subscription process ended", { itemId, clientId })
     }
     static async unsubscribe(itemId: string, clientId: string) {
         // TODO: Not async-safe
-        logger.verbose("Unsubscription process started", {itemId, clientId})
+        logger.verbose("Unsubscription process started", { itemId, clientId })
 
         StoreSubscriber.removeSubscriber(itemId, clientId)
         StoreSubscriber.cleanSubscription(itemId)
 
-        logger.verbose("Unsubscription process ended", {itemId, clientId})
+        logger.verbose("Unsubscription process ended", { itemId, clientId })
 
     }
     private static async subscribeToItem(itemId: string): Promise<boolean> {
@@ -37,7 +37,7 @@ export default class StoreSubscriber {
 
                 store.onSubscribedMessage((channel, eventItemId) => {
                     // TODO: Rogue messages appearing, sub seems to not be per key
-                    logger.verbose(`Message received from store`, {channel, eventItemId})
+                    logger.verbose(`Message received from store`, { channel, eventItemId })
 
                     if (
                         channel === SET_CHANNEL &&
@@ -46,19 +46,19 @@ export default class StoreSubscriber {
                         Object.values(
                             StoreSubscriber.subscriberCallbacks[eventItemId]
                         ).forEach(
-                                (func) => { func() }
+                            (func) => { func() }
                         )
                     }
                 })
 
-                logger.verbose(`Successfully subscribed to store key`, {itemId})
+                logger.verbose(`Successfully subscribed to store key`, { itemId })
             }
             catch (ex) {
                 logger.error(`Failed to subscribe to store key ${itemId}; `, ex)
             }
         }
         else {
-            logger.verbose(`Already subscribed to store key`, {itemId})
+            logger.verbose(`Already subscribed to store key`, { itemId })
             return true
         }
     }
@@ -69,24 +69,24 @@ export default class StoreSubscriber {
     ): boolean {
         if (StoreSubscriber.subscriberCallbacks[itemId]) {
             StoreSubscriber.subscriberCallbacks[itemId][clientId] = onMessage
-            logger.verbose(`Client subscribed to key`, {itemId, clientId})
+            logger.verbose(`Client subscribed to key`, { itemId, clientId })
             return true
         }
         else {
-            logger.warn(`Item doesn't exist, client can't subscribe`, {itemId, clientId})
+            logger.warn(`Item doesn't exist, client can't subscribe`, { itemId, clientId })
             return false
         }
     }
-    private static async cleanSubscription(itemId: string): Promise<boolean>{
+    private static async cleanSubscription(itemId: string): Promise<boolean> {
         try {
             if (StoreSubscriber.subscriberCallbacks[itemId] === {}) {
                 await store.unsubscribe()(SET_CHANNEL, itemId)
                 delete StoreSubscriber.subscriberCallbacks[itemId]
-                logger.verbose(`Subscription cleaned`, {itemId})
+                logger.verbose(`Subscription cleaned`, { itemId })
                 return true
             }
             else {
-                logger.verbose(`Subscription in use, no need to clean`, {itemId})
+                logger.verbose(`Subscription in use, no need to clean`, { itemId })
                 return true
             }
         }
@@ -98,7 +98,7 @@ export default class StoreSubscriber {
     private static removeSubscriber(itemId: string, clientId: string): boolean {
         if (StoreSubscriber.subscriberCallbacks[itemId]) {
             delete StoreSubscriber.subscriberCallbacks[itemId][clientId]
-            logger.verbose(`Client unsubscribed from key`, {itemId, clientId})
+            logger.verbose(`Client unsubscribed from key`, { itemId, clientId })
             return true
         }
         else {

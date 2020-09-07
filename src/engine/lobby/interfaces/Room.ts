@@ -1,4 +1,4 @@
-import IPlayer from "./Player";
+import IPlayer from "./Player"
 
 export default interface IRoom {
     id: string

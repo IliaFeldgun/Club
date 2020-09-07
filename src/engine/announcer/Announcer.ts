@@ -1,4 +1,4 @@
-import {Request, Response} from 'express'
+import { Request, Response } from 'express'
 import SSE from "../request_handlers/server_sent_events"
 import StoreSubscriber from "../data_stores/store_subscriber"
 

@@ -1,4 +1,4 @@
-import IRoom from "./Room";
+import IRoom from "./Room"
 
 export default interface IPlayer {
     id: string

@@ -6,14 +6,14 @@ import Room from "./models/Room";
 import LobbyStore from "./LobbyStore";
 
 export default class LobbyBuilder {
-    static async createPlayer(playerName: string): Promise<IPlayer["id"]>{
+    static async createPlayer(playerName: string): Promise<IPlayer["id"]> {
         // TODO: Look out for injection, ID generation currently prevents it
         const playerId = generateId(playerName, process.env.UUID_PLAYER_NAMESPACE)
 
         if (await LobbyStore.getPlayer(playerId))
             return playerId
         else {
-            const player : IPlayer = new Player(playerId, playerName)
+            const player: IPlayer = new Player(playerId, playerName)
             if (await LobbyStore.setPlayer(player))
                 return playerId
         }

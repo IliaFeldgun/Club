@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction} from "express"
+import { Request, Response, NextFunction } from "express"
 import logger from '../winston'
 export function handleError(
     err: Error,
@@ -14,7 +14,7 @@ export function logError(
     res: Response,
     next: NextFunction
 ) {
-    logger.error({err, sessionId: req.sessionID, url: req.url})
+    logger.error({ err, sessionId: req.sessionID, url: req.url })
     next(err)
 }
 export function handleClientError(
@@ -25,7 +25,7 @@ export function handleClientError(
 ) {
     res.status(err.httpStatusCode).send(err.clientMessage)
 }
-export class HttpError extends Error{
+export class HttpError extends Error {
     constructor(httpStatusCode: number, clientMessage: string, message?: string) {
         super(message)
         this.httpStatusCode = httpStatusCode

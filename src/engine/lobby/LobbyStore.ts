@@ -36,21 +36,22 @@ export default class LobbyStore {
     static async setRoomGame(
         roomId: IRoom["id"],
         gameId: IRoom["gameId"],
-        gameName: IRoom["gameName"]): Promise<boolean> {
-            const collection = collections.ROOM_COLLECTION
-            const updateValue = {
-                gameId, gameName
-            }
-            return Database.update(collection, roomId, updateValue)
+        gameName: IRoom["gameName"]
+    ): Promise<boolean> {
+        const collection = collections.ROOM_COLLECTION
+        const updateValue = {
+            gameId, gameName
+        }
+        return Database.update(collection, roomId, updateValue)
     }
     static async setRoomLeader(roomId: IRoom["id"], playerId: IPlayer["id"]):
         Promise<boolean> {
-            const collection = collections.ROOM_COLLECTION
-            const updateValue = {
-                leader: playerId
-            }
-            return Database.update(collection, roomId, updateValue)
+        const collection = collections.ROOM_COLLECTION
+        const updateValue = {
+            leader: playerId
         }
+        return Database.update(collection, roomId, updateValue)
+    }
     /// TODO: These two need to be a single transaction
     static async setRoomPlayers(roomId: IRoom["id"], playerIds: IPlayer["id"][]):
         Promise<boolean> {
