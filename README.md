@@ -4,6 +4,8 @@
 
 This is a platform for browser turn based games.
 
+![Club GUI](https://github.com/IliaFeldgun/Club-client/raw/master/src/img/WizClub2Small.png)
+
 Developed using mostly the Express.js framework with TypeScript.
 
 ## Usage
