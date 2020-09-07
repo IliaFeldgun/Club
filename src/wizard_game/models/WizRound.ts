@@ -1,11 +1,13 @@
-import IWizRound from "../interfaces/WizRound";
-import IDeck from "../../card_engine/interfaces/Deck";
-import IStack from "../../card_engine/interfaces/Stack";
-import IWizBet from "../interfaces/WizBet";
-import IPlayer from "../../engine/lobby/interfaces/Player";
-import IWizPlayerRoundResult from "../interfaces/WizPlayerRoundResult";
-import ICard, { Suit } from "../../card_engine/interfaces/Card";
-import { PossibleMoves } from "../enums/PossibleMoves";
+import IWizRound from "../interfaces/WizRound"
+import IWizBet from "../interfaces/WizBet"
+import IWizPlayerRoundResult from "../interfaces/WizPlayerRoundResult"
+import { PossibleMoves } from "../enums/PossibleMoves"
+
+
+import IDeck from "../../card_engine/interfaces/Deck"
+import IStack from "../../card_engine/interfaces/Stack"
+import ICard, { Suit } from "../../card_engine/interfaces/Card"
+import IPlayer from "../../engine/lobby/interfaces/Player"
 
 export default class WizRound implements IWizRound {
     roundNumber: number

@@ -1,13 +1,14 @@
-import IPlayer from "../engine/lobby/interfaces/Player";
-import ICard, { Suit } from "../card_engine/interfaces/Card";
-import IWizRound from "./interfaces/WizRound";
-import WizStore from "./WizStore";
-import IWizGame from "./interfaces/WizGame";
-import LobbyMaster from "../engine/lobby/LobbyMaster";
-import WizInfo from "./WizInfo";
-import { PossibleMoves } from "./enums/PossibleMoves";
-import WizMutator from "./WizMutator";
-import IWizPlayer from "./interfaces/WizPlayer";
+import IWizRound from "./interfaces/WizRound"
+import WizStore from "./WizStore"
+import IWizGame from "./interfaces/WizGame"
+import WizInfo from "./WizInfo"
+import { PossibleMoves } from "./enums/PossibleMoves"
+import WizMutator from "./WizMutator"
+import IWizPlayer from "./interfaces/WizPlayer"
+
+import IPlayer from "../engine/lobby/interfaces/Player"
+import LobbyMaster from "../engine/lobby/LobbyMaster"
+import ICard, { Suit } from "../card_engine/interfaces/Card"
 
 export default class WizMaster {
     static async getGameInstruction(gameId: IWizGame["id"]): Promise<PossibleMoves> {

@@ -1,6 +1,7 @@
-import { WizAnnouncementType } from "../enums/WizAnnouncementType";
-import IWizAnnouncement from "../interfaces/WizAnnouncement";
-import IPlayer from "../../engine/lobby/interfaces/Player";
+import { WizAnnouncementType } from "../enums/WizAnnouncementType"
+import IWizAnnouncement from "../interfaces/WizAnnouncement"
+
+import IPlayer from "../../engine/lobby/interfaces/Player"
 
 export default class WizAnnouncement implements IWizAnnouncement {
     version: number

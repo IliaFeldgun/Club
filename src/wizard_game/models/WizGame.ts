@@ -1,9 +1,10 @@
 import IWizGame from "../interfaces/WizGame"
 import IWizScore from "../interfaces/WizScore"
-import IRoom from "../../engine/lobby/interfaces/Room"
 import IWizRound from "../interfaces/WizRound"
-import IPlayer from "../../engine/lobby/interfaces/Player"
 import IWizAnnouncement from "../interfaces/WizAnnouncement"
+
+import IRoom from "../../engine/lobby/interfaces/Room"
+import IPlayer from "../../engine/lobby/interfaces/Player"
 
 export default class WizGame implements IWizGame {
     id: string

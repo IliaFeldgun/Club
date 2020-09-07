@@ -1,11 +1,7 @@
 import IWizGame from "./interfaces/WizGame"
-import IRoom from "../engine/lobby/interfaces/Room"
-import IPlayer from "../engine/lobby/interfaces/Player"
 import WizGame from "./models/WizGame"
 import WizScore from "./models/WizScore"
 import IWizRound from "./interfaces/WizRound"
-import Deck from "../card_engine/models/Deck"
-import Stack from "../card_engine/models/Stack"
 import WizRound from "./models/WizRound"
 import { generateId } from "../engine/id_generator"
 import WizStore from "./WizStore"
@@ -14,6 +10,11 @@ import { PossibleMoves } from "./enums/PossibleMoves"
 import { WizAnnouncementType } from "./enums/WizAnnouncementType"
 import IWizAnnouncement from "./interfaces/WizAnnouncement"
 import WizAnnouncement from "./models/WizAnnouncement"
+
+import IRoom from "../engine/lobby/interfaces/Room"
+import IPlayer from "../engine/lobby/interfaces/Player"
+import Deck from "../card_engine/models/Deck"
+import Stack from "../card_engine/models/Stack"
 
 export default class WizBuilder {
 

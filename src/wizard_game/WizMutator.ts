@@ -1,16 +1,17 @@
 import WizGameRules from "./WizGameRules"
 import IWizRound from "./interfaces/WizRound"
 import IWizGame from "./interfaces/WizGame"
-import IPlayer from "../engine/lobby/interfaces/Player"
 import WizBuilder from "./WizBuilder"
 import WizInfo from "./WizInfo"
 import WizBet from "./models/WizBet"
 import { PossibleMoves } from "./enums/PossibleMoves"
+import IWizAnnouncement from "./interfaces/WizAnnouncement"
+import { WizAnnouncementType } from "./enums/WizAnnouncementType"
+
+import IPlayer from "../engine/lobby/interfaces/Player"
 import ICard from "../card_engine/interfaces/Card"
 import Card from "../card_engine/models/Card"
 import Stack from "../card_engine/models/Stack"
-import IWizAnnouncement from "./interfaces/WizAnnouncement"
-import { WizAnnouncementType } from "./enums/WizAnnouncementType"
 
 export default class WizMutator {
     static playBet(

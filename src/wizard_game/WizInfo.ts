@@ -1,12 +1,13 @@
 import IWizRound from "./interfaces/WizRound"
-import IPlayer from "../engine/lobby/interfaces/Player"
-import ICard, { Suit } from "../card_engine/interfaces/Card"
 import WizGameRules from "./WizGameRules"
-import Card from "../card_engine/models/Card"
-import Stack from "../card_engine/models/Stack"
 import { PossibleMoves } from "./enums/PossibleMoves"
 import IWizGame from "./interfaces/WizGame"
 import WizScore from "./models/WizScore"
+
+import IPlayer from "../engine/lobby/interfaces/Player"
+import ICard, { Suit } from "../card_engine/interfaces/Card"
+import Card from "../card_engine/models/Card"
+import Stack from "../card_engine/models/Stack"
 
 export default class WizInfo {
     static getPlayerByCard(round: IWizRound, card: ICard): IPlayer["id"] {
