@@ -24,3 +24,4 @@ for running without building
 Redis server required to save game state.
 MongoDB for saving players and rooms
 .env.example gives info how to connect.
+aa
